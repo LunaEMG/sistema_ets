@@ -21,10 +21,8 @@ class ConexionBaseDatos {
         $this->conexion_pdo = null;
 
         try {
-            // Configuracion de la cadena de conexion con codificacion utf8mb4
             $cadena_conexion = "mysql:host=" . $this->host_bd . ";dbname=" . $this->nombre_bd . ";charset=utf8mb4";
             
-            // Opciones de optimizacion y seguridad para PDO
             $opciones_pdo = [
                 PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
