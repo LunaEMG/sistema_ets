@@ -1,0 +1,270 @@
+/**
+ * Hoja de estilos para el Buscador Inteligente y Calendario de ETS.
+ * Diseñado con CSS3 puro utilizando Flexbox y CSS Grid Responsivo.
+ */
+
+/* 1. Variables de Diseño (Colores oficiales de la ESCOM y estructuras) */
+:root {
+    --color_azul_escom: #006293;
+    --color_azul_oscuro: #004567;
+    --color_gris_fondo: #f8f9fa;
+    --color_gris_borde: #e9ecef;
+    --color_texto_principal: #212529;
+    --color_texto_secundario: #6c757d;
+    --color_blanco: #ffffff;
+    --color_celeste_acento: #e6f2f7;
+    --sombra_suave: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03);
+    --radio_borde: 8px;
+}
+
+/*  Estilos Generales y Reseteo */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--color_gris_fondo);
+    color: var(--color_texto_principal);
+    line-height: 1.6;
+}
+
+/* Encabezado Principal */
+.encabezado_principal {
+    background-color: var(--color_azul_escom);
+    color: var(--color_blanco);
+    padding: 2rem 1rem;
+    text-align: center;
+    border-bottom: 4px solid #003b5c; 
+}
+
+.contenedor_encabezado h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.subtitulo_institucional {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    letter-spacing: 1px;
+}
+
+/* Contenedor de la Aplicación */
+.contenedor_principal {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.titulo_seccion {
+    font-size: 1.4rem;
+    color: var(--color_azul_escom);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color_gris_borde);
+}
+
+/* Módulo del Buscador (Formulario) */
+.seccion_buscador {
+    background-color: var(--color_blanco);
+    padding: 1.5rem;
+    border-radius: var(--radio_borde);
+    box-shadow: var(--sombra_suave);
+    margin-bottom: 2.5rem;
+}
+
+.formulario_filtros {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.grupo_campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.grupo_campo label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--color_texto_principal);
+}
+
+.control_formulario {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    background-color: var(--color_blanco);
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.control_formulario:focus {
+    border-color: var(--color_azul_escom);
+    box-shadow: 0 0 0 3px rgba(0, 98, 147, 0.1);
+}
+
+.control_formulario:disabled {
+    background-color: var(--color_gris_borde);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.boton_primario {
+    width: 100%;
+    background-color: var(--color_azul_escom);
+    color: var(--color_blanco);
+    border: none;
+    padding: 0.85rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.boton_primario:hover {
+    background-color: var(--color_azul_oscuro);
+}
+
+/* Cuadricula de Resultados */
+.cuadricula_tarjetas {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+/* Bloques de Materias */
+.tarjeta_materia_ets {
+    background-color: var(--color_blanco);
+    border: 1px solid var(--color_gris_borde);
+    border-radius: var(--radio_borde);
+    box-shadow: var(--sombra_suave);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.tarjeta_materia_ets:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.08);
+}
+
+.tarjeta_encabezado {
+    background-color: #fafafa;
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--color_gris_borde);
+    position: relative;
+}
+
+.etiqueta_semestre {
+    display: inline-block;
+    background-color: var(--color_celeste_acento);
+    color: var(--color_azul_escom);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.titulo_materia {
+    font-size: 1.2rem;
+    color: var(--color_texto_principal);
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.nombre_carrera {
+    font-size: 0.85rem;
+    color: var(--color_texto_secundario);
+}
+
+.tarjeta_cuerpo {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+/* Preparación para Iconos Limpios */
+.dato_renglon {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.icono_detalle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: var(--color_gris_fondo);
+    border: 2px solid var(--color_texto_secundario);
+    flex-shrink: 0;
+    display: inline-block;
+}
+
+/* Diferenciadores visuales para iconos finales */
+.icono_detalle.de_fecha { border-color: #e67e22; }      /* Naranja */
+.icono_detalle.de_turno { border-color: #3498db; }      /* Azul */
+.icono_detalle.de_ubicacion { border-color: #2ecc71; }  /* Verde */
+.icono_detalle.de_profesor { border-color: #9b59b6; }   /* Morado */
+
+.dato_renglon p {
+    font-size: 0.95rem;
+    color: var(--color_texto_principal);
+}
+
+/* Estados de Carga y Mensajes */
+.mensaje_carga, .mensaje_alerta {
+    text-align: center;
+    padding: 3rem 1rem;
+    grid-column: 1 / -1; /* Ocupa todo el ancho en el grid */
+    color: var(--color_texto_secundario);
+    font-weight: 500;
+}
+
+/* Pie de Página */
+.pie_pagina {
+    text-align: center;
+    padding: 2rem 1rem;
+    background-color: #212529;
+    color: #a0a0a0;
+    font-size: 0.85rem;
+    margin-top: 4rem;
+}
+
+/* Diseño Responsivo para Pantallas Medianas y Grandes */
+@media (min-width: 768px) {
+    .formulario_filtros {
+        flex-direction: row;
+        align-items: flex-end;
+    }
+    
+    .grupo_campo {
+        flex: 1;
+    }
+    
+    .grupo_boton {
+        flex: 0 0 200px;
+    }
+    
+    .cuadricula_tarjetas {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .cuadricula_tarjetas {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
