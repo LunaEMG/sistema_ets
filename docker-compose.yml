@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  servidor_web:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: contenedor_web_ets
+    ports:
+      - "${puerto_web}:80"
+    volumes:
+      - ./backend:/var/www/html
+      - ./frontend:/var/www/html/frontend
+    environment:
+      - host_base_datos=${host_base_datos}
+      - nombre_base_datos=${nombre_base_datos}
+      - usuario_base_datos=${usuario_base_datos}
+      - contrasena_base_datos=${contrasena_base_datos}
+    depends_on:
+      - servidor_base_datos
+
+  servidor_base_datos:
+    image: mysql:8.0
+    container_name: contenedor_db_ets
+    restart: always
+    ports:
+      - "${puerto_base_datos}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${contrasena_raiz_mysql}
+      MYSQL_DATABASE: ${nombre_base_datos}
+      MYSQL_USER: ${usuario_base_datos}
+      MYSQL_PASSWORD: ${contrasena_base_datos}
+    volumes:
+      - datos_mysql:/var/lib/mysql
+      - ./base_datos/inicializar_base_datos.sql:/docker-entrypoint-initdb.d/inicializar_base_datos.sql
+
+volumes:
+  datos_mysql:
