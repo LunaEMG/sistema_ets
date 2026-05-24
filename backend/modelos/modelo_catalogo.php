@@ -1,6 +1,7 @@
 <?php
 /**
  * Modelo para la gestion de catalogos (Carreras, Materias, Edificios, Salones).
+ * Ejecuta consultas seguras mediante sentencias preparadas con PDO.
  */
 
 require_once __DIR__ . '/../configuracion/conexion_base_datos.php';
@@ -40,6 +41,8 @@ class ModeloCatalogo {
                              ORDER BY semestre_materia ASC, nombre_materia ASC";
                              
             $sentencia = $this->conexion_bd->prepare($consulta_sql);
+            
+            // Vinculacion estricta de parametros (Mitigacion de Inyeccion SQL)
             $sentencia->bindParam(':id_carrera', $id_carrera, PDO::PARAM_INT);
             $sentencia->execute();
             
@@ -53,7 +56,7 @@ class ModeloCatalogo {
     /**
      * Metodo interno para centralizar y registrar errores sin mostrarlos al usuario.
      */
-    private $registrar_error_modelo($metodo, $mensaje_error) {
+    private function registrar_error_modelo($metodo, $mensaje_error) {
         $ruta_log = __DIR__ . '/../registros_error/errores_sistema.log';
         $mensaje_completo = "[" . date('Y-m-d H:i:s') . "] [ModeloCatalogo::$metodo] -> " . $mensaje_error . "\n";
         error_log($mensaje_completo, 3, $ruta_log);
