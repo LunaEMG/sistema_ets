@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Exámenes ETS - ESCOM IPN</title>
+    <link rel="stylesheet" href="recursos/css/estilos_busqueda.css">
+</head>
+<body>
+
+    <header class="encabezado_principal">
+        <div class="contenedor_encabezado">
+            <h1>Sistema para la Gestión de ETS</h1>
+            <p class="subtitulo_institucional">Escuela Superior de Cómputo - IPN</p>
+        </div>
+    </header>
+
+    <main class="contenedor_principal">
+
+        <section class="seccion_buscador">
+            <h2 class="titulo_seccion">Buscador Inteligente de Exámenes</h2>
+            
+            <div class="formulario_filtros">
+                <div class="grupo_campo">
+                    <label for="select_carrera">Carrera:</label>
+                    <select id="select_carrera" class="control_formulario">
+                        <option value="0">Todas las carreras</option>
+                    </select>
+                </div>
+
+                <div class="grupo_campo">
+                    <label for="select_semestre">Semestre:</label>
+                    <select id="select_semestre" class="control_formulario">
+                        <option value="0">Todos los semestres</option>
+                        <option value="1">1° Semestre</option>
+                        <option value="2">2° Semestre</option>
+                        <option value="3">3° Semestre</option>
+                        <option value="4">4° Semestre</option>
+                        <option value="5">5° Semestre</option>
+                        <option value="6">6° Semestre</option>
+                        <option value="7">7° Semestre</option>
+                        <option value="8">8° Semestre</option>
+                    </select>
+                </div>
+
+                <div class="grupo_campo">
+                    <label for="select_materia">Unidad de Aprendizaje (Materia):</label>
+                    <select id="select_materia" class="control_formulario" disabled>
+                        <option value="0">Todas las materias</option>
+                    </select>
+                </div>
+
+                <div class="grupo_boton">
+                    <button id="btn_buscar" class="boton_primario">Buscar Exámenes</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="seccion_resultados">
+            <h2 class="titulo_seccion">Calendario Oficial de ETS</h2>
+            
+            <div id="contenedor_bloques_examenes" class="cuadricula_tarjetas">
+                </div>
+        </section>
+
+    </main>
+
+    <footer class="pie_pagina">
+        <p>&copy; 2026 - Tecnologías para el Desarrollo de Aplicaciones Web - ESCOM IPN</p>
+    </footer>
+
+    <script type="module" src="recursos/js/controladores/buscador_principal.js"></script>
+
+</body>
+</html>
