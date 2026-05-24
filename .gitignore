@@ -1,0 +1,13 @@
+# Configuración del entorno y contraseñas
+.env
+valores_entorno.env
+
+# Archivos de persistencia de datos de Docker
+base_datos/datos_mysql/
+
+# Registros de error del servidor
+backend/registros_error/*.log
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
