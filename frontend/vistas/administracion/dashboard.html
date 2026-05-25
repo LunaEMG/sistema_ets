@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - ESCOM IPN</title>
+    <link rel="stylesheet" href="../../recursos/css/estilos_busqueda.css">
+</head>
+<body>
+
+    <header class="encabezado_principal">
+        <div class="contenedor_encabezado">
+            <h1>Panel de Control Administrativo</h1>
+            <p id="texto_bienvenida_usuario">Cargando administrador...</p>
+        </div>
+    </header>
+
+    <main class="contenedor_principal">
+        <section class="seccion_buscador">
+            <h2 class="titulo_seccion">Gestión Global del Sistema</h2>
+            <p>Bienvenido al módulo de control. Desde aquí puedes dar de alta, modificar y dar de baja la programación de exámenes ETS de la ESCOM.</p>
+            
+            <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+                <button class="boton_primario" style="background-color: #27ae60;">+ Agregar Nuevo Examen</button>
+                <button id="btn_cerrar_sesion" class="boton_primario" style="background-color: #e74c3c;">Cerrar Sesión Segura</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="pie_pagina">
+        <p>&copy; 2026 - Panel Administrativo Protegido - ESCOM IPN</p>
+    </footer>
+
+    <script type="module" src="../../recursos/js/controladores/controlador_dashboard.js"></script>
+</body>
+</html>

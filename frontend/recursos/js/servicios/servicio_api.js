@@ -58,5 +58,30 @@ export const servicio_api = {
             console.error('error_servicio_api::iniciar_sesion ->', error_peticion);
             return { estado: "error", mensaje: "No se pudo conectar con el servidor de autenticación." };
         }
+    },
+
+
+    async verificar_sesion() {
+        try {
+            const respuesta = await fetch(`${url_base}/autenticacion/verificar_sesion.php`);
+            return await respuesta.json();
+        } catch (error_peticion) {
+            console.error('error_servicio_api::verificar_sesion ->', error_peticion);
+            return { estado: "error", mensaje: "Error al validar la sesión." };
+        }
+    },
+
+    async cerrar_sesion() {
+        try {
+            const respuesta = await fetch(`${url_base}/autenticacion/cerrar_sesion.php`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            return await respuesta.json();
+        } catch (error_peticion) {
+            console.error('error_servicio_api::cerrar_sesion ->', error_peticion);
+            return { estado: "error", mensaje: "No se pudo cerrar la sesión en el servidor." };
+        }
     }
-};
+}   
+
