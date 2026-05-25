@@ -57,10 +57,15 @@
         </section>
 
         <section class="seccion_resultados">
-            <h2 class="titulo_seccion">Calendario Oficial de ETS</h2>
-            
-            <div id="contenedor_bloques_examenes" class="cuadricula_tarjetas">
+            <div class="encabezado_resultados_flex">
+                <h2 class="titulo_seccion">Calendario Oficial de ETS</h2>
+                <div class="barra_acciones_exportacion">
+                    <button id="btn_exportar_pdf" class="boton_exportar de_pdf" disabled>Exportar PDF</button>
+                    <button id="btn_exportar_ics" class="boton_exportar de_ics" disabled>Exportar iCalendar (.ics)</button>
                 </div>
+            </div>
+            
+            <div id="contenedor_bloques_examenes" class="cuadricula_tarjetas"></div>
         </section>
 
     </main>
