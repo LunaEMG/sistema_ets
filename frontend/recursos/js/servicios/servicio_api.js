@@ -139,13 +139,23 @@ export const servicio_api = {
         }
     },
 
+// Obtiene las métricas y conteos de exámenes por carrera para el Dashboard
+    async obtener_estadisticas() {
+        try {
+            const respuesta = await fetch(`${url_base}/examenes/estadisticas.php`);
+            const json_resultado = await respuesta.json();
+            return json_resultado.datos || [];
+        } catch (error_peticion) {
+            console.error('error_servicio_api::obtener_estadisticas ->', error_peticion);
+            return [];
+        }
+    },
+
     // Obtiene un solo examen por su ID para edición
     async obtener_examen_por_id(id_examen) {
         try {
-            // Reutilizamos el endpoint de leer enviando el ID específico de forma directa
             const respuesta = await fetch(`${url_base}/examenes/leer.php?id_carrera=0&semestre_materia=0&id_materia=0`);
             const json_resultado = await respuesta.json();
-            // Buscamos el examen específico dentro del arreglo regresado
             return json_resultado.datos.find(e => e.id === id_examen) || null;
         } catch (error_peticion) {
             console.error('error_servicio_api::obtener_examen_por_id ->', error_peticion);

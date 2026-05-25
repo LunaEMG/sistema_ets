@@ -52,7 +52,6 @@ class ModeloExamen {
 
     /**
      * Obtiene la lista completa de exámenes ETS inscritos sin ningún filtro (Búsqueda Global Dashboard).
-     * ORDEN CRÍTICO: examen -> materia -> carrera.
      */
     public function obtener_todos_los_examenes_completo() {
         try {
@@ -170,4 +169,26 @@ class ModeloExamen {
             return false;
         }
     }
+
+    /**
+     * Obtiene el conteo exacto de exámenes programados agrupados por cada carrera.
+     */
+    public function obtener_estadisticas_por_carrera() {
+        try {
+            $consulta_sql = "SELECT c.nombre_carrera, COUNT(e.id) AS total_examenes 
+                             FROM carrera c 
+                             LEFT JOIN materia m ON m.id_carrera = c.id 
+                             LEFT JOIN examen e ON e.id_materia = m.id 
+                             GROUP BY c.id, c.nombre_carrera 
+                             ORDER BY c.nombre_carrera ASC";
+
+            $sentencia = $this->conexion_bd->prepare($consulta_sql);
+            $sentencia->execute();
+            return $sentencia->fetchAll();
+        } catch (PDOException $error_sql) {
+            $this->registrar_error_examen("obtener_estadisticas_por_carrera", $error_sql->getMessage());
+            return false;
+        }
+    }
+
 }
