@@ -50,4 +50,16 @@ switch ($accion) {
             "mensaje" => "Accion no valida o no especificada."
         ], JSON_UNESCAPED_UNICODE);
         break;
+
+    case 'profesores':
+        $resultado = $modelo_catalogo->obtener_profesores();
+        http_response_code(200);
+        echo json_encode(["estado" => "exito", "datos" => $resultado], JSON_UNESCAPED_UNICODE);
+        break;
+
+    case 'salones':
+        $resultado = $modelo_catalogo->obtener_salones();
+        http_response_code(200);
+        echo json_encode(["estado" => "exito", "datos" => $resultado], JSON_UNESCAPED_UNICODE);
+        break;
 }

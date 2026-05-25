@@ -61,4 +61,37 @@ class ModeloCatalogo {
         $mensaje_completo = "[" . date('Y-m-d H:i:s') . "] [ModeloCatalogo::$metodo] -> " . $mensaje_error . "\n";
         error_log($mensaje_completo, 3, $ruta_log);
     }
+    /**
+     * Obtiene el listado de profesores registrados.
+     */
+    public function obtener_profesores() {
+        try {
+            $consulta_sql = "SELECT id, nombre_profesor FROM profesor ORDER BY nombre_profesor ASC";
+            $sentencia = $this->conexion_bd->prepare($consulta_sql);
+            $sentencia->execute();
+            return $sentencia->fetchAll();
+        } catch (PDOException $error_sql) {
+            $this->registrar_error_modelo("obtener_profesores", $error_sql->getMessage());
+            return [];
+        }
+    }
+
+    /**
+     * Obtiene los salones junto con el nombre de su edificio correspondiente.
+     */
+    public function obtener_salones() {
+        try {
+            $consulta_sql = "SELECT s.id, CONCAT(e.nombre_edificio, ' - ', s.nombre_salon) AS ubicacion_completa 
+                             FROM salon s 
+                             INNER JOIN edificio e ON s.id_edificio = e.id 
+                             ORDER BY e.nombre_edificio ASC, s.nombre_salon ASC";
+            $sentencia = $this->conexion_bd->prepare($consulta_sql);
+            $sentencia->execute();
+            return $sentencia->fetchAll();
+        } catch (PDOException $error_sql) {
+            $this->registrar_error_modelo("obtener_salones", $error_sql->getMessage());
+            return [];
+        }
+    }
 }
+

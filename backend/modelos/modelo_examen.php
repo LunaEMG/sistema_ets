@@ -64,6 +64,29 @@ class ModeloExamen {
         }
     }
 
+    /**
+     * Registra un nuevo examen ETS en el sistema.
+     */
+    public function crear_examen($id_materia, $fecha_examen, $turno_examen, $id_salon, $id_profesor) {
+        try {
+            $consulta_sql = "INSERT INTO examen (id_materia, fecha_examen, turno_examen, id_salon, id_profesor) 
+                             VALUES (:id_materia, :fecha_examen, :turno_examen, :id_salon, :id_profesor)";
+                             
+            $sentencia = $this->conexion_bd->prepare($consulta_sql);
+            
+            return $sentencia->execute([
+                ':id_materia' => $id_materia,
+                ':fecha_examen' => $fecha_examen,
+                ':turno_examen' => $turno_examen,
+                ':id_salon' => $id_salon,
+                ':id_profesor' => $id_profesor
+            ]);
+        } catch (PDOException $error_sql) {
+            $this->registrar_error_examen("crear_examen", $error_sql->getMessage());
+            return false;
+        }
+    }
+    
     private function registrar_error_examen($metodo, $mensaje_error) {
         $ruta_log = __DIR__ . '/../registros_error/errores_sistema.log';
         $mensaje_completo = "[" . date('Y-m-d H:i:s') . "] [ModeloExamen::$metodo] -> " . $mensaje_error . "\n";

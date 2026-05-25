@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programar Examen ETS - ESCOM IPN</title>
+    <link rel="stylesheet" href="../../recursos/css/estilos_busqueda.css">
+</head>
+<body>
+
+    <header class="encabezado_principal">
+        <div class="contenedor_encabezado">
+            <h1>Programación de Exámenes</h1>
+            <p>Módulo de Alta para Nuevas Evaluaciones ETS</p>
+        </div>
+    </header>
+
+    <main class="contenedor_principal">
+        <section class="seccion_buscador" style="max-width: 700px; margin: 0 auto 2.5rem auto;">
+            <h2 class="titulo_seccion">Registrar Nuevo Examen</h2>
+
+            <div id="mensaje_alerta" class="control_formulario" style="display: none; margin-bottom: 1.5rem; text-align: center; font-weight: 600;"></div>
+
+            <form id="formulario_alta_examen" novalidate>
+                <div class="formulario_filtros" style="flex-direction: column; align-items: stretch; gap: 1rem;">
+                    
+                    <div class="grupo_campo">
+                        <label for="select_carrera">Carrera:</label>
+                        <select id="select_carrera" class="control_formulario" required>
+                            <option value="0">Seleccione una carrera...</option>
+                        </select>
+                    </div>
+
+                    <div class="grupo_campo">
+                        <label for="select_materia">Unidad de Aprendizaje (Materia):</label>
+                        <select id="select_materia" class="control_formulario" disabled required>
+                            <option value="0">Seleccione primero una carrera...</option>
+                        </select>
+                    </div>
+
+                    <div class="grupo_campo">
+                        <label for="input_fecha">Fecha de Aplicación:</label>
+                        <input type="date" id="input_fecha" class="control_formulario" required>
+                    </div>
+
+                    <div class="grupo_campo">
+                        <label for="select_turno">Turno:</label>
+                        <select id="select_turno" class="control_formulario" required>
+                            <option value="">Seleccione un turno...</option>
+                            <option value="Matutino">Matutino</option>
+                            <option value="Vespertino">Vespertino</option>
+                        </select>
+                    </div>
+
+                    <div class="grupo_campo">
+                        <label for="select_profesor">Profesor Asignado:</label>
+                        <select id="select_profesor" class="control_formulario" required>
+                            <option value="0">Seleccione un profesor...</option>
+                        </select>
+                    </div>
+
+                    <div class="grupo_campo">
+                        <label for="select_salon">Ubicación (Edificio - Aula):</label>
+                        <select id="select_salon" class="control_formulario" required>
+                            <option value="0">Seleccione un salón...</option>
+                        </select>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                        <button type="submit" class="boton_primario" style="background-color: #27ae60;">Guardar Registro</button>
+                        <a href="dashboard.html" class="boton_primario" style="background-color: #7f8c8d; text-align: center; text-decoration: none;">Cancelar</a>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <footer class="pie_pagina">
+        <p>&copy; 2026 - Sistema de Gestión de ETS - ESCOM IPN</p>
+    </footer>
+
+    <script type="module" src="../../recursos/js/controladores/controlador_crear_examen.js"></script>
+</body>
+</html>

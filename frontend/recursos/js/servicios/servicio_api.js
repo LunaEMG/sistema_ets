@@ -41,6 +41,7 @@ export const servicio_api = {
         }
     },
 
+    // Inicia sesión en el sistema como usuario administrador
     async iniciar_sesion(correo_electronico, contrasena_recibida) {
         try {
             const respuesta = await fetch(`${url_base}/autenticacion/iniciar_sesion.php`, {
@@ -60,7 +61,7 @@ export const servicio_api = {
         }
     },
 
-
+    // Verifica si existe una sesión administrativa activa
     async verificar_sesion() {
         try {
             const respuesta = await fetch(`${url_base}/autenticacion/verificar_sesion.php`);
@@ -70,7 +71,7 @@ export const servicio_api = {
             return { estado: "error", mensaje: "Error al validar la sesión." };
         }
     },
-
+    // Cierra la sesión activa del usuario en el servidor
     async cerrar_sesion() {
         try {
             const respuesta = await fetch(`${url_base}/autenticacion/cerrar_sesion.php`, {
@@ -81,6 +82,45 @@ export const servicio_api = {
         } catch (error_peticion) {
             console.error('error_servicio_api::cerrar_sesion ->', error_peticion);
             return { estado: "error", mensaje: "No se pudo cerrar la sesión en el servidor." };
+        }
+    },
+
+    // Obtiene el catálogo completo de profesores
+    async obtener_profesores() {
+        try {
+            const respuesta = await fetch(`${url_base}/catalogos/leer.php?accion=profesores`);
+            const json_resultado = await respuesta.json();
+            return json_resultado.datos || [];
+        } catch (error_peticion) {
+            console.error('error_servicio_api::obtener_profesores ->', error_peticion);
+            return [];
+        }
+    },
+
+    // Obtiene el catálogo completo de salones con su edificio
+    async obtener_salones() {
+        try {
+            const respuesta = await fetch(`${url_base}/catalogos/leer.php?accion=salones`);
+            const json_resultado = await respuesta.json();
+            return json_resultado.datos || [];
+        } catch (error_peticion) {
+            console.error('error_servicio_api::obtener_salones ->', error_peticion);
+            return [];
+        }
+    },
+
+    // Envía los datos del nuevo examen mediante un POST seguro
+    async crear_examen(datos_examen) {
+        try {
+            const respuesta = await fetch(`${url_base}/examenes/crear.php`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datos_examen)
+            });
+            return await respuesta.json();
+        } catch (error_peticion) {
+            console.error('error_servicio_api::crear_examen ->', error_peticion);
+            return { estado: "error", mensaje: "No se pudo conectar con el servidor para registrar el examen." };
         }
     }
 }   
