@@ -1,0 +1,139 @@
+/**
+ * Hoja de estilos para el modulo de inicio de sesion (Login).
+ */
+
+:root {
+    --color_azul_escom: #006293;
+    --color_azul_oscuro: #004567;
+    --color_gris_fondo: #f0f2f5;
+    --color_texto_principal: #333333;
+    --color_blanco: #ffffff;
+    --color_rojo_alerta: #e74c3c;
+    --sombra_login: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--color_gris_fondo);
+    color: var(--color_texto_principal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.contenedor_login {
+    width: 100%;
+    max-width: 420px;
+    padding: 1rem;
+}
+
+.tarjeta_login {
+    background-color: var(--color_blanco);
+    padding: 2.5rem 2rem;
+    border-radius: 8px;
+    box-shadow: var(--sombra_login);
+    border-top: 5px solid var(--color_azul_escom);
+}
+
+.login_encabezado {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.login_encabezado h2 {
+    color: var(--color_azul_escom);
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+}
+
+.login_encabezado p {
+    color: #666666;
+    font-size: 0.9rem;
+}
+
+/* Campos del Formulario */
+.grupo_campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.grupo_campo label {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.control_formulario {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.control_formulario:focus {
+    border-color: var(--color_azul_escom);
+}
+
+/* Boton de Accion */
+.boton_primario {
+    width: 100%;
+    background-color: var(--color_azul_escom);
+    color: var(--color_blanco);
+    border: none;
+    padding: 0.85rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+.boton_primario:hover {
+    background-color: var(--color_azul_oscuro);
+}
+
+/* Manejo de Alertas */
+.alerta_error {
+    background-color: #fde8e7;
+    color: var(--color_rojo_alerta);
+    border: 1px solid #f9c2bd;
+    padding: 0.75rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.oculta_mensaje {
+    display: none;
+}
+
+/* Pie de la tarjeta */
+.login_pie {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.enlace_regresar {
+    color: var(--color_azul_escom);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.enlace_regresar:hover {
+    text-decoration: underline;
+}

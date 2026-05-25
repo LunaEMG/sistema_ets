@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Administrativo - ESCOM IPN</title>
+    <link rel="stylesheet" href="recursos/css/estilos_login.css">
+</head>
+<body>
+
+    <main class="contenedor_login">
+        <section class="tarjeta_login">
+            <div class="login_encabezado">
+                <h2>Panel Administrativo</h2>
+                <p>Ingrese sus credenciales de acceso oficial</p>
+            </div>
+
+            <div id="contenedor_mensaje_error" class="alerta_error oculta_mensaje"></div>
+
+            <form id="formulario_login" novalidate>
+                <div class="grupo_campo">
+                    <label for="input_correo">Correo Electrónico:</label>
+                    <input type="email" id="input_correo" class="control_formulario" placeholder="usuario@escom.ipn.mx" required>
+                </div>
+
+                <div class="grupo_campo">
+                    <label for="input_contrasena">Contraseña:</label>
+                    <input type="password" id="input_contrasena" class="control_formulario" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" id="btn_entrar" class="boton_primario">Iniciar Sesión</button>
+            </form>
+
+            <div class="login_pie">
+                <a href="index.html" class="enlace_regresar">← Volver al buscador público</a>
+            </div>
+        </section>
+    </main>
+
+    <script type="module" src="recursos/js/controladores/controlador_login.js"></script>
+
+</body>
+</html>

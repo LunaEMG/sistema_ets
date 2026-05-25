@@ -39,5 +39,24 @@ export const servicio_api = {
             console.error('error_servicio_api::buscar_examenes ->', error_peticion);
             return [];
         }
+    },
+
+    async iniciar_sesion(correo_electronico, contrasena_recibida) {
+        try {
+            const respuesta = await fetch(`${url_base}/autenticacion/iniciar_sesion.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    correo_electronico: correo_electronico,
+                    contrasena_recibida: contrasena_recibida
+                })
+            });
+            return await respuesta.json();
+        } catch (error_peticion) {
+            console.error('error_servicio_api::iniciar_sesion ->', error_peticion);
+            return { estado: "error", mensaje: "No se pudo conectar con el servidor de autenticación." };
+        }
     }
 };
