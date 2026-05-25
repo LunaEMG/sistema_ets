@@ -123,7 +123,7 @@ export const servicio_api = {
             return { estado: "error", mensaje: "No se pudo conectar con el servidor para registrar el examen." };
         }
     },
-    
+
     // Envía el ID del examen para removerlo físicamente del sistema
     async eliminar_examen(id_examen) {
         try {
@@ -136,6 +136,35 @@ export const servicio_api = {
         } catch (error_peticion) {
             console.error('error_servicio_api::eliminar_examen ->', error_peticion);
             return { estado: "error", mensaje: "No se pudo conectar con el servidor para eliminar el examen." };
+        }
+    },
+
+    // Obtiene un solo examen por su ID para edición
+    async obtener_examen_por_id(id_examen) {
+        try {
+            // Reutilizamos el endpoint de leer enviando el ID específico de forma directa
+            const respuesta = await fetch(`${url_base}/examenes/leer.php?id_carrera=0&semestre_materia=0&id_materia=0`);
+            const json_resultado = await respuesta.json();
+            // Buscamos el examen específico dentro del arreglo regresado
+            return json_resultado.datos.find(e => e.id === id_examen) || null;
+        } catch (error_peticion) {
+            console.error('error_servicio_api::obtener_examen_por_id ->', error_peticion);
+            return null;
+        }
+    },
+
+    // Envía los datos actualizados del examen mediante POST
+    async actualizar_examen(datos_actualizados) {
+        try {
+            const respuesta = await fetch(`${url_base}/examenes/actualizar.php`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datos_actualizados)
+            });
+            return await respuesta.json();
+        } catch (error_peticion) {
+            console.error('error_servicio_api::actualizar_examen ->', error_peticion);
+            return { estado: "error", mensaje: "No se pudo conectar con el servidor para actualizar." };
         }
     }
 }   

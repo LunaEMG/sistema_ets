@@ -34,6 +34,12 @@ async function cargar_listado_examenes() {
 }
 
 async function evaluar_click_tabla(evento) {
+    if (evento.target.classList.contains('btn_editar_examen')) {
+        const id_seleccionado = parseInt(evento.target.getAttribute('data-id'));
+        window.location.href = `editar_examen.html?id=${id_seleccionado}`;
+        return;
+    }
+
     if (evento.target.classList.contains('btn_eliminar_examen')) {
         const id_seleccionado = parseInt(evento.target.getAttribute('data-id'));
         

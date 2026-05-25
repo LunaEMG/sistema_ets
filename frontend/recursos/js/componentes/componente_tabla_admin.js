@@ -23,21 +23,28 @@ export const componente_tabla_admin = {
                     <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef;">${examen.nombre_edificio} - ${examen.nombre_salon}</td>
                     <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef;">${examen.nombre_profesor}</td>
                     <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef; text-align: center;">
-                        <button class="boton_exportar de_pdf btn_eliminar_examen" data-id="${examen.id}" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; margin: 0;">
-                            Eliminar
-                        </button>
+                        <div style="display: flex; gap: 4px; justify-content: center;">
+                            <button class="btn_editar_examen" data-id="${examen.id}" 
+                                style="background-color: #f39c12; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600;">
+                                Editar
+                            </button>
+                            <button class="btn_eliminar_examen" data-id="${examen.id}" 
+                                style="background-color: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600;">
+                                Eliminar
+                            </button>
+                        </div>
                     </td>
                 </tr>
             `;
         });
 
         return `
-            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
                 <thead>
                     <tr style="background-color: #006293; color: #ffffff;">
                         <th style="padding: 0.75rem;">Materia</th>
                         <th style="padding: 0.75rem;">Carrera</th>
-                        <th style="padding: 0.75rem; text-align: center;">Semestre</th>
+                        <th style="padding: 0.75rem; text-align: center;">Sem.</th>
                         <th style="padding: 0.75rem;">Fecha</th>
                         <th style="padding: 0.75rem;">Turno</th>
                         <th style="padding: 0.75rem;">Ubicación</th>

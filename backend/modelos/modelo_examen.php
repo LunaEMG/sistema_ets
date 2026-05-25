@@ -123,4 +123,51 @@ class ModeloExamen {
         $mensaje_completo = "[" . date('Y-m-d H:i:s') . "] [ModeloExamen::$metodo] -> " . $mensaje_error . "\n";
         error_log($mensaje_completo, 3, $ruta_log);
     }
+
+    /**
+     * Obtiene un único examen ETS por su ID para precargar el formulario de edición.
+     */
+    public function obtener_examen_por_id($id_examen) {
+        try {
+            $consulta_sql = "SELECT id, id_materia, fecha_examen, turno_examen, id_salon, id_profesor 
+                             FROM examen 
+                             WHERE id = :id_examen 
+                             LIMIT 1";
+            $sentencia = $this->conexion_bd->prepare($consulta_sql);
+            $sentencia->bindParam(':id_examen', $id_examen, PDO::PARAM_INT);
+            $sentencia->execute();
+            return $sentencia->fetch();
+        } catch (PDOException $error_sql) {
+            $this->registrar_error_examen("obtener_examen_por_id", $error_sql->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Actualiza los datos de un examen ETS existente de forma segura.
+     */
+    public function actualizar_examen($id_examen, $id_materia, $fecha_examen, $turno_examen, $id_salon, $id_profesor) {
+        try {
+            $consulta_sql = "UPDATE examen 
+                             SET id_materia = :id_materia, 
+                                 fecha_examen = :fecha_examen, 
+                                 turno_examen = :turno_examen, 
+                                 id_salon = :id_salon, 
+                                 id_profesor = :id_profesor 
+                             WHERE id = :id_examen";
+                             
+            $sentencia = $this->conexion_bd->prepare($consulta_sql);
+            return $sentencia->execute([
+                ':id_examen' => $id_examen,
+                ':id_materia' => $id_materia,
+                ':fecha_examen' => $fecha_examen,
+                ':turno_examen' => $turno_examen,
+                ':id_salon' => $id_salon,
+                ':id_profesor' => $id_profesor
+            ]);
+        } catch (PDOException $error_sql) {
+            $this->registrar_error_examen("actualizar_examen", $error_sql->getMessage());
+            return false;
+        }
+    }
 }
