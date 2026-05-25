@@ -122,6 +122,21 @@ export const servicio_api = {
             console.error('error_servicio_api::crear_examen ->', error_peticion);
             return { estado: "error", mensaje: "No se pudo conectar con el servidor para registrar el examen." };
         }
+    },
+    
+    // Envía el ID del examen para removerlo físicamente del sistema
+    async eliminar_examen(id_examen) {
+        try {
+            const respuesta = await fetch(`${url_base}/examenes/eliminar.php`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_examen: id_examen })
+            });
+            return await respuesta.json();
+        } catch (error_peticion) {
+            console.error('error_servicio_api::eliminar_examen ->', error_peticion);
+            return { estado: "error", mensaje: "No se pudo conectar con el servidor para eliminar el examen." };
+        }
     }
 }   
 
