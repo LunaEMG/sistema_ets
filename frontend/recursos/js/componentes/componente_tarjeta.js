@@ -1,5 +1,5 @@
 /**
- * Componente funcional para renderizar las tarjetas de los examenes ETS.
+ * Componente funcional para renderizar las tarjetas de los exámenes ETS.
  */
 export const componente_tarjeta = {
     crear_bloque_examen(datos_examen) {
@@ -32,7 +32,7 @@ export const componente_tarjeta = {
                     </div>
                     <div class="dato_renglon" style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
                         <i class="fa-solid fa-location-dot" style="color: #006293; width: 16px; text-align: center;"></i>
-                        <p style="margin: 0;"><strong>Ubicación:</strong> ${datos_examen.nombre_edificio} - ${datos_examen.nombre_salon}</p>
+                        <p style="margin: 0;"><strong>Salón / Laboratorio:</strong> ${datos_examen.nombre_salon}</p>
                     </div>
                     <div class="dato_renglon" style="display: flex; align-items: center; gap: 10px;">
                         <i class="fa-solid fa-chalkboard-user" style="color: #006293; width: 16px; text-align: center;"></i>
