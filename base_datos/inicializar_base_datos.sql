@@ -74,7 +74,7 @@ INSERT INTO
     )
 VALUES (
         'admin@escom.ipn.mx',
-        '$2y$10$oR6g87k3f8b9X7mFghRTe.y89Yp7FvR0HwK7UvNnZyMeM62/CgD6G'
+        '$2y$10$EixVaat1Yi9wUTSTjM9vku1zcCwUNQtzsLfYwgVf0MLzAdqIPph5C'
     );
 
 -- Carreras

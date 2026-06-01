@@ -1,10 +1,13 @@
+/**
+ * Controlador limpio y verificado para la edición de exámenes ETS.
+ */
 import { servicio_api } from '../servicios/servicio_api.js';
 
 const formulario = document.getElementById('formulario_editar_examen');
 const selector_carrera = document.getElementById('select_carrera');
 const selector_materia = document.getElementById('select_materia');
 const input_fecha = document.getElementById('input_fecha');
-// MODIFICADO: Agregados selectores de doble horario correspondientes
+// MODIFICADO: Vinculación con los nuevos elementos del DOM de tiempo
 const selector_hora_manana = document.getElementById('select_hora_manana');
 const selector_hora_tarde = document.getElementById('select_hora_tarde');
 const selector_profesor = document.getElementById('select_profesor');
@@ -90,7 +93,8 @@ async function inicializar_edicion() {
 
 async function enviar_actualizacion(e) {
     e.preventDefault();
-    
+    ocultar_mensaje();
+
     const payload = {
         id_examen: id_examen_global,
         id_materia: parseInt(selector_materia.value),
@@ -100,6 +104,11 @@ async function enviar_actualizacion(e) {
         id_salon: parseInt(selector_salon.value),
         id_profesor: parseInt(selector_profesor.value)
     };
+
+    if (payload.id_materia === 0 || !payload.fecha_examen || !payload.hora_manana || !payload.hora_tarde || payload.id_salon === 0 || payload.id_profesor === 0) {
+        mostrar_mensaje('Todos los campos son obligatorios.', '#e74c3c', '#fde8e7');
+        return;
+    }
 
     const respuesta = await servicio_api.actualizar_examen(payload);
     if (respuesta.estado === 'exito') {
@@ -115,6 +124,10 @@ function mostrar_mensaje(texto, color_texto, color_fondo) {
     contenedor_mensaje.style.backgroundColor = color_fondo;
     contenedor_mensaje.style.border = `1px solid ${color_texto}`;
     contenedor_mensaje.style.display = 'block';
+}
+
+function ocultar_mensaje() {
+    contenedor_mensaje.style.display = 'none';
 }
 
 document.addEventListener('DOMContentLoaded', inicializar_edicion);
