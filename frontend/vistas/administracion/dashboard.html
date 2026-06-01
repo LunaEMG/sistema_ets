@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración - ESCOM IPN</title>
     <link rel="stylesheet" href="../../recursos/css/estilos_busqueda.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 </head>
 <body>
 
@@ -21,8 +22,12 @@
             <p>Bienvenido al módulo de control. Desde aquí puedes dar de alta, modificar y dar de baja la programación de exámenes ETS de la ESCOM.</p>
             
             <div style="margin-top: 2rem; display: flex; gap: 1rem;">
-                <a href="crear_examen.html" class="boton_primario" style="background-color: #27ae60; text-decoration: none; text-align: center;">+ Agregar Nuevo Examen</a>
-                <button id="btn_cerrar_sesion" class="boton_primario" style="background-color: #e74c3c;">Cerrar Sesión Segura</button>
+                <a href="crear_examen.html" class="boton_primario" style="background-color: #27ae60; text-decoration: none; text-align: center; display: inline-flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-plus"></i> Agregar Nuevo Examen
+                </a>
+                <button id="btn_cerrar_sesion" class="boton_primario" style="background-color: #e74c3c; display: inline-flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión Segura
+                </button>
             </div>
         </section>
 
@@ -41,6 +46,6 @@
         <p>&copy; 2026 - Panel Administrativo Protegido - ESCOM IPN</p>
     </footer>
 
-    <script type="module" src="../../recursos/js/controladores/controlador_dashboard.js"></script>
+    <script type="module" src="../../recursos/js/controladores/controlador_dashboard.js?v=4"></script>
 </body>
 </html>

@@ -1,6 +1,5 @@
 /**
  * Componente funcional para renderizar las tarjetas de los examenes ETS.
- * Modificado: Se eliminaron los emojis temporales para dejar los contenedores listos para iconos.
  */
 export const componente_tarjeta = {
     crear_bloque_examen(datos_examen) {
@@ -16,21 +15,21 @@ export const componente_tarjeta = {
                     <p class="nombre_carrera">${datos_examen.nombre_carrera}</p>
                 </div>
                 <div class="tarjeta_cuerpo">
-                    <div class="dato_renglon">
-                        <span class="icono_detalle de_fecha"></span>
-                        <p><strong>Fecha:</strong> ${fecha_legible}</p>
+                    <div class="dato_renglon" style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
+                        <i class="fa-solid fa-calendar-day" style="color: #006293; width: 16px; text-align: center;"></i>
+                        <p style="margin: 0;"><strong>Fecha:</strong> ${fecha_legible}</p>
                     </div>
-                    <div class="dato_renglon">
-                        <span class="icono_detalle de_turno"></span>
-                        <p><strong>Turno:</strong> ${datos_examen.turno_examen}</p>
+                    <div class="dato_renglon" style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
+                        <i class="fa-solid fa-clock" style="color: #006293; width: 16px; text-align: center;"></i>
+                        <p style="margin: 0;"><strong>Turno:</strong> ${datos_examen.turno_examen}</p>
                     </div>
-                    <div class="dato_renglon">
-                        <span class="icono_detalle de_ubicacion"></span>
-                        <p><strong>Ubicación:</strong> ${datos_examen.nombre_edificio} - ${datos_examen.nombre_salon}</p>
+                    <div class="dato_renglon" style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
+                        <i class="fa-solid fa-location-dot" style="color: #006293; width: 16px; text-align: center;"></i>
+                        <p style="margin: 0;"><strong>Ubicación:</strong> ${datos_examen.nombre_edificio} - ${datos_examen.nombre_salon}</p>
                     </div>
-                    <div class="dato_renglon">
-                        <span class="icono_detalle de_profesor"></span>
-                        <p><strong>Evaluador:</strong> ${datos_examen.nombre_profesor}</p>
+                    <div class="dato_renglon" style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-chalkboard-user" style="color: #006293; width: 16px; text-align: center;"></i>
+                        <p style="margin: 0;"><strong>Evaluador:</strong> ${datos_examen.nombre_profesor}</p>
                     </div>
                 </div>
             </div>

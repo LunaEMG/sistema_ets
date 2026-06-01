@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Exámenes ETS - ESCOM IPN</title>
     <link rel="stylesheet" href="recursos/css/estilos_busqueda.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 </head>
 <body>
 
@@ -51,7 +52,9 @@
                 </div>
 
                 <div class="grupo_boton">
-                    <button id="btn_buscar" class="boton_primario">Buscar Exámenes</button>
+                    <button id="btn_buscar" class="boton_primario" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fa-solid fa-magnifying-glass"></i> Buscar Exámenes
+                    </button>
                 </div>
             </div>
         </section>
@@ -60,8 +63,12 @@
             <div class="encabezado_resultados_flex">
                 <h2 class="titulo_seccion">Calendario Oficial de ETS</h2>
                 <div class="barra_acciones_exportacion">
-                    <button id="btn_exportar_pdf" class="boton_exportar de_pdf" disabled>Exportar PDF</button>
-                    <button id="btn_exportar_ics" class="boton_exportar de_ics" disabled>Exportar iCalendar (.ics)</button>
+                    <button id="btn_exportar_pdf" class="boton_exportar de_pdf" disabled style="display: inline-flex; align-items: center; gap: 6px;">
+                        <i class="fa-solid fa-file-pdf"></i> Exportar PDF
+                    </button>
+                    <button id="btn_exportar_ics" class="boton_exportar de_ics" disabled style="display: inline-flex; align-items: center; gap: 6px;">
+                        <i class="fa-solid fa-calendar-days"></i> Exportar iCalendar (.ics)
+                    </button>
                 </div>
             </div>
             
@@ -74,7 +81,7 @@
         <p>&copy; 2026 - Tecnologías para el Desarrollo de Aplicaciones Web - ESCOM IPN</p>
     </footer>
 
-    <script type="module" src="recursos/js/controladores/buscador_principal.js"></script>
+    <script type="module" src="recursos/js/controladores/buscador_principal.js?v=2"></script>
 
 </body>
 </html>
