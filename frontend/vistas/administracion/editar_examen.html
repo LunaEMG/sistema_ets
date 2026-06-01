@@ -43,13 +43,23 @@
                         <input type="date" id="input_fecha" class="control_formulario" required>
                     </div>
 
-                    <div class="grupo_campo">
-                        <label for="select_turno">Turno:</label>
-                        <select id="select_turno" class="control_formulario" required>
-                            <option value="">Seleccione un turno...</option>
-                            <option value="Matutino">Matutino</option>
-                            <option value="Vespertino">Vespertino</option>
-                        </select>
+                    <div class="grupo_campo" style="display: flex; gap: 1rem;">
+                        <div style="flex: 1;">
+                            <label for="select_hora_manana">Horario Mañana (Inicio):</label>
+                            <select id="select_hora_manana" class="control_formulario" required>
+                                <option value="08:00:00">08:00 hrs</option>
+                                <option value="10:00:00">10:00 hrs</option>
+                                <option value="12:00:00">12:00 hrs</option>
+                            </select>
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="select_hora_tarde">Horario Tarde (Inicio):</label>
+                            <select id="select_hora_tarde" class="control_formulario" required>
+                                <option value="14:00:00">14:00 hrs</option>
+                                <option value="16:00:00">16:00 hrs</option>
+                                <option value="17:00:00">17:00 hrs</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="grupo_campo">

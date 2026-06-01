@@ -1,7 +1,7 @@
 <?php
 /**
  * Modelo para la gestión de exámenes ETS en la base de datos.
- * Sincronizado exactamente con la estructura de la tabla materia.
+ * Adaptado al formato oficial de doble horario por tarjeta.
  */
 
 require_once __DIR__ . '/../configuracion/conexion_base_datos.php';
@@ -14,18 +14,16 @@ class ModeloExamen {
         $this->conexion_bd = $objeto_conexion->obtener_conexion();
     }
 
-    /**
-     * Registra un nuevo examen ETS en el sistema.
-     */
-    public function crear_examen($id_materia, $fecha_examen, $turno_examen, $id_salon, $id_profesor) {
+    public function crear_examen($id_materia, $fecha_examen, $hora_manana, $hora_tarde, $id_salon, $id_profesor) {
         try {
-            $consulta_sql = "INSERT INTO examen (id_materia, fecha_examen, turno_examen, id_salon, id_profesor) 
-                             VALUES (:id_materia, :fecha_examen, :turno_examen, :id_salon, :id_profesor)";
+            $consulta_sql = "INSERT INTO examen (id_materia, fecha_examen, hora_manana, hora_tarde, id_salon, id_profesor) 
+                             VALUES (:id_materia, :fecha_examen, :hora_manana, :hora_tarde, :id_salon, :id_profesor)";
             $sentencia = $this->conexion_bd->prepare($consulta_sql);
             return $sentencia->execute([
                 ':id_materia' => $id_materia,
                 ':fecha_examen' => $fecha_examen,
-                ':turno_examen' => $turno_examen,
+                ':hora_manana' => $hora_manana,
+                ':hora_tarde' => $hora_tarde,
                 ':id_salon' => $id_salon,
                 ':id_profesor' => $id_profesor
             ]);
@@ -35,9 +33,6 @@ class ModeloExamen {
         }
     }
 
-    /**
-     * Elimina un examen ETS del sistema por su ID único.
-     */
     public function eliminar_examen($id_examen) {
         try {
             $consulta_sql = "DELETE FROM examen WHERE id = :id_examen";
@@ -50,20 +45,17 @@ class ModeloExamen {
         }
     }
 
-    /**
-     * Obtiene la lista completa de exámenes ETS inscritos sin ningún filtro (Búsqueda Global Dashboard).
-     */
     public function obtener_todos_los_examenes_completo() {
         try {
             $consulta_sql = "SELECT e.id, m.nombre_materia, m.semestre_materia, c.nombre_carrera, 
-                                    e.fecha_examen, e.turno_examen, ed.nombre_edificio, s.nombre_salon, p.nombre_profesor
+                                    e.fecha_examen, e.hora_manana, e.hora_tarde, ed.nombre_edificio, s.nombre_salon, p.nombre_profesor
                              FROM examen e
                              INNER JOIN materia m ON e.id_materia = m.id
                              INNER JOIN carrera c ON m.id_carrera = c.id
                              INNER JOIN salon s ON e.id_salon = s.id
                              INNER JOIN edificio ed ON s.id_edificio = ed.id
                              INNER JOIN profesor p ON e.id_profesor = p.id
-                             ORDER BY e.fecha_examen ASC";
+                             ORDER BY e.fecha_examen ASC, e.hora_manana ASC";
 
             $sentencia = $this->conexion_bd->prepare($consulta_sql);
             $sentencia->execute();
@@ -74,13 +66,10 @@ class ModeloExamen {
         }
     }
 
-    /**
-     * Busca y filtra los exámenes ETS aplicando criterios dinámicos (Buscador Público).
-     */
     public function buscar_examenes_con_filtros($id_carrera, $semestre_materia, $id_materia) {
         try {
             $consulta_sql = "SELECT e.id, m.nombre_materia, m.semestre_materia, c.nombre_carrera, 
-                                    e.fecha_examen, e.turno_examen, ed.nombre_edificio, s.nombre_salon, p.nombre_profesor
+                                    e.fecha_examen, e.hora_manana, e.hora_tarde, ed.nombre_edificio, s.nombre_salon, p.nombre_profesor
                              FROM examen e
                              INNER JOIN materia m ON e.id_materia = m.id
                              INNER JOIN carrera c ON m.id_carrera = c.id
@@ -95,18 +84,16 @@ class ModeloExamen {
                 $consulta_sql .= " AND c.id = :id_carrera";
                 $parametros[':id_carrera'] = $id_carrera;
             }
-
             if ($semestre_materia > 0) {
                 $consulta_sql .= " AND m.semestre_materia = :semestre_materia";
                 $parametros[':semestre_materia'] = $semestre_materia;
             }
-
             if ($id_materia > 0) {
                 $consulta_sql .= " AND m.id = :id_materia";
                 $parametros[':id_materia'] = $id_materia;
             }
 
-            $consulta_sql .= " ORDER BY e.fecha_examen ASC";
+            $consulta_sql .= " ORDER BY e.fecha_examen ASC, e.hora_manana ASC";
 
             $sentencia = $this->conexion_bd->prepare($consulta_sql);
             $sentencia->execute($parametros);
@@ -117,18 +104,9 @@ class ModeloExamen {
         }
     }
 
-    private function registrar_error_examen($metodo, $mensaje_error) {
-        $ruta_log = __DIR__ . '/../registros_error/errores_sistema.log';
-        $mensaje_completo = "[" . date('Y-m-d H:i:s') . "] [ModeloExamen::$metodo] -> " . $mensaje_error . "\n";
-        error_log($mensaje_completo, 3, $ruta_log);
-    }
-
-    /**
-     * Obtiene un único examen ETS por su ID para precargar el formulario de edición.
-     */
     public function obtener_examen_por_id($id_examen) {
         try {
-            $consulta_sql = "SELECT id, id_materia, fecha_examen, turno_examen, id_salon, id_profesor 
+            $consulta_sql = "SELECT id, id_materia, fecha_examen, hora_manana, hora_tarde, id_salon, id_profesor 
                              FROM examen 
                              WHERE id = :id_examen 
                              LIMIT 1";
@@ -142,15 +120,13 @@ class ModeloExamen {
         }
     }
 
-    /**
-     * Actualiza los datos de un examen ETS existente de forma segura.
-     */
-    public function actualizar_examen($id_examen, $id_materia, $fecha_examen, $turno_examen, $id_salon, $id_profesor) {
+    public function actualizar_examen($id_examen, $id_materia, $fecha_examen, $hora_manana, $hora_tarde, $id_salon, $id_profesor) {
         try {
             $consulta_sql = "UPDATE examen 
                              SET id_materia = :id_materia, 
                                  fecha_examen = :fecha_examen, 
-                                 turno_examen = :turno_examen, 
+                                 hora_manana = :hora_manana, 
+                                 hora_tarde = :hora_tarde, 
                                  id_salon = :id_salon, 
                                  id_profesor = :id_profesor 
                              WHERE id = :id_examen";
@@ -160,7 +136,8 @@ class ModeloExamen {
                 ':id_examen' => $id_examen,
                 ':id_materia' => $id_materia,
                 ':fecha_examen' => $fecha_examen,
-                ':turno_examen' => $turno_examen,
+                ':hora_manana' => $hora_manana,
+                ':hora_tarde' => $hora_tarde,
                 ':id_salon' => $id_salon,
                 ':id_profesor' => $id_profesor
             ]);
@@ -170,9 +147,6 @@ class ModeloExamen {
         }
     }
 
-    /**
-     * Obtiene el conteo exacto de exámenes programados agrupados por cada carrera.
-     */
     public function obtener_estadisticas_por_carrera() {
         try {
             $consulta_sql = "SELECT c.nombre_carrera, COUNT(e.id) AS total_examenes 
@@ -191,4 +165,57 @@ class ModeloExamen {
         }
     }
 
+    // ---- VALIDACIONES CRUZADAS ROBUSTAS DE COLISIÓN ----
+
+    public function verificar_conflicto_salon($id_salon, $fecha_examen, $hora_manana, $hora_tarde, $id_examen_ignorar = 0) {
+        try {
+            $consulta_sql = "SELECT COUNT(*) FROM examen 
+                             WHERE id_salon = :id_salon 
+                               AND fecha_examen = :fecha_examen 
+                               AND (hora_manana = :hora_manana OR hora_tarde = :hora_tarde)";
+            if ($id_examen_ignorar > 0) $consulta_sql .= " AND id != :id_examen_ignorar";
+
+            $sentencia = $this->conexion_bd->prepare($consulta_sql);
+            $sentencia->bindParam(':id_salon', $id_salon, PDO::PARAM_INT);
+            $sentencia->bindParam(':fecha_examen', $fecha_examen, PDO::PARAM_STR);
+            $sentencia->bindParam(':hora_manana', $hora_manana, PDO::PARAM_STR);
+            $sentencia->bindParam(':hora_tarde', $hora_tarde, PDO::PARAM_STR);
+            if ($id_examen_ignorar > 0) $sentencia->bindParam(':id_examen_ignorar', $id_examen_ignorar, PDO::PARAM_INT);
+
+            $sentencia->execute();
+            return $sentencia->fetchColumn() > 0;
+        } catch (PDOException $error_sql) {
+            $this->registrar_error_examen("verificar_conflicto_salon", $error_sql->getMessage());
+            return true;
+        }
+    }
+
+    public function verificar_conflicto_profesor($id_profesor, $fecha_examen, $hora_manana, $hora_tarde, $id_examen_ignorar = 0) {
+        try {
+            $consulta_sql = "SELECT COUNT(*) FROM examen 
+                             WHERE id_profesor = :id_profesor 
+                               AND fecha_examen = :fecha_examen 
+                               AND (hora_manana = :hora_manana OR hora_tarde = :hora_tarde)";
+            if ($id_examen_ignorar > 0) $consulta_sql .= " AND id != :id_examen_ignorar";
+
+            $sentencia = $this->conexion_bd->prepare($consulta_sql);
+            $sentencia->bindParam(':id_profesor', $id_profesor, PDO::PARAM_INT);
+            $sentencia->bindParam(':fecha_examen', $fecha_examen, PDO::PARAM_STR);
+            $sentencia->bindParam(':hora_manana', $hora_manana, PDO::PARAM_STR);
+            $sentencia->bindParam(':hora_tarde', $hora_tarde, PDO::PARAM_STR);
+            if ($id_examen_ignorar > 0) $sentencia->bindParam(':id_examen_ignorar', $id_examen_ignorar, PDO::PARAM_INT);
+
+            $sentencia->execute();
+            return $sentencia->fetchColumn() > 0;
+        } catch (PDOException $error_sql) {
+            $this->registrar_error_examen("verificar_conflicto_profesor", $error_sql->getMessage());
+            return true;
+        }
+    }
+
+    private function registrar_error_examen($metodo, $mensaje_error) {
+        $ruta_log = __DIR__ . '/../registros_error/errores_sistema.log';
+        $mensaje_completo = "[" . date('Y-m-d H:i:s') . "] [ModeloExamen::$metodo] -> " . $mensaje_error . "\n";
+        error_log($mensaje_completo, 3, $ruta_log);
+    }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Endpoint de la API para el registro seguro de nuevos examenes ETS.
+ * Endpoint de la API para el registro seguro de nuevos examenes ETS con doble horario.
  * Requiere verificacion obligatoria de sesion activa en el servidor.
  */
 ini_set('session.cookie_httponly', 1);
@@ -31,30 +31,49 @@ $datos_recibidos = json_decode(file_get_contents("php://input"), true);
 
 $id_materia = isset($datos_recibidos['id_materia']) ? intval($datos_recibidos['id_materia']) : 0;
 $fecha_examen = isset($datos_recibidos['fecha_examen']) ? trim($datos_recibidos['fecha_examen']) : '';
-$turno_examen = isset($datos_recibidos['turno_examen']) ? trim($datos_recibidos['turno_examen']) : '';
+$hora_manana = isset($datos_recibidos['hora_manana']) ? trim($datos_recibidos['hora_manana']) : '';
+$hora_tarde = isset($datos_recibidos['hora_tarde']) ? trim($datos_recibidos['hora_tarde']) : '';
 $id_salon = isset($datos_recibidos['id_salon']) ? intval($datos_recibidos['id_salon']) : 0;
 $id_profesor = isset($datos_recibidos['id_profesor']) ? intval($datos_recibidos['id_profesor']) : 0;
 
-if ($id_materia === 0 || empty($fecha_examen) || empty($turno_examen) || $id_salon === 0 || $id_profesor === 0) {
+// Validación básica de campos requeridos
+if ($id_materia === 0 || empty($fecha_examen) || empty($hora_manana) || empty($hora_tarde) || $id_salon === 0 || $id_profesor === 0) {
     http_response_code(400);
     echo json_encode(["estado" => "error", "mensaje" => "Todos los campos son obligatorios y deben ser válidos."], JSON_UNESCAPED_UNICODE);
     exit();
 }
 
-if ($turno_examen !== 'Matutino' && $turno_examen !== 'Vespertino') {
+// REGLA DE NEGOCIO ESCOM: Validación estricta de límites operativos de la escuela
+if ($hora_manana < '08:00:00' || $hora_tarde > '17:00:00' || $hora_manana >= $hora_tarde) {
     http_response_code(400);
-    echo json_encode(["estado" => "error", "mensaje" => "El turno seleccionado no es válido."], JSON_UNESCAPED_UNICODE);
+    echo json_encode([
+        "estado" => "error", 
+        "mensaje" => "Los rangos de horarios rompen las reglas operativas de la escuela (Mínimo inicio 08:00 hrs, Máximo inicio 17:00 hrs)."
+    ], JSON_UNESCAPED_UNICODE);
     exit();
 }
 
 require_once __DIR__ . '/../../modelos/modelo_examen.php';
 $modelo_examen = new ModeloExamen();
 
-$exito = $modelo_examen->crear_examen($id_materia, $fecha_examen, $turno_examen, $id_salon, $id_profesor);
+
+if ($modelo_examen->verificar_conflicto_salon($id_salon, $fecha_examen, $hora_manana, $hora_tarde)) {
+    http_response_code(409); // Código HTTP 409: Conflict
+    echo json_encode(["estado" => "error", "mensaje" => "Conflicto de infraestructura: El salón seleccionado ya se encuentra asignado a otra evaluación en esa misma fecha (en el horario matutino o vespertino)."], JSON_UNESCAPED_UNICODE);
+    exit();
+}
+
+if ($modelo_examen->verificar_conflicto_profesor($id_profesor, $fecha_examen, $hora_manana, $hora_tarde)) {
+    http_response_code(409);
+    echo json_encode(["estado" => "error", "mensaje" => "Conflicto de personal: El profesor coordinador ya tiene asignado otro examen ETS para evaluar en esa misma fecha (en el horario matutino o vespertino)."], JSON_UNESCAPED_UNICODE);
+    exit();
+}
+
+$exito = $modelo_examen->crear_examen($id_materia, $fecha_examen, $hora_manana, $hora_tarde, $id_salon, $id_profesor);
 
 if ($exito) {
     http_response_code(201);
-    echo json_encode(["estado" => "exito", "mensaje" => "Examen ETS registrado correctamente en la programación oficial."], JSON_UNESCAPED_UNICODE);
+    echo json_encode(["estado" => "exito", "mensaje" => "Examen ETS registrado correctamente con su par de horarios oficiales en la programación."], JSON_UNESCAPED_UNICODE);
 } else {
     http_response_code(500);
     echo json_encode(["estado" => "error", "mensaje" => "No se pudo guardar el registro debido a un problema interno en el servidor."], JSON_UNESCAPED_UNICODE);

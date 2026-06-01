@@ -1,13 +1,12 @@
-/**
- * Controlador limpio y verificado para la edición de exámenes ETS.
- */
 import { servicio_api } from '../servicios/servicio_api.js';
 
 const formulario = document.getElementById('formulario_editar_examen');
 const selector_carrera = document.getElementById('select_carrera');
 const selector_materia = document.getElementById('select_materia');
 const input_fecha = document.getElementById('input_fecha');
-const selector_turno = document.getElementById('select_turno');
+// MODIFICADO: Agregados selectores de doble horario correspondientes
+const selector_hora_manana = document.getElementById('select_hora_manana');
+const selector_hora_tarde = document.getElementById('select_hora_tarde');
 const selector_profesor = document.getElementById('select_profesor');
 const selector_salon = document.getElementById('select_salon');
 const contenedor_mensaje = document.getElementById('mensaje_alerta');
@@ -56,7 +55,9 @@ async function inicializar_edicion() {
         }
 
         input_fecha.value = datos_examen.fecha_examen;
-        selector_turno.value = datos_examen.turno_examen;
+        
+        selector_hora_manana.value = datos_examen.hora_manana;
+        selector_hora_tarde.value = datos_examen.hora_tarde;
         
         const prof_encontrado = profesores.find(p => p.nombre_profesor === datos_examen.nombre_profesor);
         if (prof_encontrado) selector_profesor.value = prof_encontrado.id;
@@ -89,11 +90,13 @@ async function inicializar_edicion() {
 
 async function enviar_actualizacion(e) {
     e.preventDefault();
+    
     const payload = {
         id_examen: id_examen_global,
         id_materia: parseInt(selector_materia.value),
         fecha_examen: input_fecha.value,
-        turno_examen: selector_turno.value,
+        hora_manana: selector_hora_manana.value,
+        hora_tarde: selector_hora_tarde.value,
         id_salon: parseInt(selector_salon.value),
         id_profesor: parseInt(selector_profesor.value)
     };
@@ -102,8 +105,16 @@ async function enviar_actualizacion(e) {
     if (respuesta.estado === 'exito') {
         window.location.href = 'dashboard.html';
     } else {
-        alert(respuesta.mensaje);
+        mostrar_mensaje(respuesta.mensaje, '#e74c3c', '#fde8e7');
     }
+}
+
+function mostrar_mensaje(texto, color_texto, color_fondo) {
+    contenedor_mensaje.textContent = texto;
+    contenedor_mensaje.style.color = color_texto;
+    contenedor_mensaje.style.backgroundColor = color_fondo;
+    contenedor_mensaje.style.border = `1px solid ${color_texto}`;
+    contenedor_mensaje.style.display = 'block';
 }
 
 document.addEventListener('DOMContentLoaded', inicializar_edicion);
