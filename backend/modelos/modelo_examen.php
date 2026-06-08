@@ -1,7 +1,6 @@
 <?php
 /**
  * Modelo para la gestión de exámenes ETS en la base de datos.
- * Adaptado al formato oficial de doble horario por tarjeta.
  */
 
 require_once __DIR__ . '/../configuracion/conexion_base_datos.php';
@@ -165,14 +164,17 @@ class ModeloExamen {
         }
     }
 
-    // ---- VALIDACIONES CRUZADAS ROBUSTAS DE COLISIÓN ----
 
     public function verificar_conflicto_salon($id_salon, $fecha_examen, $hora_manana, $hora_tarde, $id_examen_ignorar = 0) {
         try {
             $consulta_sql = "SELECT COUNT(*) FROM examen 
                              WHERE id_salon = :id_salon 
                                AND fecha_examen = :fecha_examen 
-                               AND (hora_manana = :hora_manana OR hora_tarde = :hora_tarde)";
+                               AND (
+                                   (:hora_manana < ADDTIME(hora_manana, '02:00:00') AND hora_manana < ADDTIME(:hora_manana, '02:00:00'))
+                                   OR 
+                                   (:hora_tarde < ADDTIME(hora_tarde, '02:00:00') AND hora_tarde < ADDTIME(:hora_tarde, '02:00:00'))
+                               )";
             if ($id_examen_ignorar > 0) $consulta_sql .= " AND id != :id_examen_ignorar";
 
             $sentencia = $this->conexion_bd->prepare($consulta_sql);
@@ -195,7 +197,11 @@ class ModeloExamen {
             $consulta_sql = "SELECT COUNT(*) FROM examen 
                              WHERE id_profesor = :id_profesor 
                                AND fecha_examen = :fecha_examen 
-                               AND (hora_manana = :hora_manana OR hora_tarde = :hora_tarde)";
+                               AND (
+                                   (:hora_manana < ADDTIME(hora_manana, '02:00:00') AND hora_manana < ADDTIME(:hora_manana, '02:00:00'))
+                                   OR 
+                                   (:hora_tarde < ADDTIME(hora_tarde, '02:00:00') AND hora_tarde < ADDTIME(:hora_tarde, '02:00:00'))
+                               )";
             if ($id_examen_ignorar > 0) $consulta_sql .= " AND id != :id_examen_ignorar";
 
             $sentencia = $this->conexion_bd->prepare($consulta_sql);

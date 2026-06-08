@@ -1,3 +1,5 @@
+import { escaparHTML } from '../utilidades/escape.js';
+
 /**
  * Componente funcional para estructurar la tabla de gestión de exámenes en el panel.
  */
@@ -19,22 +21,22 @@ export const componente_tabla_admin = {
 
             filas_html += `
                 <tr>
-                    <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef; font-weight: 600;">${examen.nombre_materia}</td>
-                    <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef;">${examen.nombre_carrera}</td>
-                    <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef; text-align: center;">${examen.semestre_materia}°</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef; font-weight: 600;">${escaparHTML(examen.nombre_materia)}</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef;">${escaparHTML(examen.nombre_carrera)}</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef; text-align: center;">${escaparHTML(String(examen.semestre_materia))}°</td>
                     <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef;">${fecha_corta}</td>
                     <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef; white-space: nowrap;">
                         <div style="font-size: 0.8rem; font-weight: 600; color: #006293;">${horario_corto}</div>
                     </td>
-                    <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef; font-weight: 700; color: #2c3e50;">${examen.nombre_salon}</td>
-                    <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef;">${examen.nombre_profesor}</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef; font-weight: 700; color: #2c3e50;">${escaparHTML(examen.nombre_salon)}</td>
+                    <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef;">${escaparHTML(examen.nombre_profesor)}</td>
                     <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef; text-align: center;">
                         <div style="display: flex; gap: 6px; justify-content: center;">
-                            <button class="btn_editar_examen" data-id="${examen.id}" 
+                            <button class="btn_editar_examen" data-id="${escaparHTML(String(examen.id))}" 
                                 style="background-color: #f39c12; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
                                 <i class="fa-solid fa-pen-to-square"></i> Editar
                             </button>
-                            <button class="btn_eliminar_examen" data-id="${examen.id}" 
+                            <button class="btn_eliminar_examen" data-id="${escaparHTML(String(examen.id))}" 
                                 style="background-color: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
                                 <i class="fa-solid fa-trash"></i> Eliminar
                             </button>

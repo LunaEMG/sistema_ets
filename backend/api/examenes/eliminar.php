@@ -24,6 +24,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
+if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || !isset($_SESSION['token_csrf']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $_SESSION['token_csrf']) {
+    http_response_code(403);
+    echo json_encode(["estado" => "error", "mensaje" => "Error de validación CSRF. Petición rechazada por seguridad."], JSON_UNESCAPED_UNICODE);
+    exit();
+}
+
 $datos_recibidos = json_decode(file_get_contents("php://input"), true);
 $id_examen = isset($datos_recibidos['id_examen']) ? intval($datos_recibidos['id_examen']) : 0;
 

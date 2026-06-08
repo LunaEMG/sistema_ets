@@ -24,6 +24,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
+if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || !isset($_SESSION['token_csrf']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $_SESSION['token_csrf']) {
+    http_response_code(403);
+    echo json_encode(["estado" => "error", "mensaje" => "Error de validación CSRF. Petición rechazada por seguridad."], JSON_UNESCAPED_UNICODE);
+    exit();
+}
+
 $datos_recibidos = json_decode(file_get_contents("php://input"), true);
 
 $id_materia = isset($datos_recibidos['id_materia']) ? intval($datos_recibidos['id_materia']) : 0;
@@ -33,14 +39,12 @@ $hora_tarde = isset($datos_recibidos['hora_tarde']) ? trim($datos_recibidos['hor
 $id_salon = isset($datos_recibidos['id_salon']) ? intval($datos_recibidos['id_salon']) : 0;
 $id_profesor = isset($datos_recibidos['id_profesor']) ? intval($datos_recibidos['id_profesor']) : 0;
 
-// Validación básica de campos requeridos
 if ($id_materia === 0 || empty($fecha_examen) || empty($hora_manana) || empty($hora_tarde) || $id_salon === 0 || $id_profesor === 0) {
     http_response_code(400);
     echo json_encode(["estado" => "error", "mensaje" => "Todos los campos son obligatorios y deben ser válidos."], JSON_UNESCAPED_UNICODE);
     exit();
 }
 
-// REGLA DE NEGOCIO ESCOM: Validación estricta de límites operativos de la escuela
 if ($hora_manana < '08:00:00' || $hora_tarde > '17:00:00' || $hora_manana >= $hora_tarde) {
     http_response_code(400);
     echo json_encode([

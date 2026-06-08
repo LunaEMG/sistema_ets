@@ -12,10 +12,14 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 if (isset($_SESSION['esta_autenticado']) && $_SESSION['esta_autenticado'] === true) {
+    if (empty($_SESSION['token_csrf'])) {
+        $_SESSION['token_csrf'] = bin2hex(random_bytes(32));
+    }
     http_response_code(200);
     echo json_encode([
         "estado" => "autenticado",
         "mensaje" => "Sesión activa.",
+        "token_csrf" => $_SESSION['token_csrf'],
         "usuario" => [
             "correo_electronico" => $_SESSION['correo_usuario']
         ]

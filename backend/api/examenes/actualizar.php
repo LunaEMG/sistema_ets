@@ -17,6 +17,18 @@ if (!isset($_SESSION['esta_autenticado']) || $_SESSION['esta_autenticado'] !== t
     exit();
 }
 
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    echo json_encode(["estado" => "error", "mensaje" => "Método no permitido. Utilice POST."], JSON_UNESCAPED_UNICODE);
+    exit();
+}
+
+if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || !isset($_SESSION['token_csrf']) || $_SERVER['HTTP_X_CSRF_TOKEN'] !== $_SESSION['token_csrf']) {
+    http_response_code(403);
+    echo json_encode(["estado" => "error", "mensaje" => "Error de validación CSRF. Petición rechazada por seguridad."], JSON_UNESCAPED_UNICODE);
+    exit();
+}
+
 $datos_recibidos = json_decode(file_get_contents("php://input"), true);
 
 $id_examen = isset($datos_recibidos['id_examen']) ? intval($datos_recibidos['id_examen']) : 0;
@@ -33,7 +45,6 @@ if ($id_examen === 0 || $id_materia === 0 || empty($fecha_examen) || empty($hora
     exit();
 }
 
-// REGLA DE NEGOCIO ESCOM: Validación estricta de límites operativos de la escuela en la edición
 if ($hora_manana < '08:00:00' || $hora_tarde > '17:00:00' || $hora_manana >= $hora_tarde) {
     http_response_code(400);
     echo json_encode([

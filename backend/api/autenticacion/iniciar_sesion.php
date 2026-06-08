@@ -48,11 +48,13 @@ if ($usuario_encontrado && password_verify($contrasena_recibida, $usuario_encont
     $_SESSION['id_usuario'] = $usuario_encontrado['id'];
     $_SESSION['correo_usuario'] = $usuario_encontrado['correo_electronico'];
     $_SESSION['esta_autenticado'] = true;
+    $_SESSION['token_csrf'] = bin2hex(random_bytes(32));
 
     http_response_code(200);
     echo json_encode([
         "estado" => "exito",
         "mensaje" => "Autenticacion exitosa. Bienvenido al panel de control.",
+        "token_csrf" => $_SESSION['token_csrf'],
         "usuario" => [
             "id" => $usuario_encontrado['id'],
             "correo_electronico" => $usuario_encontrado['correo_electronico']

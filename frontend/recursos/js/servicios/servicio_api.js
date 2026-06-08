@@ -3,8 +3,9 @@
  * Servicio Centralizado de API (Frontend) - VERSIÓN COMPLETA INTEGRADA
  */
 
-// Constante global unificada hacia la raíz expuesta por Apache en Docker
 const URL_BASE = 'http://localhost:8080/api';
+
+let token_csrf_actual = null;
 
 export const servicio_api = {
 
@@ -97,7 +98,11 @@ export const servicio_api = {
                 })
             });
             if (!respuesta.ok) throw new Error(`HTTP error! status: ${respuesta.status}`);
-            return await respuesta.json();
+            const datos = await respuesta.json();
+            if (datos.estado === 'exito' && datos.token_csrf) {
+                token_csrf_actual = datos.token_csrf;
+            }
+            return datos;
         } catch (error) {
             console.error("error_servicio_api::iniciar_sesion ->", error);
             return { estado: 'error', mensaje: 'No se pudo conectar con el servidor.' };
@@ -110,20 +115,24 @@ export const servicio_api = {
                 method: 'GET'
             });
             if (!respuesta.ok) return { estado: 'no_autenticado' };
-            return await respuesta.json();
+            const datos = await respuesta.json();
+            if (datos.estado === 'autenticado' && datos.token_csrf) {
+                token_csrf_actual = datos.token_csrf;
+            }
+            return datos;
         } catch (error) {
             console.error("error_servicio_api::verificar_sesion ->", error);
             return { estado: 'error' };
         }
     },
 
-    // AÑADIDO: Cierre de sesión seguro nativo requerido por el Dashboard
     async cerrar_sesion() {
         try {
             const respuesta = await fetch(`${URL_BASE}/autenticacion/cerrar_sesion.php`, {
                 method: 'GET'
             });
             if (!respuesta.ok) throw new Error(`HTTP error! status: ${respuesta.status}`);
+            token_csrf_actual = null;
             return await respuesta.json();
         } catch (error) {
             console.error("error_servicio_api::cerrar_sesion ->", error);
@@ -137,7 +146,6 @@ export const servicio_api = {
      * ==========================================
      */
 
-    // AÑADIDO: Consulta de estadísticas cuantitativas de tarjetas del Dashboard
     async obtener_estadisticas() {
         try {
             const respuesta = await fetch(`${URL_BASE}/examenes/estadisticas.php`, {
@@ -156,7 +164,10 @@ export const servicio_api = {
         try {
             const respuesta = await fetch(`${URL_BASE}/examenes/crear.php`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token_csrf_actual || ''
+                },
                 body: JSON.stringify(datos_examen)
             });
             if (!respuesta.ok) throw new Error(`HTTP error! status: ${respuesta.status}`);
@@ -171,7 +182,10 @@ export const servicio_api = {
         try {
             const respuesta = await fetch(`${URL_BASE}/examenes/actualizar.php`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token_csrf_actual || ''
+                },
                 body: JSON.stringify(datos_examen)
             });
             if (!respuesta.ok) throw new Error(`HTTP error! status: ${respuesta.status}`);
@@ -186,7 +200,10 @@ export const servicio_api = {
         try {
             const respuesta = await fetch(`${URL_BASE}/examenes/eliminar.php`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token_csrf_actual || ''
+                },
                 body: JSON.stringify({ id_examen: parseInt(id_examen) })
             });
             if (!respuesta.ok) throw new Error(`HTTP error! status: ${respuesta.status}`);
