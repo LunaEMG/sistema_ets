@@ -107,18 +107,29 @@ async function evaluar_click_tabla(evento) {
     if (evento.target.classList.contains('btn_eliminar_examen') || evento.target.closest('.btn_eliminar_examen')) {
         const boton = evento.target.classList.contains('btn_eliminar_examen') ? evento.target : evento.target.closest('.btn_eliminar_examen');
         const id_seleccionado = parseInt(boton.getAttribute('data-id'));
-        const confirmacion = confirm('¿Está completamente seguro de que desea eliminar permanentemente este examen ETS de la programación oficial?');
         
-        if (confirmacion) {
-            const respuesta = await servicio_api.eliminar_examen(id_seleccionado);
-            
-            if (respuesta.estado === 'exito') {
-                await cargar_listado_examenes();
-                await cargar_tarjetas_estadisticas();
-            } else {
-                alert(respuesta.mensaje);
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¿Deseas eliminar permanentemente este examen ETS de la programación oficial?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#e74c3c',
+            cancelButtonColor: '#7f8c8d',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const respuesta = await servicio_api.eliminar_examen(id_seleccionado);
+                
+                if (respuesta.estado === 'exito') {
+                    Swal.fire('¡Eliminado!', 'El examen ha sido eliminado.', 'success');
+                    await cargar_listado_examenes();
+                    await cargar_tarjetas_estadisticas();
+                } else {
+                    Swal.fire('Error', respuesta.mensaje, 'error');
+                }
             }
-        }
+        });
     }
 }
 
@@ -127,7 +138,7 @@ async function procesar_salida() {
     if (respuesta.estado === 'exito') {
         window.location.href = '../../login.html';
     } else {
-        alert('Hubo un problema al cerrar la sesión de forma segura.');
+        Swal.fire('Error', 'Hubo un problema al cerrar la sesión de forma segura.', 'error');
     }
 }
 

@@ -108,7 +108,6 @@ async function inicializar_formulario() {
 
 async function procesar_registro_examen(e) {
     e.preventDefault();
-    ocultar_mensaje();
 
     const payload = {
         id_materia: parseInt(selector_materia.value),
@@ -121,31 +120,26 @@ async function procesar_registro_examen(e) {
     };
 
     if (payload.id_materia === 0 || !payload.fecha_examen || !payload.hora_manana || !payload.hora_tarde || payload.id_salon === 0 || payload.id_profesor === 0) {
-        mostrar_mensaje('Todos los campos son obligatorios.', '#e74c3c', '#fde8e7');
+        Swal.fire('Atención', 'Todos los campos son obligatorios.', 'warning');
         return;
     }
 
     const respuesta = await servicio_api.crear_examen(payload);
     if (respuesta.estado === 'exito') {
-        mostrar_mensaje(respuesta.mensaje, '#27ae60', '#e8f8f5');
-        setTimeout(() => { window.location.href = 'dashboard.html'; }, 2000);
+        Swal.fire({
+            icon: 'success',
+            title: '¡Registrado!',
+            text: respuesta.mensaje,
+            showConfirmButton: false,
+            timer: 2000
+        }).then(() => {
+            window.location.href = 'dashboard.html';
+        });
     } else {
-        mostrar_mensaje(respuesta.mensaje, '#e74c3c', '#fde8e7');
+        Swal.fire('Error', respuesta.mensaje, 'error');
     }
 }
 
-function mostrar_mensaje(texto, color_texto, color_fondo) {
-    if (contenedor_mensaje) {
-        contenedor_mensaje.textContent = texto;
-        contenedor_mensaje.style.color = color_texto;
-        contenedor_mensaje.style.backgroundColor = color_fondo;
-        contenedor_mensaje.style.border = `1px solid ${color_texto}`;
-        contenedor_mensaje.style.display = 'block';
-    }
-}
 
-function ocultar_mensaje() {
-    if (contenedor_mensaje) contenedor_mensaje.style.display = 'none';
-}
 
 document.addEventListener('DOMContentLoaded', inicializar_formulario);

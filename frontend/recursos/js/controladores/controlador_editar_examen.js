@@ -130,7 +130,6 @@ async function inicializar_edicion() {
 
 async function enviar_actualizacion(e) {
     e.preventDefault();
-    ocultar_mensaje();
     
     const payload = {
         id_examen: id_examen_global,
@@ -143,28 +142,26 @@ async function enviar_actualizacion(e) {
     };
 
     if (payload.id_materia === 0 || !payload.fecha_examen || payload.id_salon === 0 || payload.id_profesor === 0) {
-        mostrar_mensaje('Todos los campos son obligatorios.', '#e74c3c', '#fde8e7');
+        Swal.fire('Atención', 'Todos los campos son obligatorios.', 'warning');
         return;
     }
 
     const respuesta = await servicio_api.actualizar_examen(payload);
     if (respuesta.estado === 'exito') {
-        window.location.href = 'dashboard.html';
+        Swal.fire({
+            icon: 'success',
+            title: '¡Actualizado!',
+            text: respuesta.mensaje,
+            showConfirmButton: false,
+            timer: 2000
+        }).then(() => {
+            window.location.href = 'dashboard.html';
+        });
     } else {
-        mostrar_mensaje(respuesta.mensaje, '#e74c3c', '#fde8e7');
+        Swal.fire('Error', respuesta.mensaje, 'error');
     }
 }
 
-function mostrar_mensaje(texto, color_texto, color_fondo) {
-    contenedor_mensaje.textContent = texto;
-    contenedor_mensaje.style.color = color_texto;
-    contenedor_mensaje.style.backgroundColor = color_fondo;
-    contenedor_mensaje.style.border = `1px solid ${color_texto}`;
-    contenedor_mensaje.style.display = 'block';
-}
 
-function ocultar_mensaje() {
-    contenedor_mensaje.style.display = 'none';
-}
 
 document.addEventListener('DOMContentLoaded', inicializar_edicion);

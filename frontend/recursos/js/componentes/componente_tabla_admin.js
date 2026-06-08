@@ -32,13 +32,13 @@ export const componente_tabla_admin = {
                     <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef;">${escaparHTML(examen.nombre_profesor)}</td>
                     <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef; text-align: center;">
                         <div style="display: flex; gap: 6px; justify-content: center;">
-                            <button class="btn_editar_examen" data-id="${escaparHTML(String(examen.id))}" 
-                                style="background-color: #f39c12; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
-                                <i class="fa-solid fa-pen-to-square"></i> Editar
+                            <button class="btn_editar_examen" data-id="${escaparHTML(String(examen.id))}" title="Editar Examen"
+                                style="background-color: #f39c12; color: white; border: none; padding: 8px 10px; border-radius: 4px; cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; justify-content: center;">
+                                <i class="fa-solid fa-pen-to-square"></i>
                             </button>
-                            <button class="btn_eliminar_examen" data-id="${escaparHTML(String(examen.id))}" 
-                                style="background-color: #e74c3c; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
-                                <i class="fa-solid fa-trash"></i> Eliminar
+                            <button class="btn_eliminar_examen" data-id="${escaparHTML(String(examen.id))}" title="Eliminar Examen"
+                                style="background-color: #e74c3c; color: white; border: none; padding: 8px 10px; border-radius: 4px; cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; justify-content: center;">
+                                <i class="fa-solid fa-trash"></i>
                             </button>
                         </div>
                     </td>

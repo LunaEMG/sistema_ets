@@ -171,20 +171,25 @@ class ModeloExamen {
                              WHERE id_salon = :id_salon 
                                AND fecha_examen = :fecha_examen 
                                AND (
-                                   (:hora_manana < ADDTIME(hora_manana, '02:00:00') AND hora_manana < ADDTIME(:hora_manana, '02:00:00'))
+                                   (:hora_manana_1 < ADDTIME(hora_manana, '02:00:00') AND hora_manana < ADDTIME(:hora_manana_2, '02:00:00'))
                                    OR 
-                                   (:hora_tarde < ADDTIME(hora_tarde, '02:00:00') AND hora_tarde < ADDTIME(:hora_tarde, '02:00:00'))
+                                   (:hora_tarde_1 < ADDTIME(hora_tarde, '02:00:00') AND hora_tarde < ADDTIME(:hora_tarde_2, '02:00:00'))
                                )";
             if ($id_examen_ignorar > 0) $consulta_sql .= " AND id != :id_examen_ignorar";
 
             $sentencia = $this->conexion_bd->prepare($consulta_sql);
-            $sentencia->bindParam(':id_salon', $id_salon, PDO::PARAM_INT);
-            $sentencia->bindParam(':fecha_examen', $fecha_examen, PDO::PARAM_STR);
-            $sentencia->bindParam(':hora_manana', $hora_manana, PDO::PARAM_STR);
-            $sentencia->bindParam(':hora_tarde', $hora_tarde, PDO::PARAM_STR);
-            if ($id_examen_ignorar > 0) $sentencia->bindParam(':id_examen_ignorar', $id_examen_ignorar, PDO::PARAM_INT);
+            
+            $parametros = [
+                ':id_salon' => $id_salon,
+                ':fecha_examen' => $fecha_examen,
+                ':hora_manana_1' => $hora_manana,
+                ':hora_manana_2' => $hora_manana,
+                ':hora_tarde_1' => $hora_tarde,
+                ':hora_tarde_2' => $hora_tarde
+            ];
+            if ($id_examen_ignorar > 0) $parametros[':id_examen_ignorar'] = $id_examen_ignorar;
 
-            $sentencia->execute();
+            $sentencia->execute($parametros);
             return $sentencia->fetchColumn() > 0;
         } catch (PDOException $error_sql) {
             $this->registrar_error_examen("verificar_conflicto_salon", $error_sql->getMessage());
@@ -198,20 +203,25 @@ class ModeloExamen {
                              WHERE id_profesor = :id_profesor 
                                AND fecha_examen = :fecha_examen 
                                AND (
-                                   (:hora_manana < ADDTIME(hora_manana, '02:00:00') AND hora_manana < ADDTIME(:hora_manana, '02:00:00'))
+                                   (:hora_manana_1 < ADDTIME(hora_manana, '02:00:00') AND hora_manana < ADDTIME(:hora_manana_2, '02:00:00'))
                                    OR 
-                                   (:hora_tarde < ADDTIME(hora_tarde, '02:00:00') AND hora_tarde < ADDTIME(:hora_tarde, '02:00:00'))
+                                   (:hora_tarde_1 < ADDTIME(hora_tarde, '02:00:00') AND hora_tarde < ADDTIME(:hora_tarde_2, '02:00:00'))
                                )";
             if ($id_examen_ignorar > 0) $consulta_sql .= " AND id != :id_examen_ignorar";
 
             $sentencia = $this->conexion_bd->prepare($consulta_sql);
-            $sentencia->bindParam(':id_profesor', $id_profesor, PDO::PARAM_INT);
-            $sentencia->bindParam(':fecha_examen', $fecha_examen, PDO::PARAM_STR);
-            $sentencia->bindParam(':hora_manana', $hora_manana, PDO::PARAM_STR);
-            $sentencia->bindParam(':hora_tarde', $hora_tarde, PDO::PARAM_STR);
-            if ($id_examen_ignorar > 0) $sentencia->bindParam(':id_examen_ignorar', $id_examen_ignorar, PDO::PARAM_INT);
+            
+            $parametros = [
+                ':id_profesor' => $id_profesor,
+                ':fecha_examen' => $fecha_examen,
+                ':hora_manana_1' => $hora_manana,
+                ':hora_manana_2' => $hora_manana,
+                ':hora_tarde_1' => $hora_tarde,
+                ':hora_tarde_2' => $hora_tarde
+            ];
+            if ($id_examen_ignorar > 0) $parametros[':id_examen_ignorar'] = $id_examen_ignorar;
 
-            $sentencia->execute();
+            $sentencia->execute($parametros);
             return $sentencia->fetchColumn() > 0;
         } catch (PDOException $error_sql) {
             $this->registrar_error_examen("verificar_conflicto_profesor", $error_sql->getMessage());

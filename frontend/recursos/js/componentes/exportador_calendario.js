@@ -17,6 +17,14 @@ export const exportador_calendario = {
     exportar_a_ics(lista_examenes) {
         if (!lista_examenes || lista_examenes.length === 0) return;
 
+        Swal.fire({
+            icon: 'success',
+            title: '¡Calendario Generado!',
+            text: 'Tu archivo .ics se ha generado y descargado con éxito.',
+            showConfirmButton: false,
+            timer: 2000
+        });
+
         let contenido_ics = [
             "BEGIN:VCALENDAR",
             "VERSION:2.0",

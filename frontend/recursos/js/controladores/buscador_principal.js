@@ -65,6 +65,12 @@ async function ejecutar_busqueda_examenes() {
 
     if (coleccion_examenes_actuales.length === 0) {
         contenedor_resultados.innerHTML = '<p class="mensaje_alerta">No se encontraron exámenes programados con los filtros seleccionados.</p>';
+        Swal.fire({
+            icon: 'info',
+            title: 'Búsqueda sin resultados',
+            text: 'No se encontraron exámenes programados con los filtros seleccionados.',
+            confirmButtonColor: '#006293'
+        });
         return;
     }
 
