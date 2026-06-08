@@ -83,7 +83,16 @@ async function inicializar_edicion() {
             if (materia_encontrada) selector_materia.value = materia_encontrada.id;
         }
 
-        input_fecha.value = datos_examen.fecha_examen;
+        if (input_fecha) {
+            flatpickr(input_fecha, {
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "d/m/Y",
+                allowInput: true,
+                locale: "es",
+                defaultDate: datos_examen.fecha_examen
+            });
+        }
         selector_hora_manana.value = datos_examen.hora_manana;
         selector_hora_tarde.value = datos_examen.hora_tarde;
         

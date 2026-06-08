@@ -34,6 +34,17 @@ async function inicializar_formulario() {
 
     lista_salones_global = salones;
 
+    if (input_fecha) {
+        flatpickr(input_fecha, {
+            dateFormat: "Y-m-d",
+            altInput: true,
+            altFormat: "d/m/Y",
+            allowInput: true,
+            locale: "es",
+            minDate: "today"
+        });
+    }
+
     if (selector_carrera && carreras) {
         selector_carrera.innerHTML = '<option value="0">Seleccione una carrera...</option>';
         carreras.forEach(c => selector_carrera.add(new Option(c.nombre_carrera, c.id)));

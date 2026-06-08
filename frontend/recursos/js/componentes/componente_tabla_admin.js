@@ -21,23 +21,21 @@ export const componente_tabla_admin = {
 
             filas_html += `
                 <tr>
-                    <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef; font-weight: 600;">${escaparHTML(examen.nombre_materia)}</td>
-                    <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef;">${escaparHTML(examen.nombre_carrera)}</td>
-                    <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef; text-align: center;">${escaparHTML(String(examen.semestre_materia))}°</td>
-                    <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef;">${fecha_corta}</td>
-                    <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef; white-space: nowrap;">
-                        <div style="font-size: 0.8rem; font-weight: 600; color: #006293;">${horario_corto}</div>
+                    <td><span class="destacado_primario">${escaparHTML(examen.nombre_materia)}</span></td>
+                    <td>${escaparHTML(examen.nombre_carrera)}</td>
+                    <td style="text-align: center;">${escaparHTML(String(examen.semestre_materia))}°</td>
+                    <td>${fecha_corta}</td>
+                    <td style="white-space: nowrap;">
+                        <span class="destacado_secundario">${horario_corto}</span>
                     </td>
-                    <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef; font-weight: 700; color: #2c3e50;">${escaparHTML(examen.nombre_salon)}</td>
-                    <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef;">${escaparHTML(examen.nombre_profesor)}</td>
-                    <td style="padding: 0.75rem; border-bottom: 1px solid #e9ecef; text-align: center;">
-                        <div style="display: flex; gap: 6px; justify-content: center;">
-                            <button class="btn_editar_examen" data-id="${escaparHTML(String(examen.id))}" title="Editar Examen"
-                                style="background-color: #f39c12; color: white; border: none; padding: 8px 10px; border-radius: 4px; cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; justify-content: center;">
+                    <td class="destacado_primario">${escaparHTML(examen.nombre_salon)}</td>
+                    <td>${escaparHTML(examen.nombre_profesor)}</td>
+                    <td>
+                        <div class="acciones_fila">
+                            <button class="btn_icono_accion editar btn_editar_examen" data-id="${escaparHTML(String(examen.id))}" title="Editar Examen">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </button>
-                            <button class="btn_eliminar_examen" data-id="${escaparHTML(String(examen.id))}" title="Eliminar Examen"
-                                style="background-color: #e74c3c; color: white; border: none; padding: 8px 10px; border-radius: 4px; cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; justify-content: center;">
+                            <button class="btn_icono_accion eliminar btn_eliminar_examen" data-id="${escaparHTML(String(examen.id))}" title="Eliminar Examen">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </div>
@@ -47,23 +45,25 @@ export const componente_tabla_admin = {
         });
 
         return `
-            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem;">
-                <thead>
-                    <tr style="background-color: #006293; color: #ffffff;">
-                        <th style="padding: 0.75rem;">Materia</th>
-                        <th style="padding: 0.75rem;">Carrera</th>
-                        <th style="padding: 0.75rem; text-align: center;">Sem.</th>
-                        <th style="padding: 0.75rem;">Fecha</th>
-                        <th style="padding: 0.75rem;">Horarios (M / V)</th>
-                        <th style="padding: 0.75rem;">Ubicación (Aula)</th>
-                        <th style="padding: 0.75rem;">Coordinador</th>
-                        <th style="padding: 0.75rem; text-align: center;">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${filas_html}
-                </tbody>
-            </table>
+            <div class="contenedor_tabla_admin">
+                <table class="tabla_admin">
+                    <thead>
+                        <tr>
+                            <th>Materia</th>
+                            <th>Carrera</th>
+                            <th style="text-align: center;">Sem.</th>
+                            <th>Fecha</th>
+                            <th>Horarios (M / V)</th>
+                            <th>Ubicación (Aula)</th>
+                            <th>Coordinador</th>
+                            <th style="text-align: center;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${filas_html}
+                    </tbody>
+                </table>
+            </div>
         `;
     }
 };

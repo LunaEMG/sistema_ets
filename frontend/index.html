@@ -6,6 +6,7 @@
     <title>Gestión de Exámenes ETS - ESCOM IPN</title>
     <link rel="stylesheet" href="recursos/css/estilos_busqueda.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Crete+Round:ital@0;1&family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -19,8 +20,8 @@
     <main class="contenedor_principal">
 
         <section class="seccion_buscador">
-            <h2 class="titulo_seccion">Buscador Inteligente de Exámenes</h2>
             
+
             <div class="formulario_filtros">
                 <div class="grupo_campo">
                     <label for="select_carrera">Carrera:</label>
@@ -45,15 +46,15 @@
                 </div>
 
                 <div class="grupo_campo">
-                    <label for="select_materia">Unidad de Aprendizaje (Materia):</label>
+                    <label for="select_materia">Unidad de Aprendizaje:</label>
                     <select id="select_materia" class="control_formulario" disabled>
                         <option value="0">Todas las materias</option>
                     </select>
                 </div>
 
                 <div class="grupo_boton">
-                    <button id="btn_buscar" class="boton_primario" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
-                        <i class="fa-solid fa-magnifying-glass"></i> Buscar Exámenes
+                    <button id="btn_buscar" class="boton_primario btn_solo_icono" title="Buscar" aria-label="Buscar Exámenes" style="display: inline-flex; align-items: center; justify-content: center; height: 46px; border-radius: 6px;">
+                        <i class="fa-solid fa-magnifying-glass" style="font-size: 1.25rem;"></i>
                     </button>
                 </div>
             </div>

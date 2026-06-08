@@ -5,7 +5,6 @@ import { servicio_api } from '../servicios/servicio_api.js';
 import { componente_tarjeta } from '../componentes/componente_tarjeta.js';
 import { exportador_calendario } from '../componentes/exportador_calendario.js';
 
-// Referencias a los elementos del DOM
 const selector_carrera = document.getElementById('select_carrera');
 const selector_semestre = document.getElementById('select_semestre');
 const selector_materia = document.getElementById('select_materia');
@@ -51,7 +50,12 @@ async function inicializar_buscador() {
 }
 
 async function ejecutar_busqueda_examenes() {
-    contenedor_resultados.innerHTML = '<p class="mensaje_carga">Buscando exámenes programados...</p>';
+    contenedor_resultados.innerHTML = `
+        <div class="mensaje_carga">
+            <div class="spinner_carga"></div>
+            <p>Buscando exámenes programados...</p>
+        </div>
+    `;
     
     boton_exportar_pdf.disabled = true;
     boton_exportar_ics.disabled = true;
@@ -64,7 +68,12 @@ async function ejecutar_busqueda_examenes() {
     contenedor_resultados.innerHTML = '';
 
     if (coleccion_examenes_actuales.length === 0) {
-        contenedor_resultados.innerHTML = '<p class="mensaje_alerta">No se encontraron exámenes programados con los filtros seleccionados.</p>';
+        contenedor_resultados.innerHTML = `
+            <div class="mensaje_alerta">
+                <i class="fa-solid fa-folder-open" style="font-size: 3rem; color: #ced4da; margin-bottom: 10px;"></i>
+                <p>No se encontraron exámenes programados con los filtros seleccionados.</p>
+            </div>
+        `;
         Swal.fire({
             icon: 'info',
             title: 'Búsqueda sin resultados',

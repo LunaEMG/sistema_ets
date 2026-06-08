@@ -23,21 +23,41 @@ export const componente_tarjeta = {
                     <p class="nombre_carrera">${escaparHTML(datos_examen.nombre_carrera)}</p>
                 </div>
                 <div class="tarjeta_cuerpo">
-                    <div class="dato_renglon" style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
-                        <i class="fa-solid fa-calendar-day" style="color: #006293; width: 16px; text-align: center;"></i>
-                        <p style="margin: 0;"><strong>Fecha:</strong> ${fecha_legible}</p>
+                    <div class="dato_renglon">
+                        <div class="contenedor_icono">
+                            <i class="fa-solid fa-calendar-day"></i>
+                        </div>
+                        <div class="info_dato">
+                            <span class="etiqueta_dato">Fecha</span>
+                            <p class="valor_dato">${fecha_legible}</p>
+                        </div>
                     </div>
-                    <div class="dato_renglon" style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
-                        <i class="fa-solid fa-clock" style="color: #006293; width: 16px; text-align: center;"></i>
-                        <p style="margin: 0;"><strong>Horario:</strong> ${horario_completo}</p>
+                    <div class="dato_renglon">
+                        <div class="contenedor_icono">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                        <div class="info_dato">
+                            <span class="etiqueta_dato">Horario</span>
+                            <p class="valor_dato">${horario_completo}</p>
+                        </div>
                     </div>
-                    <div class="dato_renglon" style="display: flex; align-items: center; gap: 10px; margin-bottom: 0.5rem;">
-                        <i class="fa-solid fa-location-dot" style="color: #006293; width: 16px; text-align: center;"></i>
-                        <p style="margin: 0;"><strong>Salón / Laboratorio:</strong> ${escaparHTML(datos_examen.nombre_salon)}</p>
+                    <div class="dato_renglon">
+                        <div class="contenedor_icono">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <div class="info_dato">
+                            <span class="etiqueta_dato">Salón / Laboratorio</span>
+                            <p class="valor_dato">${escaparHTML(datos_examen.nombre_salon)}</p>
+                        </div>
                     </div>
-                    <div class="dato_renglon" style="display: flex; align-items: center; gap: 10px;">
-                        <i class="fa-solid fa-chalkboard-user" style="color: #006293; width: 16px; text-align: center;"></i>
-                        <p style="margin: 0;"><strong>Coordinador:</strong> ${escaparHTML(datos_examen.nombre_profesor)}</p>
+                    <div class="dato_renglon">
+                        <div class="contenedor_icono">
+                            <i class="fa-solid fa-chalkboard-user"></i>
+                        </div>
+                        <div class="info_dato">
+                            <span class="etiqueta_dato">Coordinador</span>
+                            <p class="valor_dato">${escaparHTML(datos_examen.nombre_profesor)}</p>
+                        </div>
                     </div>
                 </div>
             </div>

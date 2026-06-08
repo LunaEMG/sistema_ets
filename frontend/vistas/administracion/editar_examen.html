@@ -6,19 +6,24 @@
     <title>Modificar Examen ETS - ESCOM IPN</title>
     <link rel="stylesheet" href="../../recursos/css/estilos_busqueda.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Crete+Round:ital@0;1&family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
 
-    <header class="encabezado_principal">
+    <header class="encabezado_admin">
         <div class="contenedor_encabezado">
             <h1>Modificación de Exámenes</h1>
             <p>Módulo de Cambios para la Programación Oficial</p>
         </div>
+        <div class="logo_admin" style="font-size: 2rem; opacity: 0.8;">
+            <i class="fa-solid fa-pen-to-square"></i>
+        </div>
     </header>
 
-    <main class="contenedor_principal">
-        <section class="seccion_buscador" style="max-width: 700px; margin: 0 auto 2.5rem auto;">
-            <h2 class="titulo_seccion">Editar Datos del Examen</h2>
+    <main class="contenedor_principal" style="padding-top: 2rem;">
+        <section class="tarjeta_formulario">
+            <h2 class="titulo_seccion" style="text-align: center; color: var(--color_azul_oscuro); border-bottom: none; margin-bottom: 2rem;">Editar Datos del Examen</h2>
 
             <div id="mensaje_alerta" class="control_formulario" style="display: none; margin-bottom: 1.5rem; text-align: center; font-weight: 600;"></div>
 
@@ -41,7 +46,7 @@
 
                     <div class="grupo_campo">
                         <label for="input_fecha">Fecha de Aplicación:</label>
-                        <input type="date" id="input_fecha" class="control_formulario" required>
+                        <input type="text" id="input_fecha" class="control_formulario" placeholder="DD/MM/AAAA" required>
                     </div>
 
                     <div class="grupo_campo" style="display: flex; gap: 1rem;">
@@ -102,13 +107,13 @@
                         </div>
                     </div>
 
-                    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-                        <button type="submit" class="boton_primario" style="background-color: #006293;">
-                            <i class="fa-solid fa-pen-to-square"></i> Actualizar Cambios
-                        </button>
-                        <a href="dashboard.html" class="boton_primario" style="background-color: #7f8c8d; text-align: center; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                    <div class="acciones_formulario">
+                        <a href="dashboard.html" class="boton_primario btn_cancelar" style="text-align: center; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: auto; margin: 0;">
                             <i class="fa-solid fa-xmark"></i> Cancelar
                         </a>
+                        <button type="submit" class="boton_primario btn_guardar" style="width: auto; margin: 0; background-color: #f39c12;">
+                            <i class="fa-solid fa-pen-to-square"></i> Actualizar Cambios
+                        </button>
                     </div>
                 </div>
             </form>
@@ -119,6 +124,8 @@
         <p>&copy; 2026 - Sistema de Gestión de ETS - ESCOM IPN</p>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
     <script type="module" src="../../recursos/js/controladores/controlador_editar_examen.js"></script>
 </body>
 </html>

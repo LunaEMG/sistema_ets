@@ -6,30 +6,35 @@
     <title>Panel de Administración - ESCOM IPN</title>
     <link rel="stylesheet" href="../../recursos/css/estilos_busqueda.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Crete+Round:ital@0;1&family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header class="encabezado_principal">
+    <header class="encabezado_admin">
         <div class="contenedor_encabezado">
             <h1>Panel de Control Administrativo</h1>
             <p id="texto_bienvenida_usuario">Cargando administrador...</p>
         </div>
+        <div class="logo_admin" style="font-size: 2rem; opacity: 0.8;">
+            <i class="fa-solid fa-shield-halved"></i>
+        </div>
     </header>
 
     <main class="contenedor_principal">
-        <section class="seccion_buscador">
-            <h2 class="titulo_seccion">Gestión Global del Sistema</h2>
-            <p>Bienvenido al módulo de control. Desde aquí puedes dar de alta, modificar y dar de baja la programación de exámenes ETS de la ESCOM.</p>
-            
-            <div style="margin-top: 2rem; display: flex; gap: 1rem;">
-                <a href="crear_examen.html" class="boton_primario" style="background-color: #27ae60; text-decoration: none; text-align: center; display: inline-flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-plus"></i> Agregar Nuevo Examen
+        <div class="toolbar_admin">
+            <div class="info_toolbar">
+                <h2>Gestión Global del Sistema</h2>
+                <p style="color: var(--color_texto_secundario); font-size: 0.95rem; margin: 0;">Administra altas, bajas y cambios en los exámenes ETS.</p>
+            </div>
+            <div class="acciones_toolbar">
+                <a href="crear_examen.html" class="btn_guardar boton_primario" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; width: auto; margin: 0;">
+                    <i class="fa-solid fa-plus"></i> Agregar Examen
                 </a>
-                <button id="btn_cerrar_sesion" class="boton_primario" style="background-color: #e74c3c; display: inline-flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión Segura
+                <button id="btn_cerrar_sesion" class="btn_cancelar boton_primario" style="display: inline-flex; align-items: center; gap: 8px; width: auto; margin: 0;">
+                    <i class="fa-solid fa-right-from-bracket"></i> Salir
                 </button>
             </div>
-        </section>
+        </div>
 
         <section class="seccion_resultados" style="margin-bottom: 2rem; background-color: transparent; box-shadow: none; padding: 0;">
             <h2 class="titulo_seccion">Resumen Estadístico</h2>

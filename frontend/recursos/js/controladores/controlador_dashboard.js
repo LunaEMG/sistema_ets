@@ -4,7 +4,6 @@
 import { servicio_api } from '../servicios/servicio_api.js';
 import { componente_tabla_admin } from '../componentes/componente_tabla_admin.js';
 
-// 1. Declaración e indexación de elementos del DOM
 const texto_bienvenida_usuario = document.getElementById('texto_bienvenida_usuario');
 const btn_cerrar_sesion = document.getElementById('btn_cerrar_sesion');
 const contenedor_tabla = document.getElementById('contenedor_tabla_examenes');
@@ -41,26 +40,26 @@ async function cargar_tarjetas_estadisticas() {
         
         if (!metricas || metricas.length === 0) {
             contenedor_stats.innerHTML = `
-                <div style="background-color: #ffffff; padding: 1.25rem; border-radius: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 5px solid #006293; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <h4 style="font-size: 0.8rem; color: #666666; text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 600;">Ingeniería en Sistemas Computacionales</h4>
-                        <p style="font-size: 1.8rem; font-weight: 700; color: #006293; margin: 0;">0 <span style="font-size: 0.9rem; font-weight: 400; color: #7f8c8d;">registrados</span></p>
+                <div class="tarjeta_stat">
+                    <div class="info_stat">
+                        <h4>Ingeniería en Sistemas Computacionales</h4>
+                        <p>0 <span>registrados</span></p>
                     </div>
-                    <i class="fa-solid fa-laptop-code" style="font-size: 1.75rem; color: #cbd5e1;"></i>
+                    <i class="fa-solid fa-laptop-code icono_stat"></i>
                 </div>
-                <div style="background-color: #ffffff; padding: 1.25rem; border-radius: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 5px solid #006293; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <h4 style="font-size: 0.8rem; color: #666666; text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 600;">Ingeniería en Inteligencia Artificial</h4>
-                        <p style="font-size: 1.8rem; font-weight: 700; color: #006293; margin: 0;">0 <span style="font-size: 0.9rem; font-weight: 400; color: #7f8c8d;">registrados</span></p>
+                <div class="tarjeta_stat">
+                    <div class="info_stat">
+                        <h4>Ingeniería en Inteligencia Artificial</h4>
+                        <p>0 <span>registrados</span></p>
                     </div>
-                    <i class="fa-solid fa-brain" style="font-size: 1.75rem; color: #cbd5e1;"></i>
+                    <i class="fa-solid fa-brain icono_stat"></i>
                 </div>
-                <div style="background-color: #ffffff; padding: 1.25rem; border-radius: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 5px solid #006293; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <h4 style="font-size: 0.8rem; color: #666666; text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 600;">Licenciatura en Ciencia de Datos</h4>
-                        <p style="font-size: 1.8rem; font-weight: 700; color: #006293; margin: 0;">0 <span style="font-size: 0.9rem; font-weight: 400; color: #7f8c8d;">registrados</span></p>
+                <div class="tarjeta_stat">
+                    <div class="info_stat">
+                        <h4>Licenciatura en Ciencia de Datos</h4>
+                        <p>0 <span>registrados</span></p>
                     </div>
-                    <i class="fa-solid fa-database" style="font-size: 1.75rem; color: #cbd5e1;"></i>
+                    <i class="fa-solid fa-database icono_stat"></i>
                 </div>
             `;
             return;
@@ -70,16 +69,12 @@ async function cargar_tarjetas_estadisticas() {
         metricas.forEach(stat => {
             const iconoClase = resolverIconoCarrera(stat.nombre_carrera);
             html_tarjetas += `
-                <div style="background-color: #ffffff; padding: 1.25rem; border-radius: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 5px solid #006293; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <h4 style="font-size: 0.8rem; color: #666666; text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 600;">
-                            ${stat.nombre_carrera}
-                        </h4>
-                        <p style="font-size: 1.8rem; font-weight: 700; color: #006293; margin: 0;">
-                            ${stat.total_examenes} <span style="font-size: 0.9rem; font-weight: 400; color: #7f8c8d;">registrados</span>
-                        </p>
+                <div class="tarjeta_stat">
+                    <div class="info_stat">
+                        <h4>${stat.nombre_carrera}</h4>
+                        <p>${stat.total_examenes} <span>registrados</span></p>
                     </div>
-                    <i class="fa-solid ${iconoClase}" style="font-size: 1.75rem; color: #cbd5e1;"></i>
+                    <i class="fa-solid ${iconoClase} icono_stat"></i>
                 </div>
             `;
         });
