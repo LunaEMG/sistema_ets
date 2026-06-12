@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="../../recursos/imagenes/tiburon.svg">
     <link rel="stylesheet" href="../../recursos/css/estilos_busqueda.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Crete+Round:ital@0;1&family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -10,17 +11,21 @@
 </head>
 <body>
 
-    <header class="encabezado_admin">
-        <div class="contenedor_encabezado">
-            <h1>Programación de Exámenes</h1>
-            <p>Módulo de Alta para Nuevas Evaluaciones ETS</p>
-        </div>
-        <div class="logo_admin" style="font-size: 2rem; opacity: 0.8;">
-            <i class="fa-solid fa-file-circle-plus"></i>
+    <header class="encabezado_nuevo">
+        <div class="contenedor_nav_superior">
+            <div class="logo_titulo">
+                <div class="icono_logo">
+                    <i class="fa-solid fa-file-circle-plus"></i>
+                </div>
+                <h1>Programar Examen</h1>
+            </div>
+            <nav class="navegacion_superior">
+                <a href="dashboard.html">Volver al Panel</a>
+            </nav>
         </div>
     </header>
 
-    <main class="contenedor_principal" style="padding-top: 2rem;">
+    <main class="contenedor_principal_nuevo" style="padding-top: 3rem;">
         <section class="tarjeta_formulario">
             <h2 class="titulo_seccion" style="text-align: center; color: var(--color_azul_oscuro); border-bottom: none; margin-bottom: 2rem;">Registrar Nuevo Examen</h2>
 
@@ -106,11 +111,11 @@
                         </div>
                     </div>
 
-                    <div class="acciones_formulario">
-                        <a href="dashboard.html" class="boton_primario btn_cancelar" style="text-align: center; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: auto; margin: 0;">
+                    <div class="acciones_formulario" style="display: flex; gap: 1rem; margin-top: 1rem;">
+                        <a href="dashboard.html" class="boton_exportar" style="text-align: center; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: auto; margin: 0;">
                             <i class="fa-solid fa-xmark"></i> Cancelar
                         </a>
-                        <button type="submit" class="boton_primario btn_guardar" style="width: auto; margin: 0;">
+                        <button type="submit" class="boton_exportar" style="width: auto; margin: 0; background-color: var(--color_blue_900); color: white; border-color: var(--color_blue_900);">
                             <i class="fa-solid fa-floppy-disk"></i> Guardar Registro
                         </button>
                     </div>

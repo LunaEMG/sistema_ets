@@ -40,26 +40,32 @@ async function cargar_tarjetas_estadisticas() {
         
         if (!metricas || metricas.length === 0) {
             contenedor_stats.innerHTML = `
-                <div class="tarjeta_stat">
-                    <div class="info_stat">
-                        <h4>Ingeniería en Sistemas Computacionales</h4>
-                        <p>0 <span>registrados</span></p>
+                <div class="tarjeta_stat_nueva">
+                    <div class="info_stat_nueva">
+                        <p class="titulo_stat_nuevo">Sistemas Computacionales</p>
+                        <h3 class="valor_stat_nuevo">0</h3>
                     </div>
-                    <i class="fa-solid fa-laptop-code icono_stat"></i>
+                    <div class="icono_stat_nuevo">
+                        <i class="fa-solid fa-laptop-code"></i>
+                    </div>
                 </div>
-                <div class="tarjeta_stat">
-                    <div class="info_stat">
-                        <h4>Ingeniería en Inteligencia Artificial</h4>
-                        <p>0 <span>registrados</span></p>
+                <div class="tarjeta_stat_nueva">
+                    <div class="info_stat_nueva">
+                        <p class="titulo_stat_nuevo">Inteligencia Artificial</p>
+                        <h3 class="valor_stat_nuevo">0</h3>
                     </div>
-                    <i class="fa-solid fa-brain icono_stat"></i>
+                    <div class="icono_stat_nuevo">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
                 </div>
-                <div class="tarjeta_stat">
-                    <div class="info_stat">
-                        <h4>Licenciatura en Ciencia de Datos</h4>
-                        <p>0 <span>registrados</span></p>
+                <div class="tarjeta_stat_nueva">
+                    <div class="info_stat_nueva">
+                        <p class="titulo_stat_nuevo">Ciencia de Datos</p>
+                        <h3 class="valor_stat_nuevo">0</h3>
                     </div>
-                    <i class="fa-solid fa-database icono_stat"></i>
+                    <div class="icono_stat_nuevo">
+                        <i class="fa-solid fa-database"></i>
+                    </div>
                 </div>
             `;
             return;
@@ -69,12 +75,14 @@ async function cargar_tarjetas_estadisticas() {
         metricas.forEach(stat => {
             const iconoClase = resolverIconoCarrera(stat.nombre_carrera);
             html_tarjetas += `
-                <div class="tarjeta_stat">
-                    <div class="info_stat">
-                        <h4>${stat.nombre_carrera}</h4>
-                        <p>${stat.total_examenes} <span>registrados</span></p>
+                <div class="tarjeta_stat_nueva">
+                    <div class="info_stat_nueva">
+                        <p class="titulo_stat_nuevo">${stat.nombre_carrera}</p>
+                        <h3 class="valor_stat_nuevo">${stat.total_examenes}</h3>
                     </div>
-                    <i class="fa-solid ${iconoClase} icono_stat"></i>
+                    <div class="icono_stat_nuevo">
+                        <i class="fa-solid ${iconoClase}"></i>
+                    </div>
                 </div>
             `;
         });
@@ -129,12 +137,21 @@ async function evaluar_click_tabla(evento) {
 }
 
 async function procesar_salida() {
-    const respuesta = await servicio_api.cerrar_sesion();
-    if (respuesta.estado === 'exito') {
-        window.location.href = '../../login.html';
-    } else {
-        Swal.fire('Error', 'Hubo un problema al cerrar la sesión de forma segura.', 'error');
-    }
+    Swal.fire({
+        title: 'Cerrando sesión',
+        text: '¡Hasta pronto!',
+        icon: 'success',
+        showConfirmButton: false,
+        timer: 1500,
+        willClose: async () => {
+            const respuesta = await servicio_api.cerrar_sesion();
+            if (respuesta.estado === 'exito') {
+                window.location.replace('../../login.html');
+            } else {
+                Swal.fire('Error', 'Hubo un problema al cerrar la sesión de forma segura.', 'error');
+            }
+        }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', inicializar_dashboard);

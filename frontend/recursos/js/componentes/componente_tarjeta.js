@@ -16,47 +16,66 @@ export const componente_tarjeta = {
         const horario_completo = `${calcularBloque(datos_examen.hora_manana)} y ${calcularBloque(datos_examen.hora_tarde)}`;
 
         return `
-            <div class="tarjeta_materia_ets">
-                <div class="tarjeta_encabezado">
-                    <span class="etiqueta_semestre">${escaparHTML(String(datos_examen.semestre_materia))}° Semestre</span>
-                    <h3 class="titulo_materia">${escaparHTML(datos_examen.nombre_materia)}</h3>
-                    <p class="nombre_carrera">${escaparHTML(datos_examen.nombre_carrera)}</p>
+            <div class="tarjeta_materia_ets_nueva">
+                <img src="recursos/imagenes/tiburon.svg" class="marca_agua_tiburon" alt="Tiburón ESCOM">
+                <!-- Header Tarjeta -->
+                <div class="tarjeta_encabezado_nuevo" style="position: relative; z-index: 1;">
+                    <div class="tarjeta_encabezado_top">
+                        <span class="badge_carrera">
+                            ${escaparHTML(datos_examen.nombre_carrera)}
+                        </span>
+                        <span class="id_examen_badge">
+                            ID: ${datos_examen.id}
+                        </span>
+                    </div>
+                    <h4 class="titulo_materia_nuevo">
+                        ${escaparHTML(datos_examen.nombre_materia)}
+                    </h4>
+                    <div class="info_semestre_nuevo">
+                        <i class="fa-solid fa-book-open" style="margin-right: 0.375rem;"></i>
+                        Semestre ${escaparHTML(String(datos_examen.semestre_materia))}
+                    </div>
                 </div>
-                <div class="tarjeta_cuerpo">
-                    <div class="dato_renglon">
-                        <div class="contenedor_icono">
-                            <i class="fa-solid fa-calendar-day"></i>
+
+                <!-- Cuerpo Tarjeta -->
+                <div class="tarjeta_cuerpo_nuevo" style="position: relative; z-index: 1;">
+                    <div class="dato_fila_nueva">
+                        <div class="icono_dato_nuevo">
+                            <i class="fa-solid fa-user-tie"></i>
                         </div>
-                        <div class="info_dato">
-                            <span class="etiqueta_dato">Fecha</span>
-                            <p class="valor_dato">${fecha_legible}</p>
+                        <div class="texto_dato_nuevo">
+                            <span class="etiqueta_dato_nuevo">Profesor Titular</span>
+                            <span class="valor_dato_nuevo">${escaparHTML(datos_examen.nombre_profesor)}</span>
                         </div>
                     </div>
-                    <div class="dato_renglon">
-                        <div class="contenedor_icono">
+
+                    <div class="dato_fila_nueva">
+                        <div class="icono_dato_nuevo">
+                            <i class="fa-solid fa-calendar"></i>
+                        </div>
+                        <div class="texto_dato_nuevo">
+                            <span class="etiqueta_dato_nuevo">Fecha</span>
+                            <span class="valor_dato_nuevo" style="text-transform: capitalize;">${fecha_legible.split(',')[0]}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="dato_fila_nueva">
+                        <div class="icono_dato_nuevo">
                             <i class="fa-solid fa-clock"></i>
                         </div>
-                        <div class="info_dato">
-                            <span class="etiqueta_dato">Horario</span>
-                            <p class="valor_dato">${horario_completo}</p>
+                        <div class="texto_dato_nuevo">
+                            <span class="etiqueta_dato_nuevo">Hora</span>
+                            <span class="valor_dato_nuevo">${horario_completo}</span>
                         </div>
                     </div>
-                    <div class="dato_renglon">
-                        <div class="contenedor_icono">
+
+                    <div class="dato_fila_nueva">
+                        <div class="icono_dato_nuevo">
                             <i class="fa-solid fa-location-dot"></i>
                         </div>
-                        <div class="info_dato">
-                            <span class="etiqueta_dato">Salón / Laboratorio</span>
-                            <p class="valor_dato">${escaparHTML(datos_examen.nombre_salon)}</p>
-                        </div>
-                    </div>
-                    <div class="dato_renglon">
-                        <div class="contenedor_icono">
-                            <i class="fa-solid fa-chalkboard-user"></i>
-                        </div>
-                        <div class="info_dato">
-                            <span class="etiqueta_dato">Coordinador</span>
-                            <p class="valor_dato">${escaparHTML(datos_examen.nombre_profesor)}</p>
+                        <div class="texto_dato_nuevo">
+                            <span class="etiqueta_dato_nuevo">Ubicación</span>
+                            <span class="valor_dato_nuevo">${escaparHTML(datos_examen.nombre_salon)}</span>
                         </div>
                     </div>
                 </div>

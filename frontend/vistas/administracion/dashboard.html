@@ -4,35 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración - ESCOM IPN</title>
+    <link rel="icon" type="image/svg+xml" href="../../recursos/imagenes/tiburon.svg">
     <link rel="stylesheet" href="../../recursos/css/estilos_busqueda.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Crete+Round:ital@0;1&family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header class="encabezado_admin">
-        <div class="contenedor_encabezado">
-            <h1>Panel de Control Administrativo</h1>
-            <p id="texto_bienvenida_usuario">Cargando administrador...</p>
-        </div>
-        <div class="logo_admin" style="font-size: 2rem; opacity: 0.8;">
-            <i class="fa-solid fa-shield-halved"></i>
+    <header class="encabezado_nuevo">
+        <div class="contenedor_nav_superior">
+            <div class="logo_titulo">
+                <div class="icono_logo">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h1>Panel Administrativo</h1>
+            </div>
+            <nav class="navegacion_superior">
+                <span id="texto_bienvenida_usuario" style="color: var(--color_blue_200); font-weight: 600;">...</span>
+            </nav>
         </div>
     </header>
 
-    <main class="contenedor_principal">
-        <div class="toolbar_admin">
-            <div class="info_toolbar">
-                <h2>Gestión Global del Sistema</h2>
-                <p style="color: var(--color_texto_secundario); font-size: 0.95rem; margin: 0;">Administra altas, bajas y cambios en los exámenes ETS.</p>
-            </div>
-            <div class="acciones_toolbar">
-                <a href="crear_examen.html" class="btn_guardar boton_primario" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; width: auto; margin: 0;">
-                    <i class="fa-solid fa-plus"></i> Agregar Examen
-                </a>
-                <button id="btn_cerrar_sesion" class="btn_cancelar boton_primario" style="display: inline-flex; align-items: center; gap: 8px; width: auto; margin: 0;">
-                    <i class="fa-solid fa-right-from-bracket"></i> Salir
-                </button>
+    <main class="contenedor_principal_nuevo">
+        <div class="toolbar_admin_nuevo" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 4rem; margin-bottom: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+                <div class="info_toolbar">
+                    <h2 style="font-size: 1.875rem; font-weight: 800; color: var(--color_blue_950); margin-bottom: 0.25rem;">Gestión de Exámenes</h2>
+                    <p style="color: var(--color_slate_500); font-size: 1rem; margin: 0;">Administra altas, bajas y cambios en los horarios programados.</p>
+                </div>
+                <div class="acciones_toolbar" style="display: flex; gap: 0.75rem;">
+                    <a href="crear_examen.html" class="boton_exportar de_ics" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-plus"></i> Programar Examen
+                    </a>
+                    <button id="btn_cerrar_sesion" class="boton_exportar de_pdf" style="display: inline-flex; align-items: center; gap: 8px;">
+                        <i class="fa-solid fa-right-from-bracket"></i> Salir
+                    </button>
+                </div>
             </div>
         </div>
 

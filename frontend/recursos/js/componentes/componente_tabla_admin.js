@@ -20,23 +20,25 @@ export const componente_tabla_admin = {
             const horario_corto = `${h_manana}:00-${h_manana+2}:00 / ${h_tarde}:00-${h_tarde+2}:00`;
 
             filas_html += `
-                <tr>
-                    <td><span class="destacado_primario">${escaparHTML(examen.nombre_materia)}</span></td>
-                    <td>${escaparHTML(examen.nombre_carrera)}</td>
-                    <td style="text-align: center;">${escaparHTML(String(examen.semestre_materia))}°</td>
-                    <td>${fecha_corta}</td>
-                    <td style="white-space: nowrap;">
-                        <span class="destacado_secundario">${horario_corto}</span>
+                <tr class="fila_tabla_nueva">
+                    <td class="celda_principal_nueva">${escaparHTML(examen.nombre_materia)}</td>
+                    <td class="celda_secundaria_nueva">${escaparHTML(examen.nombre_carrera)}</td>
+                    <td class="celda_secundaria_nueva" style="text-align: center;">
+                        <span class="badge_semestre_nuevo">${escaparHTML(String(examen.semestre_materia))}°</span>
                     </td>
-                    <td class="destacado_primario">${escaparHTML(examen.nombre_salon)}</td>
-                    <td>${escaparHTML(examen.nombre_profesor)}</td>
-                    <td>
-                        <div class="acciones_fila">
-                            <button class="btn_icono_accion editar btn_editar_examen" data-id="${escaparHTML(String(examen.id))}" title="Editar Examen">
-                                <i class="fa-solid fa-pen-to-square"></i>
+                    <td class="celda_secundaria_nueva">${fecha_corta}</td>
+                    <td class="celda_secundaria_nueva">
+                        <span class="badge_horario_nuevo">${horario_corto}</span>
+                    </td>
+                    <td class="celda_secundaria_nueva">${escaparHTML(examen.nombre_salon)}</td>
+                    <td class="celda_secundaria_nueva">${escaparHTML(examen.nombre_profesor)}</td>
+                    <td class="celda_acciones_nueva">
+                        <div class="contenedor_acciones_nuevo">
+                            <button class="btn_accion_nuevo editar btn_editar_examen" data-id="${escaparHTML(String(examen.id))}" title="Editar">
+                                <i class="fa-solid fa-pen"></i>
                             </button>
-                            <button class="btn_icono_accion eliminar btn_eliminar_examen" data-id="${escaparHTML(String(examen.id))}" title="Eliminar Examen">
-                                <i class="fa-solid fa-trash"></i>
+                            <button class="btn_accion_nuevo eliminar btn_eliminar_examen" data-id="${escaparHTML(String(examen.id))}" title="Eliminar">
+                                <i class="fa-solid fa-trash-can"></i>
                             </button>
                         </div>
                     </td>
@@ -45,21 +47,21 @@ export const componente_tabla_admin = {
         });
 
         return `
-            <div class="contenedor_tabla_admin">
-                <table class="tabla_admin">
-                    <thead>
+            <div class="contenedor_tabla_nuevo">
+                <table class="tabla_nueva">
+                    <thead class="encabezado_tabla_nuevo">
                         <tr>
                             <th>Materia</th>
                             <th>Carrera</th>
-                            <th style="text-align: center;">Sem.</th>
+                            <th style="text-align: center;">Semestre</th>
                             <th>Fecha</th>
-                            <th>Horarios (M / V)</th>
-                            <th>Ubicación (Aula)</th>
+                            <th>Horarios</th>
+                            <th>Ubicación</th>
                             <th>Coordinador</th>
-                            <th style="text-align: center;">Acciones</th>
+                            <th style="text-align: right;">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="cuerpo_tabla_nuevo">
                         ${filas_html}
                     </tbody>
                 </table>
