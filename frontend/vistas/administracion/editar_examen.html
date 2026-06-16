@@ -42,7 +42,7 @@
                             <select id="select_carrera" class="control_formulario" required style="flex: 1;">
                                 <option value="0">Seleccione una carrera...</option>
                             </select>
-                            <button type="button" id="btn_agregar_carrera" class="boton_primario" title="Agregar Nueva Carrera" style="padding: 0 16px; border-radius: 6px; width: auto; flex-shrink: 0;"><i class="fa-solid fa-plus"></i></button>
+                            <button type="button" id="btn_agregar_carrera" class="boton_primario btn_adicion_rapida" title="Agregar Nueva Carrera"><i class="fa-solid fa-plus"></i></button>
                         </div>
                         <span class="mensaje_error_inline oculta_mensaje" id="error_carrera" role="alert" aria-live="assertive"></span>
                     </div>
@@ -53,7 +53,7 @@
                             <select id="select_materia" class="control_formulario" disabled required style="flex: 1;">
                                 <option value="0">Seleccione una materia...</option>
                             </select>
-                            <button type="button" id="btn_agregar_materia" class="boton_primario" title="Agregar Nueva Materia" style="padding: 0 16px; border-radius: 6px; width: auto; flex-shrink: 0;" disabled><i class="fa-solid fa-plus"></i></button>
+                            <button type="button" id="btn_agregar_materia" class="boton_primario btn_adicion_rapida" title="Agregar Nueva Materia" disabled><i class="fa-solid fa-plus"></i></button>
                         </div>
                         <span class="mensaje_error_inline oculta_mensaje" id="error_materia" role="alert" aria-live="assertive"></span>
                     </div>
@@ -95,13 +95,13 @@
                             <select id="select_profesor" class="control_formulario" required style="flex: 1;">
                                 <option value="0">Seleccione un profesor...</option>
                             </select>
-                            <button type="button" id="btn_agregar_profesor" class="boton_primario" title="Agregar Nuevo Profesor" style="padding: 0 16px; border-radius: 6px; width: auto; flex-shrink: 0;"><i class="fa-solid fa-plus"></i></button>
+                            <button type="button" id="btn_agregar_profesor" class="boton_primario btn_adicion_rapida" title="Agregar Nuevo Profesor"><i class="fa-solid fa-plus"></i></button>
                         </div>
                         <span class="mensaje_error_inline oculta_mensaje" id="error_profesor" role="alert" aria-live="assertive"></span>
                     </div>
 
-                    <div class="grupo_campo" style="display: flex; gap: 1rem;">
-                        <div style="flex: 1;">
+                    <div class="grupo_campo" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 200px;">
                             <label for="select_edificio">Edificio:</label>
                             <select id="select_edificio" class="control_formulario" required>
                                 <option value="">Seleccione...</option>
@@ -112,7 +112,7 @@
                             </select>
                             <span class="mensaje_error_inline oculta_mensaje" id="error_edificio" role="alert" aria-live="assertive"></span>
                         </div>
-                        <div style="flex: 1;">
+                        <div style="flex: 1; min-width: 200px;">
                             <label for="select_piso">Piso / Nivel:</label>
                             <select id="select_piso" class="control_formulario" disabled required>
                                 <option value="">Seleccione edificio...</option>
@@ -122,20 +122,20 @@
                             </select>
                             <span class="mensaje_error_inline oculta_mensaje" id="error_piso" role="alert" aria-live="assertive"></span>
                         </div>
-                        <div class="grupo_campo">
-                        <label for="select_salon_final">Aula / Laboratorio Final:</label>
-                        <select id="select_salon_final" class="control_formulario" disabled required>
-                            <option value="0">Seleccione edificio y piso...</option>
-                        </select>
-                        <span class="mensaje_error_inline oculta_mensaje" id="error_salon_final" role="alert" aria-live="assertive"></span>
-                    </div>
+                        <div style="flex: 1; min-width: 200px;">
+                            <label for="select_salon_final">Aula / Laboratorio Final:</label>
+                            <select id="select_salon_final" class="control_formulario" disabled required>
+                                <option value="0">Seleccione edificio y piso...</option>
+                            </select>
+                            <span class="mensaje_error_inline oculta_mensaje" id="error_salon_final" role="alert" aria-live="assertive"></span>
+                        </div>
                     </div>
 
                     <div class="acciones_formulario" style="display: flex; gap: 1rem; margin-top: 1rem;">
-                        <a href="dashboard.html" class="boton_exportar" style="text-align: center; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: auto; margin: 0;">
+                        <a href="dashboard.html" class="btn_formulario btn_secundario">
                             <i class="fa-solid fa-xmark"></i> Cancelar
                         </a>
-                        <button type="submit" class="boton_exportar" style="width: auto; margin: 0; background-color: var(--color_blue_900); color: white; border-color: var(--color_blue_900);">
+                        <button type="submit" class="btn_formulario btn_primario">
                             <i class="fa-solid fa-pen-to-square"></i> Actualizar Cambios
                         </button>
                     </div>

@@ -344,7 +344,6 @@ async function procesar_registro_examen(e) {
     const payload = {
         id_materia: parseInt(selector_materia.value),
         fecha_examen: input_fecha.value,
-        type: undefined,
         hora_manana: selector_hora_manana.value,
         hora_tarde: selector_hora_tarde.value,
         id_salon: parseInt(selector_salon_final.value),

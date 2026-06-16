@@ -1,4 +1,5 @@
 import { servicio_api } from '../servicios/servicio_api.js';
+import { escaparHTML } from '../utilidades/escape.js';
 
 let lista_carreras = [];
 
@@ -36,15 +37,15 @@ function renderizar_tabla_carreras(carreras) {
     }
     
     let html = `<table class="tabla_admin">
-        <thead><tr><th>ID</th><th>Nombre de Carrera</th><th style="text-align:center">Acciones</th></tr></thead>
+        <thead><tr><th>ID</th><th>Nombre de Carrera</th><th style="text-align:right">Acciones</th></tr></thead>
         <tbody>`;
     carreras.forEach(c => {
         html += `<tr>
             <td>${c.id}</td>
-            <td class="destacado_primario">${c.nombre_carrera}</td>
+            <td class="destacado_primario">${escaparHTML(c.nombre_carrera)}</td>
             <td class="acciones_fila">
-                <button class="btn_icono_accion editar" title="Editar Carrera" data-id="${c.id}" data-nombre="${c.nombre_carrera}" data-tipo="carrera"><i class="fa-solid fa-pen"></i></button>
-                <button class="btn_icono_accion eliminar" title="Eliminar Carrera" data-id="${c.id}" data-tipo="carrera"><i class="fa-solid fa-trash"></i></button>
+                <button class="btn_accion_nuevo editar" title="Editar Carrera" aria-label="Editar carrera ${escaparHTML(c.nombre_carrera)}" data-id="${c.id}" data-nombre="${escaparHTML(c.nombre_carrera)}" data-tipo="carrera"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn_accion_nuevo eliminar" title="Eliminar Carrera" aria-label="Eliminar carrera ${escaparHTML(c.nombre_carrera)}" data-id="${c.id}" data-tipo="carrera"><i class="fa-solid fa-trash"></i></button>
             </td>
         </tr>`;
     });
@@ -61,17 +62,17 @@ function renderizar_tabla_materias(materias) {
     }
     
     let html = `<table class="tabla_admin">
-        <thead><tr><th>ID</th><th>Nombre</th><th>Semestre</th><th>Carrera</th><th style="text-align:center">Acciones</th></tr></thead>
+        <thead><tr><th>ID</th><th>Nombre</th><th>Semestre</th><th>Carrera</th><th style="text-align:right">Acciones</th></tr></thead>
         <tbody>`;
     materias.forEach(m => {
         html += `<tr>
             <td>${m.id}</td>
-            <td class="destacado_primario">${m.nombre_materia}</td>
+            <td class="destacado_primario">${escaparHTML(m.nombre_materia)}</td>
             <td>${m.semestre_materia}</td>
-            <td class="destacado_secundario">${m.nombre_carrera}</td>
+            <td class="destacado_secundario">${escaparHTML(m.nombre_carrera)}</td>
             <td class="acciones_fila">
-                <button class="btn_icono_accion editar" title="Editar Materia" data-id="${m.id}" data-nombre="${m.nombre_materia}" data-semestre="${m.semestre_materia}" data-carrera="${m.id_carrera}" data-tipo="materia"><i class="fa-solid fa-pen"></i></button>
-                <button class="btn_icono_accion eliminar" title="Eliminar Materia" data-id="${m.id}" data-tipo="materia"><i class="fa-solid fa-trash"></i></button>
+                <button class="btn_accion_nuevo editar" title="Editar Materia" aria-label="Editar materia ${escaparHTML(m.nombre_materia)}" data-id="${m.id}" data-nombre="${escaparHTML(m.nombre_materia)}" data-semestre="${m.semestre_materia}" data-carrera="${m.id_carrera}" data-tipo="materia"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn_accion_nuevo eliminar" title="Eliminar Materia" aria-label="Eliminar materia ${escaparHTML(m.nombre_materia)}" data-id="${m.id}" data-tipo="materia"><i class="fa-solid fa-trash"></i></button>
             </td>
         </tr>`;
     });
@@ -88,15 +89,15 @@ function renderizar_tabla_profesores(profesores) {
     }
     
     let html = `<table class="tabla_admin">
-        <thead><tr><th>ID</th><th>Nombre</th><th style="text-align:center">Acciones</th></tr></thead>
+        <thead><tr><th>ID</th><th>Nombre</th><th style="text-align:right">Acciones</th></tr></thead>
         <tbody>`;
     profesores.forEach(p => {
         html += `<tr>
             <td>${p.id}</td>
-            <td class="destacado_primario">${p.nombre_profesor}</td>
+            <td class="destacado_primario">${escaparHTML(p.nombre_profesor)}</td>
             <td class="acciones_fila">
-                <button class="btn_icono_accion editar" title="Editar Profesor" data-id="${p.id}" data-nombre="${p.nombre_profesor}" data-tipo="profesor"><i class="fa-solid fa-pen"></i></button>
-                <button class="btn_icono_accion eliminar" title="Eliminar Profesor" data-id="${p.id}" data-tipo="profesor"><i class="fa-solid fa-trash"></i></button>
+                <button class="btn_accion_nuevo editar" title="Editar Profesor" aria-label="Editar profesor ${escaparHTML(p.nombre_profesor)}" data-id="${p.id}" data-nombre="${escaparHTML(p.nombre_profesor)}" data-tipo="profesor"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn_accion_nuevo eliminar" title="Eliminar Profesor" aria-label="Eliminar profesor ${escaparHTML(p.nombre_profesor)}" data-id="${p.id}" data-tipo="profesor"><i class="fa-solid fa-trash"></i></button>
             </td>
         </tr>`;
     });
@@ -106,10 +107,10 @@ function renderizar_tabla_profesores(profesores) {
 }
 
 function asignar_eventos() {
-    document.querySelectorAll('.btn_icono_accion.editar').forEach(btn => {
+    document.querySelectorAll('.btn_accion_nuevo.editar').forEach(btn => {
         btn.onclick = (e) => manejar_edicion(e.currentTarget);
     });
-    document.querySelectorAll('.btn_icono_accion.eliminar').forEach(btn => {
+    document.querySelectorAll('.btn_accion_nuevo.eliminar').forEach(btn => {
         btn.onclick = (e) => manejar_eliminacion(e.currentTarget);
     });
 }
@@ -136,9 +137,9 @@ async function manejar_edicion(btn) {
         const { value: formValues } = await Swal.fire({
             title: 'Editar Profesor',
             html: `
-                <label style="display:block;text-align:left;font-weight:bold;margin-top:10px;">Nombre:</label>
-                <input id="swal-in-nombre" class="swal2-input" value="${nombre_actual}">
-                <label style="display:block;text-align:left;font-weight:bold;margin-top:10px;">Nuevo Correo (requerido):</label>
+                <label for="swal-in-nombre" class="label_swal_admin">Nombre del Profesor:</label>
+                <input id="swal-in-nombre" type="text" class="swal2-input" value="${nombre_actual}">
+                <label for="swal-in-correo" class="label_swal_admin">Nuevo Correo Institucional (requerido):</label>
                 <input id="swal-in-correo" type="email" class="swal2-input" placeholder="correo@ipn.mx">
             `,
             focusConfirm: false,
@@ -159,9 +160,12 @@ async function manejar_edicion(btn) {
         const { value: formValues } = await Swal.fire({
             title: 'Editar Materia',
             html: `
-                <input id="swal-m-nombre" class="swal2-input" value="${btn.dataset.nombre}">
+                <label for="swal-m-nombre" class="label_swal_admin">Nombre de la Unidad de Aprendizaje:</label>
+                <input id="swal-m-nombre" type="text" class="swal2-input" value="${btn.dataset.nombre}">
+                <label for="swal-m-sem" class="label_swal_admin">Nivel / Semestre:</label>
                 <input id="swal-m-sem" type="number" class="swal2-input" value="${btn.dataset.semestre}" min="1" max="10">
-                <select id="swal-m-car" class="swal2-select" style="display:flex;width:100%;margin-top:10px;">${opcionesCarrera}</select>
+                <label for="swal-m-car" class="label_swal_admin">Programa Académico (Carrera):</label>
+                <select id="swal-m-car" class="swal2-select select_swal_admin">${opcionesCarrera}</select>
             `,
             focusConfirm: false,
             showCancelButton: true,
