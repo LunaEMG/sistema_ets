@@ -16,7 +16,7 @@ export const componente_tarjeta = {
         const horario_completo = `${calcularBloque(datos_examen.hora_manana)} y ${calcularBloque(datos_examen.hora_tarde)}`;
 
         return `
-            <div class="tarjeta_materia_ets_nueva">
+            <div class="tarjeta_materia_ets_nueva" onclick="this.classList.toggle('animacion_activa')">
                 <img src="recursos/imagenes/tiburon.svg" class="marca_agua_tiburon" alt="Tiburón ESCOM">
                 <!-- Header Tarjeta -->
                 <div class="tarjeta_encabezado_nuevo" style="position: relative; z-index: 1;">

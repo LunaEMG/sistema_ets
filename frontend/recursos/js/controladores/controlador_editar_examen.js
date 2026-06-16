@@ -12,6 +12,10 @@ const selector_hora_tarde = document.getElementById('select_hora_tarde');
 const selector_profesor = document.getElementById('select_profesor');
 const contenedor_mensaje = document.getElementById('mensaje_alerta');
 
+const btn_agregar_carrera = document.getElementById('btn_agregar_carrera');
+const btn_agregar_materia = document.getElementById('btn_agregar_materia');
+const btn_agregar_profesor = document.getElementById('btn_agregar_profesor');
+
 const selector_edificio = document.getElementById('select_edificio');
 const selector_piso = document.getElementById('select_piso');
 const selector_salon_final = document.getElementById('select_salon_final');
@@ -225,6 +229,132 @@ async function inicializar_edicion() {
             selector_salon_final.disabled = true;
         }
     });
+
+    if (btn_agregar_carrera) {
+        btn_agregar_carrera.addEventListener('click', async () => {
+            const { value: nombre_carrera } = await Swal.fire({
+                title: 'Nueva Carrera',
+                input: 'text',
+                inputLabel: 'Nombre de la Carrera',
+                inputPlaceholder: 'Ej. Ingeniería en Sistemas Computacionales',
+                showCancelButton: true,
+                confirmButtonText: 'Guardar',
+                cancelButtonText: 'Cancelar',
+                inputValidator: (value) => {
+                    if (!value) return '¡El nombre es obligatorio!'
+                }
+            });
+
+            if (nombre_carrera) {
+                const res = await servicio_api.crear_catalogo({ accion: 'carrera', nombre_carrera });
+                if (res.estado === 'exito') {
+                    selector_carrera.add(new Option(nombre_carrera, res.id));
+                    selector_carrera.value = res.id;
+                    selector_carrera.dispatchEvent(new Event('change'));
+                    Swal.fire('¡Éxito!', 'Carrera agregada correctamente.', 'success');
+                } else {
+                    Swal.fire('Error', res.mensaje, 'error');
+                }
+            }
+        });
+    }
+
+    selector_carrera.addEventListener('change', async (e) => {
+        const id_carrera = parseInt(e.target.value);
+        selector_materia.innerHTML = '<option value="0">Seleccione una materia...</option>';
+        selector_materia.disabled = true;
+
+        if (id_carrera > 0) {
+            const materias = await servicio_api.obtener_materias_por_carrera(id_carrera);
+            materias.forEach(m => {
+                selector_materia.add(new Option(`[Semestre ${m.semestre_materia}] - ${m.nombre_materia}`, m.id));
+            });
+            selector_materia.disabled = false;
+            if(btn_agregar_materia) btn_agregar_materia.disabled = false;
+        } else {
+            if(btn_agregar_materia) btn_agregar_materia.disabled = true;
+        }
+    });
+
+    if (btn_agregar_materia) {
+        btn_agregar_materia.addEventListener('click', async () => {
+            const id_carrera = selector_carrera.value;
+            if (!id_carrera || id_carrera == "0") {
+                Swal.fire('Atención', 'Seleccione una carrera primero.', 'warning');
+                return;
+            }
+
+            const { value: formValues } = await Swal.fire({
+                title: 'Nueva Materia',
+                html:
+                    '<input id="swal-input1" class="swal2-input" placeholder="Nombre de la Materia">' +
+                    '<input id="swal-input2" type="number" class="swal2-input" placeholder="Semestre (Ej. 5)" min="1" max="10">',
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonText: 'Guardar',
+                cancelButtonText: 'Cancelar',
+                preConfirm: () => {
+                    const nombre = document.getElementById('swal-input1').value;
+                    const semestre = document.getElementById('swal-input2').value;
+                    if(!nombre || !semestre) {
+                        Swal.showValidationMessage('Todos los campos son obligatorios');
+                        return false;
+                    }
+                    return [nombre, semestre]
+                }
+            });
+
+            if (formValues) {
+                const [nombre_materia, semestre_materia] = formValues;
+                const res = await servicio_api.crear_catalogo({ accion: 'materia', nombre_materia, semestre_materia, id_carrera });
+                if (res.estado === 'exito') {
+                    selector_materia.add(new Option(`[Semestre ${semestre_materia}] - ${nombre_materia}`, res.id));
+                    selector_materia.value = res.id;
+                    selector_materia.dispatchEvent(new Event('change'));
+                    Swal.fire('¡Éxito!', 'Materia agregada correctamente.', 'success');
+                } else {
+                    Swal.fire('Error', res.mensaje, 'error');
+                }
+            }
+        });
+    }
+
+    if (btn_agregar_profesor) {
+        btn_agregar_profesor.addEventListener('click', async () => {
+            const { value: formValues } = await Swal.fire({
+                title: 'Nuevo Profesor',
+                html:
+                    '<input id="swal-input-p1" class="swal2-input" placeholder="Nombre Completo">' +
+                    '<input id="swal-input-p2" type="email" class="swal2-input" placeholder="Correo Electrónico">',
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonText: 'Guardar',
+                cancelButtonText: 'Cancelar',
+                preConfirm: () => {
+                    const nombre = document.getElementById('swal-input-p1').value;
+                    const correo = document.getElementById('swal-input-p2').value;
+                    if(!nombre || !correo) {
+                        Swal.showValidationMessage('Todos los campos son obligatorios');
+                        return false;
+                    }
+                    return [nombre, correo]
+                }
+            });
+
+            if (formValues) {
+                const [nombre_profesor, correo_electronico] = formValues;
+                const res = await servicio_api.crear_catalogo({ accion: 'profesor', nombre_profesor, correo_electronico });
+                if (res.estado === 'exito') {
+                    selector_profesor.add(new Option(nombre_profesor, res.id));
+                    selector_profesor.value = res.id;
+                    selector_profesor.dispatchEvent(new Event('change'));
+                    Swal.fire('¡Éxito!', 'Profesor agregado correctamente.', 'success');
+                } else {
+                    Swal.fire('Error', res.mensaje, 'error');
+                }
+            }
+        });
+    }
 
     formulario.addEventListener('submit', enviar_actualizacion);
 }

@@ -41,12 +41,10 @@ switch ($accion) {
         }
         break;
 
-    default:
-        http_response_code(400);
-        echo json_encode([
-            "estado" => "error",
-            "mensaje" => "Accion no valida o no especificada."
-        ], JSON_UNESCAPED_UNICODE);
+    case 'todas_materias':
+        $resultado = $modelo_catalogo->obtener_todas_materias();
+        http_response_code(200);
+        echo json_encode(["estado" => "exito", "datos" => $resultado], JSON_UNESCAPED_UNICODE);
         break;
 
     case 'profesores':
@@ -59,5 +57,13 @@ switch ($accion) {
         $resultado = $modelo_catalogo->obtener_salones();
         http_response_code(200);
         echo json_encode(["estado" => "exito", "datos" => $resultado], JSON_UNESCAPED_UNICODE);
+        break;
+
+    default:
+        http_response_code(400);
+        echo json_encode([
+            "estado" => "error",
+            "mensaje" => "Accion no valida o no especificada."
+        ], JSON_UNESCAPED_UNICODE);
         break;
 }

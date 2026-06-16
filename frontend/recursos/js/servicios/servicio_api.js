@@ -3,9 +3,24 @@
  * Servicio Centralizado de API (Frontend) - VERSIÓN COMPLETA INTEGRADA
  */
 
-const URL_BASE = 'http://localhost:8080/api';
+const URL_BASE = `${window.location.origin}/api`;
 
 let token_csrf_actual = null;
+
+async function fetch_api(url, opciones = {}) {
+    const headers_combinados = {
+        'ngrok-skip-browser-warning': '69420',
+        ...(opciones.headers || {})
+    };
+    
+    const config = {
+        ...opciones,
+        headers: headers_combinados,
+        credentials: 'same-origin' 
+    };
+    
+    return fetch(url, config);
+}
 
 export const servicio_api = {
 
@@ -17,7 +32,7 @@ export const servicio_api = {
 
     async obtener_carreras() {
         try {
-            const respuesta = await fetch(`${URL_BASE}/catalogos/leer.php?accion=carreras`);
+            const respuesta = await fetch_api(`${URL_BASE}/catalogos/leer.php?accion=carreras`);
             if (!respuesta.ok) throw new Error(`HTTP error! status: ${respuesta.status}`);
             const datos = await respuesta.json();
             return datos.datos || [];
@@ -27,9 +42,21 @@ export const servicio_api = {
         }
     },
 
+    async obtener_todas_materias() {
+        try {
+            const respuesta = await fetch_api(`${URL_BASE}/catalogos/leer.php?accion=todas_materias`);
+            if (!respuesta.ok) throw new Error(`HTTP error! status: ${respuesta.status}`);
+            const datos = await respuesta.json();
+            return datos.datos || [];
+        } catch (error) {
+            console.error("error_servicio_api::obtener_todas_materias ->", error);
+            return [];
+        }
+    },
+
     async obtener_materias_por_carrera(id_carrera) {
         try {
-            const respuesta = await fetch(`${URL_BASE}/catalogos/leer.php?accion=materias&id_carrera=${parseInt(id_carrera)}`);
+            const respuesta = await fetch_api(`${URL_BASE}/catalogos/leer.php?accion=materias&id_carrera=${parseInt(id_carrera)}`);
             if (!respuesta.ok) throw new Error(`HTTP error! status: ${respuesta.status}`);
             const datos = await respuesta.json();
             return datos.datos || [];
@@ -41,7 +68,7 @@ export const servicio_api = {
 
     async obtener_salones() {
         try {
-            const respuesta = await fetch(`${URL_BASE}/catalogos/leer.php?accion=salones`);
+            const respuesta = await fetch_api(`${URL_BASE}/catalogos/leer.php?accion=salones`);
             if (!respuesta.ok) throw new Error(`HTTP error! status: ${respuesta.status}`);
             const datos = await respuesta.json();
             return datos.datos || [];
@@ -53,7 +80,7 @@ export const servicio_api = {
 
     async obtener_profesores() {
         try {
-            const respuesta = await fetch(`${URL_BASE}/catalogos/leer.php?accion=profesores`);
+            const respuesta = await fetch_api(`${URL_BASE}/catalogos/leer.php?accion=profesores`);
             if (!respuesta.ok) throw new Error(`HTTP error! status: ${respuesta.status}`);
             const datos = await respuesta.json();
             return datos.datos || [];
@@ -70,7 +97,7 @@ export const servicio_api = {
             const materia_id = parseInt(id_materia) || 0;
 
             const url_filtros = `${URL_BASE}/examenes/leer.php?id_carrera=${carrera_id}&semestre_materia=${semestre_num}&id_materia=${materia_id}`;
-            const respuesta = await fetch(url_filtros, { method: 'GET' });
+            const respuesta = await fetch_api(url_filtros, { method: 'GET' });
             if (!respuesta.ok) throw new Error(`HTTP error! status: ${respuesta.status}`);
             
             const datos = await respuesta.json();
@@ -89,7 +116,7 @@ export const servicio_api = {
 
     async iniciar_sesion(correo, contrasena) {
         try {
-            const respuesta = await fetch(`${URL_BASE}/autenticacion/iniciar_sesion.php`, {
+            const respuesta = await fetch_api(`${URL_BASE}/autenticacion/iniciar_sesion.php`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
@@ -110,7 +137,7 @@ export const servicio_api = {
 
     async verificar_sesion() {
         try {
-            const respuesta = await fetch(`${URL_BASE}/autenticacion/verificar_sesion.php`, {
+            const respuesta = await fetch_api(`${URL_BASE}/autenticacion/verificar_sesion.php`, {
                 method: 'GET'
             });
             if (!respuesta.ok) return { estado: 'no_autenticado' };
@@ -127,7 +154,7 @@ export const servicio_api = {
 
     async cerrar_sesion() {
         try {
-            const respuesta = await fetch(`${URL_BASE}/autenticacion/cerrar_sesion.php`, {
+            const respuesta = await fetch_api(`${URL_BASE}/autenticacion/cerrar_sesion.php`, {
                 method: 'GET'
             });
             if (!respuesta.ok) throw new Error(`HTTP error! status: ${respuesta.status}`);
@@ -147,7 +174,7 @@ export const servicio_api = {
 
     async obtener_estadisticas() {
         try {
-            const respuesta = await fetch(`${URL_BASE}/examenes/estadisticas.php`, {
+            const respuesta = await fetch_api(`${URL_BASE}/examenes/estadisticas.php`, {
                 method: 'GET'
             });
             if (!respuesta.ok) throw new Error(`HTTP error! status: ${respuesta.status}`);
@@ -161,7 +188,7 @@ export const servicio_api = {
 
     async crear_examen(datos_examen) {
         try {
-            const respuesta = await fetch(`${URL_BASE}/examenes/crear.php`, {
+            const respuesta = await fetch_api(`${URL_BASE}/examenes/crear.php`, {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
@@ -179,7 +206,7 @@ export const servicio_api = {
 
     async actualizar_examen(datos_examen) {
         try {
-            const respuesta = await fetch(`${URL_BASE}/examenes/actualizar.php`, {
+            const respuesta = await fetch_api(`${URL_BASE}/examenes/actualizar.php`, {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
@@ -197,7 +224,7 @@ export const servicio_api = {
 
     async eliminar_examen(id_examen) {
         try {
-            const respuesta = await fetch(`${URL_BASE}/examenes/eliminar.php`, {
+            const respuesta = await fetch_api(`${URL_BASE}/examenes/eliminar.php`, {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
@@ -210,6 +237,73 @@ export const servicio_api = {
         } catch (error) {
             console.error("error_servicio_api::eliminar_examen ->", error);
             return { estado: 'error', mensaje: 'Error al eliminar.' };
+        }
+    },
+
+    async crear_catalogo(datos) {
+        try {
+            const respuesta = await fetch_api(`${URL_BASE}/catalogos/crear.php`, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token_csrf_actual || ''
+                },
+                body: JSON.stringify(datos)
+            });
+            
+            if (!respuesta.ok) {
+                const err_datos = await respuesta.json().catch(() => null);
+                if (err_datos && err_datos.mensaje) return err_datos;
+                throw new Error(`HTTP error! status: ${respuesta.status}`);
+            }
+            return await respuesta.json();
+        } catch (error) {
+            console.error("error_servicio_api::crear_catalogo ->", error);
+            return { estado: 'error', mensaje: 'Error interno al crear elemento.' };
+        }
+    },
+
+    async actualizar_catalogo(datos) {
+        try {
+            const respuesta = await fetch_api(`${URL_BASE}/catalogos/actualizar.php`, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token_csrf_actual || ''
+                },
+                body: JSON.stringify(datos)
+            });
+            if (!respuesta.ok) {
+                const err_datos = await respuesta.json().catch(() => null);
+                if (err_datos && err_datos.mensaje) return err_datos;
+                throw new Error(`HTTP error! status: ${respuesta.status}`);
+            }
+            return await respuesta.json();
+        } catch (error) {
+            console.error("error_servicio_api::actualizar_catalogo ->", error);
+            return { estado: 'error', mensaje: 'Error interno al actualizar elemento.' };
+        }
+    },
+
+    async eliminar_catalogo(accion, id) {
+        try {
+            const respuesta = await fetch_api(`${URL_BASE}/catalogos/eliminar.php`, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token_csrf_actual || ''
+                },
+                body: JSON.stringify({ accion: accion, id: parseInt(id) })
+            });
+            if (!respuesta.ok) {
+                const err_datos = await respuesta.json().catch(() => null);
+                if (err_datos && err_datos.mensaje) return err_datos;
+                throw new Error(`HTTP error! status: ${respuesta.status}`);
+            }
+            return await respuesta.json();
+        } catch (error) {
+            console.error("error_servicio_api::eliminar_catalogo ->", error);
+            return { estado: 'error', mensaje: 'Error interno al intentar eliminar.' };
         }
     }
 };

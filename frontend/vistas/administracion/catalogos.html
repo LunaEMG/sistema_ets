@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogos - Panel Administrativo</title>
+    <link rel="icon" type="image/svg+xml" href="../../recursos/imagenes/tiburon.svg">
+    <link rel="stylesheet" href="../../recursos/css/estilos_busqueda.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Crete+Round:ital@0;1&family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .tabla_admin th, .tabla_admin td { text-align: left; }
+    </style>
+</head>
+<body>
+    <header class="encabezado_nuevo">
+        <div class="contenedor_nav_superior">
+            <div class="logo_titulo">
+                <div class="icono_logo">
+                    <i class="fa-solid fa-list-check"></i>
+                </div>
+                <h1>Gestión de Catálogos</h1>
+            </div>
+            <nav class="navegacion_superior">
+                <a href="dashboard.html" style="color: var(--color_blanco); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-arrow-left"></i> Volver al Dashboard
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="contenedor_principal_nuevo">
+        <div class="toolbar_admin_nuevo" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 4rem; margin-bottom: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+                <div class="info_toolbar">
+                    <h2 style="font-size: 1.875rem; font-weight: 800; color: var(--color_blue_950); margin-bottom: 0.25rem;">Catálogos del Sistema</h2>
+                    <p style="color: var(--color_slate_500); font-size: 1rem; margin: 0;">Administra profesores, carreras y materias.</p>
+                </div>
+            </div>
+        </div>
+
+        <section class="seccion_resultados">
+            <h2 class="titulo_seccion"><i class="fa-solid fa-graduation-cap"></i> Carreras</h2>
+            <div id="contenedor_tabla_carreras" style="background-color: #ffffff; padding: 1rem; border-radius: 8px; box-shadow: var(--sombra_suave); overflow-x: auto; margin-bottom: 2rem;">
+                <p class="mensaje_carga">Cargando carreras...</p>
+            </div>
+            
+            <h2 class="titulo_seccion"><i class="fa-solid fa-book-open"></i> Unidades de Aprendizaje (Materias)</h2>
+            <div id="contenedor_tabla_materias" style="background-color: #ffffff; padding: 1rem; border-radius: 8px; box-shadow: var(--sombra_suave); overflow-x: auto; margin-bottom: 2rem;">
+                <p class="mensaje_carga">Cargando materias...</p>
+            </div>
+
+            <h2 class="titulo_seccion"><i class="fa-solid fa-chalkboard-user"></i> Profesores</h2>
+            <div id="contenedor_tabla_profesores" style="background-color: #ffffff; padding: 1rem; border-radius: 8px; box-shadow: var(--sombra_suave); overflow-x: auto;">
+                <p class="mensaje_carga">Cargando profesores...</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="pie_pagina">
+        <p>&copy; 2026 - Panel Administrativo Protegido - ESCOM IPN</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module" src="../../recursos/js/controladores/controlador_catalogos.js"></script>
+</body>
+</html>

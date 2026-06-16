@@ -14,11 +14,16 @@
 
     <header class="encabezado_nuevo">
         <div class="contenedor_nav_superior">
-            <div class="logo_titulo">
-                <img src="recursos/imagenes/tiburon.svg" alt="Tiburón ESCOM" style="width: 4rem; height: 4rem; filter: brightness(0) invert(1); margin-right: 0.5rem;">
-                <h1>Escuela Superior de Cómputo</h1>
+            <div class="barra_superior_movil">
+                <div class="logo_titulo">
+                    <img src="recursos/imagenes/tiburon.svg" alt="Tiburón ESCOM" style="width: 3rem; height: 3rem; filter: brightness(0) invert(1); margin-right: 0.5rem;">
+                    <h1>Escuela Superior de Cómputo</h1>
+                </div>
+                <button id="btn_menu_movil" class="btn_menu_movil" aria-label="Alternar menú">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
             </div>
-            <nav class="navegacion_superior">
+            <nav class="navegacion_superior" id="navegacion_superior">
                 <a href="#">Inicio</a>
                 <a href="#" class="activo">Horarios de Exámenes</a>
                 <a href="login.html">Acceso Administrativo</a>

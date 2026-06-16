@@ -37,17 +37,23 @@
                     
                     <div class="grupo_campo">
                         <label for="select_carrera">Carrera:</label>
-                        <select id="select_carrera" class="control_formulario" required>
-                            <option value="0">Seleccione una carrera...</option>
-                        </select>
+                        <div style="display: flex; gap: 8px; width: 100%;">
+                            <select id="select_carrera" class="control_formulario" required style="flex: 1;">
+                                <option value="0">Seleccione una carrera...</option>
+                            </select>
+                            <button type="button" id="btn_agregar_carrera" class="boton_primario" title="Agregar Nueva Carrera" style="padding: 0 16px; border-radius: 6px; width: auto; flex-shrink: 0;"><i class="fa-solid fa-plus"></i></button>
+                        </div>
                         <span class="mensaje_error_inline oculta_mensaje" id="error_carrera" role="alert" aria-live="assertive"></span>
                     </div>
 
                     <div class="grupo_campo">
                         <label for="select_materia">Unidad de Aprendizaje (Materia):</label>
-                        <select id="select_materia" class="control_formulario" disabled required>
-                            <option value="0">Seleccione primero una carrera...</option>
-                        </select>
+                        <div style="display: flex; gap: 8px; width: 100%;">
+                            <select id="select_materia" class="control_formulario" disabled required style="flex: 1;">
+                                <option value="0">Seleccione primero una carrera...</option>
+                            </select>
+                            <button type="button" id="btn_agregar_materia" class="boton_primario" title="Agregar Nueva Materia" style="padding: 0 16px; border-radius: 6px; width: auto; flex-shrink: 0;" disabled><i class="fa-solid fa-plus"></i></button>
+                        </div>
                         <span class="mensaje_error_inline oculta_mensaje" id="error_materia" role="alert" aria-live="assertive"></span>
                     </div>
 
@@ -84,9 +90,12 @@
 
                     <div class="grupo_campo">
                         <label for="select_profesor">Profesor Coordinador:</label>
-                        <select id="select_profesor" class="control_formulario" required>
-                            <option value="0">Seleccione un profesor...</option>
-                        </select>
+                        <div style="display: flex; gap: 8px; width: 100%;">
+                            <select id="select_profesor" class="control_formulario" required style="flex: 1;">
+                                <option value="0">Seleccione un profesor...</option>
+                            </select>
+                            <button type="button" id="btn_agregar_profesor" class="boton_primario" title="Agregar Nuevo Profesor" style="padding: 0 16px; border-radius: 6px; width: auto; flex-shrink: 0;"><i class="fa-solid fa-plus"></i></button>
+                        </div>
                         <span class="mensaje_error_inline oculta_mensaje" id="error_profesor" role="alert" aria-live="assertive"></span>
                     </div>
 

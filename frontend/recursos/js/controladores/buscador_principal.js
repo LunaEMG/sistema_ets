@@ -17,6 +17,14 @@ const input_buscador_texto = document.getElementById('input_buscador_texto');
 let coleccion_examenes_actuales = [];
 
 async function inicializar_buscador() {
+    const btn_menu_movil = document.getElementById('btn_menu_movil');
+    const navegacion_superior = document.getElementById('navegacion_superior');
+    if (btn_menu_movil && navegacion_superior) {
+        btn_menu_movil.addEventListener('click', () => {
+            navegacion_superior.classList.toggle('mostrar_menu');
+        });
+    }
+
     const lista_carreras = await servicio_api.obtener_carreras();
     
     lista_carreras.forEach(carrera => {
