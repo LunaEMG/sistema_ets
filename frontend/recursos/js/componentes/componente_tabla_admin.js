@@ -4,14 +4,18 @@ import { escaparHTML } from '../utilidades/escape.js';
  * Componente funcional para estructurar la tabla de gestión de exámenes en el panel.
  */
 export const componente_tabla_admin = {
-    crear_tabla(lista_examenes) {
+    crear_tabla(lista_examenes, pagina_actual = 1, items_por_pagina = 10) {
         if (lista_examenes.length === 0) {
             return '<p class="mensaje_alerta">No hay exámenes registrados en este momento.</p>';
         }
 
+        const total_paginas = Math.ceil(lista_examenes.length / items_por_pagina);
+        const inicio = (pagina_actual - 1) * items_por_pagina;
+        const examenes_pagina = lista_examenes.slice(inicio, inicio + items_por_pagina);
+
         let filas_html = '';
 
-        lista_examenes.forEach(examen => {
+        examenes_pagina.forEach(examen => {
             const opciones_fecha = { year: 'numeric', month: '2-digit', day: '2-digit' };
             const fecha_corta = new Date(examen.fecha_examen + 'T00:00:00').toLocaleDateString('es-MX', opciones_fecha);
 
@@ -34,17 +38,34 @@ export const componente_tabla_admin = {
                     <td class="celda_secundaria_nueva">${escaparHTML(examen.nombre_profesor)}</td>
                     <td class="celda_acciones_nueva">
                         <div class="contenedor_acciones_nuevo">
-                            <button class="btn_accion_nuevo editar btn_editar_examen" data-id="${escaparHTML(String(examen.id))}" title="Editar">
-                                <i class="fa-solid fa-pen"></i>
+                            <button class="btn_accion_nuevo editar btn_editar_examen" data-id="${escaparHTML(String(examen.id))}" title="Editar" aria-label="Editar examen de ${escaparHTML(examen.nombre_materia)}">
+                                <i class="fa-solid fa-pen" aria-hidden="true"></i>
                             </button>
-                            <button class="btn_accion_nuevo eliminar btn_eliminar_examen" data-id="${escaparHTML(String(examen.id))}" title="Eliminar">
-                                <i class="fa-solid fa-trash-can"></i>
+                            <button class="btn_accion_nuevo eliminar btn_eliminar_examen" data-id="${escaparHTML(String(examen.id))}" title="Eliminar" aria-label="Eliminar examen de ${escaparHTML(examen.nombre_materia)}">
+                                <i class="fa-solid fa-trash" aria-hidden="true"></i>
                             </button>
                         </div>
                     </td>
                 </tr>
             `;
         });
+
+        let paginacion_html = '';
+        if (total_paginas > 1) {
+            paginacion_html += '<div class="paginacion_admin">';
+            paginacion_html += `<button class="btn_pagina btn_nav_pagina" data-pagina="${pagina_actual - 1}" ${pagina_actual === 1 ? 'disabled' : ''} aria-label="Página anterior"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>`;
+            
+            for(let i = 1; i <= total_paginas; i++) {
+                if (i === 1 || i === total_paginas || (i >= pagina_actual - 1 && i <= pagina_actual + 1)) {
+                    paginacion_html += `<button class="btn_pagina btn_nav_pagina ${i === pagina_actual ? 'activa' : ''}" data-pagina="${i}" ${i === pagina_actual ? 'aria-current="page"' : ''} aria-label="Ir a página ${i}">${i}</button>`;
+                } else if (i === pagina_actual - 2 || i === pagina_actual + 2) {
+                    paginacion_html += `<span style="padding: 0.5rem; color: var(--color_texto_secundario);">...</span>`;
+                }
+            }
+            
+            paginacion_html += `<button class="btn_pagina btn_nav_pagina" data-pagina="${pagina_actual + 1}" ${pagina_actual === total_paginas ? 'disabled' : ''} aria-label="Página siguiente"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>`;
+            paginacion_html += '</div>';
+        }
 
         return `
             <div class="contenedor_tabla_nuevo">
@@ -66,6 +87,7 @@ export const componente_tabla_admin = {
                     </tbody>
                 </table>
             </div>
+            ${paginacion_html}
         `;
     }
 };

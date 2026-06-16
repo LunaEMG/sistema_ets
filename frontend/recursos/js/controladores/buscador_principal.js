@@ -12,6 +12,7 @@ const contenedor_resultados = document.getElementById('contenedor_bloques_examen
 const boton_buscar = document.getElementById('btn_buscar');
 const boton_exportar_pdf = document.getElementById('btn_exportar_pdf');
 const boton_exportar_ics = document.getElementById('btn_exportar_ics');
+const input_buscador_texto = document.getElementById('input_buscador_texto');
 
 let coleccion_examenes_actuales = [];
 
@@ -44,7 +45,22 @@ async function inicializar_buscador() {
 
     boton_buscar.addEventListener('click', ejecutar_busqueda_examenes);
     boton_exportar_pdf.addEventListener('click', () => exportador_calendario.exportar_a_pdf());
-    boton_exportar_ics.addEventListener('click', () => exportador_calendario.exportar_a_ics(coleccion_examenes_actuales));
+    boton_exportar_ics.addEventListener('click', () => {
+        exportador_calendario.exportar_a_ics(coleccion_examenes_actuales);
+        const original = boton_exportar_ics.innerHTML;
+        boton_exportar_ics.innerHTML = '<i class="fa-solid fa-check" style="color: #27ae60;"></i> ¡Descargado!';
+        setTimeout(() => { boton_exportar_ics.innerHTML = original; }, 3000);
+    });
+    
+    if (input_buscador_texto) {
+        let temporizador_debounce;
+        input_buscador_texto.addEventListener('input', () => {
+            clearTimeout(temporizador_debounce);
+            temporizador_debounce = setTimeout(() => {
+                filtrar_por_texto();
+            }, 300);
+        });
+    }
     
     ejecutar_busqueda_examenes();
 }
@@ -58,22 +74,31 @@ async function ejecutar_busqueda_examenes() {
     `;
     
     boton_exportar_pdf.disabled = true;
-    boton_exportar_ics.disabled = true;
+    const contenido_btn_original = boton_buscar.innerHTML;
+    boton_buscar.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+    boton_buscar.disabled = true;
+    selector_carrera.disabled = true;
+    selector_semestre.disabled = true;
+    selector_materia.disabled = true;
+    if (input_buscador_texto) input_buscador_texto.disabled = true;
 
     const carrera = selector_carrera.value;
     const semestre = selector_semestre.value;
     const materia = selector_materia.value;
 
-    coleccion_examenes_actuales = await servicio_api.buscar_examenes(carrera, semestre, materia);
-    contenedor_resultados.innerHTML = '';
+    try {
+        coleccion_examenes_actuales = await servicio_api.buscar_examenes(carrera, semestre, materia);
+    } finally {
+        boton_buscar.innerHTML = contenido_btn_original;
+        boton_buscar.disabled = false;
+        selector_carrera.disabled = false;
+        selector_semestre.disabled = false;
+        if (selector_carrera.value > 0) selector_materia.disabled = false;
+        if (input_buscador_texto) input_buscador_texto.disabled = false;
+    }
 
     if (coleccion_examenes_actuales.length === 0) {
-        contenedor_resultados.innerHTML = `
-            <div class="mensaje_alerta">
-                <i class="fa-solid fa-folder-open" style="font-size: 3rem; color: #ced4da; margin-bottom: 10px;"></i>
-                <p>No se encontraron exámenes programados con los filtros seleccionados.</p>
-            </div>
-        `;
+        renderizar_examenes([]);
         Swal.fire({
             icon: 'info',
             title: 'Búsqueda sin resultados',
@@ -83,13 +108,62 @@ async function ejecutar_busqueda_examenes() {
         return;
     }
 
-    coleccion_examenes_actuales.forEach(examen => {
-        const html_tarjeta = componente_tarjeta.crear_bloque_examen(examen);
-        contenedor_resultados.innerHTML += html_tarjeta;
-    });
+    filtrar_por_texto();
 
     boton_exportar_pdf.disabled = false;
     boton_exportar_ics.disabled = false;
+}
+
+function normalizar_texto(texto) {
+    if (!texto) return '';
+    return texto.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+function filtrar_por_texto() {
+    const texto_busqueda = normalizar_texto(input_buscador_texto.value);
+    
+    if (texto_busqueda === '') {
+        renderizar_examenes(coleccion_examenes_actuales);
+        return;
+    }
+
+    const lista_filtrada = coleccion_examenes_actuales.filter(examen => {
+        const mat = normalizar_texto(examen.nombre_materia);
+        const prof = normalizar_texto(examen.nombre_profesor);
+        const car = normalizar_texto(examen.nombre_carrera);
+        const id = normalizar_texto(examen.id);
+        
+        return mat.includes(texto_busqueda) || 
+               prof.includes(texto_busqueda) || 
+               car.includes(texto_busqueda) || 
+               id.includes(texto_busqueda);
+    });
+
+    renderizar_examenes(lista_filtrada);
+}
+
+function renderizar_examenes(lista_examenes) {
+    contenedor_resultados.innerHTML = '';
+
+    if (lista_examenes.length === 0) {
+        contenedor_resultados.innerHTML = `
+            <div class="mensaje_alerta">
+                <i class="fa-solid fa-folder-open" style="font-size: 3rem; color: var(--color_gris_borde_fuerte); margin-bottom: 10px;"></i>
+                <p style="font-weight: 600;">No se encontraron exámenes con tu búsqueda de texto.</p>
+                <p style="font-size: 0.9rem; color: var(--color_texto_secundario); margin-top: 5px;">Revisa si la materia pertenece a otro semestre o limpia los filtros.</p>
+                <button onclick="document.getElementById('input_buscador_texto').value=''; document.getElementById('input_buscador_texto').dispatchEvent(new Event('input'))" class="boton_primario" style="margin-top: 1rem; padding: 0.5rem 1rem; font-size: 0.9rem;">
+                    <i class="fa-solid fa-broom"></i> Limpiar Búsqueda
+                </button>
+            </div>
+        `;
+        return;
+    }
+
+    let html_acumulado = '';
+    lista_examenes.forEach(examen => {
+        html_acumulado += componente_tarjeta.crear_bloque_examen(examen);
+    });
+    contenedor_resultados.innerHTML = html_acumulado;
 }
 
 document.addEventListener('DOMContentLoaded', inicializar_buscador);

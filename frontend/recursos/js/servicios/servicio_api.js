@@ -97,7 +97,6 @@ export const servicio_api = {
                     contrasena_recibida: contrasena 
                 })
             });
-            if (!respuesta.ok) throw new Error(`HTTP error! status: ${respuesta.status}`);
             const datos = await respuesta.json();
             if (datos.estado === 'exito' && datos.token_csrf) {
                 token_csrf_actual = datos.token_csrf;

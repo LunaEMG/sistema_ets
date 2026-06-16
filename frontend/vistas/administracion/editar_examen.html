@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
+    <a href="#main_content" class="skip_link">Saltar al formulario de edición</a>
 
     <header class="encabezado_nuevo">
         <div class="contenedor_nav_superior">
@@ -26,7 +27,7 @@
         </div>
     </header>
 
-    <main class="contenedor_principal_nuevo" style="padding-top: 3rem;">
+    <main id="main_content" class="contenedor_principal_nuevo" style="padding-top: 3rem;">
         <section class="tarjeta_formulario">
             <h2 class="titulo_seccion" style="text-align: center; color: var(--color_azul_oscuro); border-bottom: none; margin-bottom: 2rem;">Editar Datos del Examen</h2>
 
@@ -40,6 +41,7 @@
                         <select id="select_carrera" class="control_formulario" required>
                             <option value="0">Seleccione una carrera...</option>
                         </select>
+                        <span class="mensaje_error_inline oculta_mensaje" id="error_carrera" role="alert" aria-live="assertive"></span>
                     </div>
 
                     <div class="grupo_campo">
@@ -47,11 +49,13 @@
                         <select id="select_materia" class="control_formulario" disabled required>
                             <option value="0">Seleccione una materia...</option>
                         </select>
+                        <span class="mensaje_error_inline oculta_mensaje" id="error_materia" role="alert" aria-live="assertive"></span>
                     </div>
 
                     <div class="grupo_campo">
                         <label for="input_fecha">Fecha de Aplicación:</label>
                         <input type="text" id="input_fecha" class="control_formulario" placeholder="DD/MM/AAAA" required>
+                        <span class="mensaje_error_inline oculta_mensaje" id="error_fecha" role="alert" aria-live="assertive"></span>
                     </div>
 
                     <div class="grupo_campo" style="display: flex; gap: 1rem;">
@@ -64,6 +68,7 @@
                                 <option value="11:00:00">11:00 hrs</option>
                                 <option value="12:00:00">12:00 hrs</option>
                             </select>
+                            <span class="mensaje_error_inline oculta_mensaje" id="error_hora_manana" role="alert" aria-live="assertive"></span>
                         </div>
                         <div style="flex: 1;">
                             <label for="select_hora_tarde">Horario Tarde (Inicio):</label>
@@ -74,6 +79,7 @@
                                 <option value="16:00:00">16:00 hrs</option>
                                 <option value="17:00:00">17:00 hrs</option>
                             </select>
+                            <span class="mensaje_error_inline oculta_mensaje" id="error_hora_tarde" role="alert" aria-live="assertive"></span>
                         </div>
                     </div>
 
@@ -82,6 +88,7 @@
                         <select id="select_profesor" class="control_formulario" required>
                             <option value="0">Seleccione un profesor...</option>
                         </select>
+                        <span class="mensaje_error_inline oculta_mensaje" id="error_profesor" role="alert" aria-live="assertive"></span>
                     </div>
 
                     <div class="grupo_campo" style="display: flex; gap: 1rem;">
@@ -94,22 +101,25 @@
                                 <option value="3">Edificio 3</option>
                                 <option value="4">Edificio 4</option>
                             </select>
+                            <span class="mensaje_error_inline oculta_mensaje" id="error_edificio" role="alert" aria-live="assertive"></span>
                         </div>
                         <div style="flex: 1;">
                             <label for="select_piso">Piso / Nivel:</label>
                             <select id="select_piso" class="control_formulario" disabled required>
                                 <option value="">Seleccione edificio...</option>
-                                <option value="0">Planta Baja (0)</option>
-                                <option value="1">Primer Piso (1)</option>
-                                <option value="2">Segundo Piso (2)</option>
+                                <option value="0">Planta Baja</option>
+                                <option value="1">Primer Piso</option>
+                                <option value="2">Segundo Piso</option>
                             </select>
+                            <span class="mensaje_error_inline oculta_mensaje" id="error_piso" role="alert" aria-live="assertive"></span>
                         </div>
-                        <div style="flex: 1;">
-                            <label for="select_salon_final">Aula / Laboratorio:</label>
-                            <select id="select_salon_final" class="control_formulario" disabled required>
-                                <option value="">Seleccione piso...</option>
-                            </select>
-                        </div>
+                        <div class="grupo_campo">
+                        <label for="select_salon_final">Aula / Laboratorio Final:</label>
+                        <select id="select_salon_final" class="control_formulario" disabled required>
+                            <option value="0">Seleccione edificio y piso...</option>
+                        </select>
+                        <span class="mensaje_error_inline oculta_mensaje" id="error_salon_final" role="alert" aria-live="assertive"></span>
+                    </div>
                     </div>
 
                     <div class="acciones_formulario" style="display: flex; gap: 1rem; margin-top: 1rem;">

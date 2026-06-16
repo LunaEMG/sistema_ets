@@ -21,6 +21,51 @@ const id_examen_global = parseInt(parametros_url.get('id')) || 0;
 
 let lista_salones_global = [];
 
+const error_carrera = document.getElementById('error_carrera');
+const error_materia = document.getElementById('error_materia');
+const error_fecha = document.getElementById('error_fecha');
+const error_hora_manana = document.getElementById('error_hora_manana');
+const error_hora_tarde = document.getElementById('error_hora_tarde');
+const error_profesor = document.getElementById('error_profesor');
+const error_edificio = document.getElementById('error_edificio');
+const error_piso = document.getElementById('error_piso');
+const error_salon_final = document.getElementById('error_salon_final');
+
+let estado_formulario_modificado = false;
+
+function marcar_modificado() {
+    estado_formulario_modificado = true;
+}
+
+function mostrar_error_inline(input, span_error, mensaje) {
+    span_error.textContent = mensaje;
+    span_error.classList.remove('oculta_mensaje');
+    input.classList.add('input_invalido');
+}
+
+function limpiar_error_inline(input, span_error) {
+    span_error.classList.add('oculta_mensaje');
+    input.classList.remove('input_invalido');
+}
+
+function validar_select(input, span_error, valor_invalido = ["0", ""]) {
+    if (valor_invalido.includes(input.value)) {
+        mostrar_error_inline(input, span_error, 'Por favor, seleccione una opción válida.');
+        return false;
+    }
+    limpiar_error_inline(input, span_error);
+    return true;
+}
+
+function validar_texto(input, span_error) {
+    if (input.value.trim() === '') {
+        mostrar_error_inline(input, span_error, 'Este campo es obligatorio.');
+        return false;
+    }
+    limpiar_error_inline(input, span_error);
+    return true;
+}
+
 async function inicializar_edicion() {
     const comprobacion = await servicio_api.verificar_sesion();
     if (comprobacion.estado !== 'autenticado' || id_examen_global === 0) {
@@ -37,6 +82,37 @@ async function inicializar_edicion() {
         ]);
 
         lista_salones_global = salones;
+
+        window.addEventListener('beforeunload', (e) => {
+            if (estado_formulario_modificado) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+
+        const enlace_volver = document.querySelector('a[href="dashboard.html"]');
+        if (enlace_volver) {
+            enlace_volver.addEventListener('click', (e) => {
+                if (estado_formulario_modificado) {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: '¿Salir sin guardar?',
+                        text: "Tienes cambios no guardados que se perderán.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#e74c3c',
+                        cancelButtonColor: '#95a5a6',
+                        confirmButtonText: 'Sí, salir',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            estado_formulario_modificado = false;
+                            window.location.href = 'dashboard.html';
+                        }
+                    });
+                }
+            });
+        }
 
         const datos_examen = lista_examenes.find(e => Number(e.id) === Number(id_examen_global));
         if (!datos_examen) {
@@ -90,7 +166,14 @@ async function inicializar_edicion() {
                 altFormat: "d/m/Y",
                 allowInput: true,
                 locale: "es",
-                defaultDate: datos_examen.fecha_examen
+                defaultDate: datos_examen.fecha_examen,
+                onChange: () => {
+                    marcar_modificado();
+                    validar_texto(input_fecha, error_fecha);
+                }
+            });
+            input_fecha.addEventListener('blur', () => {
+                validar_texto(input_fecha, error_fecha);
             });
         }
         selector_hora_manana.value = datos_examen.hora_manana;
@@ -102,6 +185,15 @@ async function inicializar_edicion() {
     } catch (error) {
         console.error("Error al inicializar edicion:", error);
     }
+
+    [selector_carrera, selector_materia, selector_hora_manana, selector_hora_tarde, selector_profesor, selector_edificio, selector_piso, selector_salon_final].forEach(select => {
+        if(select) {
+            select.addEventListener('change', () => {
+                marcar_modificado();
+                validar_select(select, document.getElementById(`error_${select.id.replace('select_','')}`));
+            });
+        }
+    });
 
     selector_edificio.addEventListener('change', () => {
         if (selector_edificio.value !== "") {
@@ -139,6 +231,22 @@ async function inicializar_edicion() {
 
 async function enviar_actualizacion(e) {
     e.preventDefault();
+
+    const v1 = validar_select(selector_carrera, error_carrera);
+    const v2 = validar_select(selector_materia, error_materia);
+    const v3 = validar_texto(input_fecha, error_fecha);
+    const v4 = validar_select(selector_hora_manana, error_hora_manana);
+    const v5 = validar_select(selector_hora_tarde, error_hora_tarde);
+    const v6 = validar_select(selector_profesor, error_profesor);
+    const v7 = validar_select(selector_edificio, error_edificio);
+    const v8 = validar_select(selector_piso, error_piso);
+    const v9 = validar_select(selector_salon_final, error_salon_final);
+
+    if (!(v1 && v2 && v3 && v4 && v5 && v6 && v7 && v8 && v9)) {
+        const primer_error = formulario.querySelector('.input_invalido');
+        if (primer_error) primer_error.focus();
+        return;
+    }
     
     const payload = {
         id_examen: id_examen_global,
@@ -150,13 +258,18 @@ async function enviar_actualizacion(e) {
         id_profesor: parseInt(selector_profesor.value)
     };
 
-    if (payload.id_materia === 0 || !payload.fecha_examen || payload.id_salon === 0 || payload.id_profesor === 0) {
-        Swal.fire('Atención', 'Todos los campos son obligatorios.', 'warning');
-        return;
-    }
+    const boton_enviar = formulario.querySelector('button[type="submit"]');
+    const texto_original = boton_enviar.innerHTML;
+    boton_enviar.disabled = true;
+    boton_enviar.innerHTML = 'Actualizando... <i class="fa-solid fa-spinner fa-spin"></i>';
 
     const respuesta = await servicio_api.actualizar_examen(payload);
+    
+    boton_enviar.disabled = false;
+    boton_enviar.innerHTML = texto_original;
+
     if (respuesta.estado === 'exito') {
+        estado_formulario_modificado = false; 
         Swal.fire({
             icon: 'success',
             title: '¡Actualizado!',
@@ -164,7 +277,7 @@ async function enviar_actualizacion(e) {
             showConfirmButton: false,
             timer: 2000
         }).then(() => {
-            window.location.href = 'dashboard.html';
+            window.location.replace('dashboard.html');
         });
     } else {
         Swal.fire('Error', respuesta.mensaje, 'error');

@@ -10,41 +10,45 @@
     <link href="https://fonts.googleapis.com/css2?family=Crete+Round:ital@0;1&family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+    <a href="#formulario_login" class="skip_link">Saltar al formulario de inicio de sesión</a>
 
     <main class="contenedor_login">
         <section class="tarjeta_login">
             <div class="login_encabezado">
-                <i class="fa-solid fa-shield-halved logo_login"></i>
+                <i class="fa-solid fa-shield-halved logo_login" aria-hidden="true"></i>
                 <h2>Panel Administrativo</h2>
                 <p>Ingrese sus credenciales de acceso oficial</p>
             </div>
-
-            <div id="contenedor_mensaje_error" class="alerta_error oculta_mensaje"></div>
 
             <form id="formulario_login" novalidate>
                 <div class="grupo_campo">
                     <label for="input_correo">Correo Electrónico:</label>
                     <div class="contenedor_input">
-                        <input type="email" id="input_correo" class="control_formulario" placeholder="usuario@escom.ipn.mx" required>
-                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" id="input_correo" class="control_formulario" placeholder="usuario@escom.ipn.mx" required autocomplete="email" aria-describedby="error_correo">
+                        <i class="fa-solid fa-envelope icono_input_izq" aria-hidden="true"></i>
                     </div>
+                    <span class="mensaje_error_inline oculta_mensaje" id="error_correo" role="alert" aria-live="assertive"></span>
                 </div>
 
                 <div class="grupo_campo">
                     <label for="input_contrasena">Contraseña:</label>
                     <div class="contenedor_input">
-                        <input type="password" id="input_contrasena" class="control_formulario" placeholder="••••••••" required>
-                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" id="input_contrasena" class="control_formulario" placeholder="••••••••" required autocomplete="current-password" aria-describedby="error_contrasena">
+                        <i class="fa-solid fa-lock icono_input_izq" aria-hidden="true"></i>
+                        <i class="fa-solid fa-eye icono_toggle_password" id="toggle_contrasena" title="Mostrar/Ocultar contraseña" role="button" aria-label="Alternar visibilidad de contraseña" tabindex="0"></i>
                     </div>
+                    <span class="mensaje_error_inline oculta_mensaje" id="error_contrasena" role="alert" aria-live="assertive"></span>
                 </div>
 
                 <button type="submit" id="btn_entrar" class="boton_primario">
-                    Iniciar Sesión <i class="fa-solid fa-arrow-right-to-bracket" style="margin-left: 8px;"></i>
+                    Iniciar Sesión <i class="fa-solid fa-arrow-right-to-bracket" style="margin-left: 8px;" aria-hidden="true"></i>
                 </button>
             </form>
 
             <div class="login_pie">
-                <a href="index.html" class="enlace_regresar"><i class="fa-solid fa-arrow-left"></i> Volver al buscador público</a>
+                <a href="index.html" class="enlace_regresar" aria-label="Volver a la vista pública del buscador">
+                    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Volver al buscador público
+                </a>
             </div>
         </section>
     </main>

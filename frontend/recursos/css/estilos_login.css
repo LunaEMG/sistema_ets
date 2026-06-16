@@ -13,7 +13,24 @@
     --color_rojo_alerta: #e74c3c;
     --sombra_fuerte: 0 20px 40px rgba(0, 0, 0, 0.15);
     --sombra_suave: 0 10px 20px rgba(0, 0, 0, 0.05);
+
+    /* Nuevos Tokens Semánticos */
+    --color_fondo_tarjeta: rgba(255, 255, 255, 0.95);
+    --color_borde_tarjeta: rgba(255, 255, 255, 0.5);
+    --color_texto_secundario: #7f8c8d;
+    --color_texto_etiqueta: #34495e;
+    --color_fondo_input: #f8fafc;
+    --color_borde_input: #e2e8f0;
+    --color_placeholder: #cbd5e1;
+    --color_icono: #95a5a6;
+    --color_superficie_error: #fdf2f2;
+    --color_borde_divisor: #e2e8f0;
+    --color_boton_disabled: #bdc3c7;
+    --sombra_focus: rgba(0, 98, 147, 0.1);
+    --sombra_focus_error: rgba(231, 76, 60, 0.1);
 }
+
+
 
 * {
     box-sizing: border-box;
@@ -23,7 +40,7 @@
 
 body {
     font-family: 'Lato', sans-serif;
-    background: linear-gradient(135deg, var(--color_gris_fondo) 0%, #e2e8f0 100%);
+    background: linear-gradient(135deg, var(--color_gris_fondo) 0%, var(--color_borde_input) 100%);
     background-image: radial-gradient(circle at top right, rgba(0, 98, 147, 0.08) 0%, transparent 40%),
                       radial-gradient(circle at bottom left, rgba(52, 152, 219, 0.08) 0%, transparent 40%);
     color: var(--color_texto_principal);
@@ -38,6 +55,28 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Raleway', sans-serif;
 }
 
+/* Enlace de salto para accesibilidad (Skip Link) */
+.skip_link {
+    position: absolute;
+    top: -50px;
+    left: 0;
+    background: var(--color_azul_oscuro);
+    color: var(--color_blanco);
+    padding: 12px 24px;
+    z-index: 9999;
+    transition: top 0.3s ease;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 0 0 8px 0;
+    box-shadow: var(--sombra_suave);
+}
+
+.skip_link:focus {
+    top: 0;
+    outline: 3px solid var(--color_azul_claro);
+    outline-offset: 2px;
+}
+
 .contenedor_login {
     width: 100%;
     max-width: 440px;
@@ -47,15 +86,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .tarjeta_login {
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: var(--color_fondo_tarjeta);
     backdrop-filter: blur(10px);
     padding: 3rem 2.5rem;
     border-radius: 16px;
     box-shadow: var(--sombra_fuerte);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px solid var(--color_borde_tarjeta);
     position: relative;
     overflow: hidden;
-    animation: aparecer_tarjeta 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: aparecer_tarjeta 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .tarjeta_login::before {
@@ -88,13 +127,6 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 3rem;
     color: var(--color_azul_escom);
     margin-bottom: 1rem;
-    animation: flotar 3s ease-in-out infinite;
-}
-
-@keyframes flotar {
-    0% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-    100% { transform: translateY(0); }
 }
 
 .login_encabezado h2 {
@@ -106,7 +138,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .login_encabezado p {
-    color: #7f8c8d;
+    color: var(--color_texto_secundario);
     font-size: 0.95rem;
     font-weight: 500;
 }
@@ -122,7 +154,7 @@ h1, h2, h3, h4, h5, h6 {
 .grupo_campo label {
     font-weight: 600;
     font-size: 0.85rem;
-    color: #34495e;
+    color: var(--color_texto_etiqueta);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -133,20 +165,35 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
 }
 
-.contenedor_input i {
+.icono_input_izq {
     position: absolute;
     left: 1rem;
-    color: #95a5a6;
+    color: var(--color_icono);
     font-size: 1.1rem;
     transition: color 0.3s ease;
+    pointer-events: none; 
+}
+
+.icono_toggle_password {
+    position: absolute;
+    right: 1rem;
+    color: var(--color_icono);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    padding: 0.5rem; 
+}
+
+.icono_toggle_password:hover {
+    color: var(--color_azul_oscuro);
 }
 
 .control_formulario {
     width: 100%;
-    padding: 1rem 1rem 1rem 2.8rem;
+    padding: 1rem 3rem 1rem 2.8rem; 
     font-size: 1rem;
-    border: 2px solid #e2e8f0;
-    background-color: #f8fafc;
+    border: 2px solid var(--color_borde_input);
+    background-color: var(--color_fondo_input);
     border-radius: 8px;
     outline: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -154,18 +201,37 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .control_formulario::placeholder {
-    color: #cbd5e1;
+    color: var(--color_placeholder);
 }
 
 .control_formulario:focus {
     border-color: var(--color_azul_escom);
     background-color: var(--color_blanco);
-    box-shadow: 0 0 0 4px rgba(0, 98, 147, 0.1);
+    box-shadow: 0 0 0 4px var(--sombra_focus);
 }
 
-.control_formulario:focus + i, 
-.contenedor_input:focus-within i {
+.control_formulario:focus + .icono_input_izq, 
+.contenedor_input:focus-within .icono_input_izq {
     color: var(--color_azul_escom);
+}
+
+.input_invalido {
+    border-color: var(--color_rojo_alerta) !important;
+    box-shadow: 0 0 0 4px var(--sombra_focus_error) !important;
+}
+
+.mensaje_error_inline {
+    display: block;
+    color: var(--color_rojo_alerta);
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-top: 0.4rem;
+    animation: aparecer_error 0.3s ease-out;
+}
+
+@keyframes aparecer_error {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .boton_primario {
@@ -183,6 +249,17 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 4px 15px rgba(0, 98, 147, 0.3);
     position: relative;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.boton_primario:disabled {
+    background: var(--color_boton_disabled);
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
 }
 
 .boton_primario::after {
@@ -211,7 +288,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .alerta_error {
-    background-color: #fdf2f2;
+    background-color: var(--color_superficie_error);
     color: var(--color_rojo_alerta);
     border-left: 4px solid var(--color_rojo_alerta);
     padding: 1rem;
@@ -239,11 +316,11 @@ h1, h2, h3, h4, h5, h6 {
     text-align: center;
     margin-top: 2rem;
     padding-top: 1.5rem;
-    border-top: 1px solid #e2e8f0;
+    border-top: 1px solid var(--color_borde_divisor);
 }
 
 .enlace_regresar {
-    color: #7f8c8d;
+    color: var(--color_texto_secundario);
     text-decoration: none;
     font-size: 0.9rem;
     font-weight: 600;

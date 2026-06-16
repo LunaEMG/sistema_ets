@@ -9,6 +9,10 @@ const btn_cerrar_sesion = document.getElementById('btn_cerrar_sesion');
 const contenedor_tabla = document.getElementById('contenedor_tabla_examenes');
 const contenedor_stats = document.getElementById('contenedor_estadisticas');
 
+let examenes_memoria = [];
+let pagina_actual = 1;
+const ITEMS_POR_PAGINA = 10;
+
 async function inicializar_dashboard() {
     const comprobacion = await servicio_api.verificar_sesion();
 
@@ -94,12 +98,57 @@ async function cargar_tarjetas_estadisticas() {
 }
 
 async function cargar_listado_examenes() {
-    contenedor_tabla.innerHTML = '<p class="mensaje_carga">Cargando programación de exámenes...</p>';
-    const todos_los_examenes = await servicio_api.buscar_examenes(0, 0, 0);
-    contenedor_tabla.innerHTML = componente_tabla_admin.crear_tabla(todos_los_examenes);
+    let skeletons_html = '';
+    for(let i = 0; i < 5; i++) {
+        skeletons_html += `
+            <tr class="skeleton_row">
+                <td><div class="skeleton_text w_70"></div></td>
+                <td><div class="skeleton_text w_100"></div></td>
+                <td><div class="skeleton_badge"></div></td>
+                <td><div class="skeleton_text w_50"></div></td>
+                <td><div class="skeleton_text w_100"></div></td>
+                <td><div class="skeleton_text w_50"></div></td>
+                <td><div class="skeleton_text w_70"></div></td>
+                <td>
+                    <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                        <div class="skeleton_btn"></div><div class="skeleton_btn"></div>
+                    </div>
+                </td>
+            </tr>
+        `;
+    }
+
+    contenedor_tabla.innerHTML = `
+        <div class="contenedor_tabla_nuevo">
+            <table class="tabla_nueva">
+                <thead class="encabezado_tabla_nuevo">
+                    <tr><th>Materia</th><th>Carrera</th><th>Semestre</th><th>Fecha</th><th>Horarios</th><th>Ubicación</th><th>Coordinador</th><th style="text-align: right;">Acciones</th></tr>
+                </thead>
+                <tbody class="cuerpo_tabla_nuevo">
+                    ${skeletons_html}
+                </tbody>
+            </table>
+        </div>
+    `;
+
+    examenes_memoria = await servicio_api.buscar_examenes(0, 0, 0);
+    renderizar_tabla_paginada();
+}
+
+function renderizar_tabla_paginada() {
+    contenedor_tabla.innerHTML = componente_tabla_admin.crear_tabla(examenes_memoria, pagina_actual, ITEMS_POR_PAGINA);
 }
 
 async function evaluar_click_tabla(evento) {
+    if (evento.target.classList.contains('btn_nav_pagina') || evento.target.closest('.btn_nav_pagina')) {
+        const boton = evento.target.classList.contains('btn_nav_pagina') ? evento.target : evento.target.closest('.btn_nav_pagina');
+        if (!boton.disabled) {
+            pagina_actual = parseInt(boton.getAttribute('data-pagina'));
+            renderizar_tabla_paginada();
+        }
+        return;
+    }
+
     if (evento.target.classList.contains('btn_editar_examen') || evento.target.closest('.btn_editar_examen')) {
         const boton = evento.target.classList.contains('btn_editar_examen') ? evento.target : evento.target.closest('.btn_editar_examen');
         const id_seleccionado = parseInt(boton.getAttribute('data-id'));

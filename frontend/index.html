@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Crete+Round:ital@0;1&family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+    <a href="#main_content" class="skip_link">Saltar al contenido principal</a>
 
     <header class="encabezado_nuevo">
         <div class="contenedor_nav_superior">
@@ -33,21 +34,26 @@
         
         <div class="contenedor_hero_flex">
             <div class="logo_institucional_hero">
-                <img src="recursos/imagenes/logo_ipn.png" alt="Logo IPN" class="imagen_logo_hero" onerror="this.style.display='none';">
+                <img src="recursos/imagenes/logo_ipn.png" alt="Logo IPN" class="imagen_logo_hero" width="140" height="140" onerror="this.style.display='none';">
             </div>
 
             <div class="contenido_hero">
                 <h2>Consulta tu Horario de Examen</h2>
                 <p>Encuentra rápidamente la fecha, hora y salón de tu examen a titulo de suficiencia.</p>
+                
+                <div class="contenedor_buscador_texto">
+                    <i class="fa-solid fa-search icono_buscador_texto"></i>
+                    <input type="text" id="input_buscador_texto" class="input_buscador_texto" placeholder="Buscar por materia, profesor, carrera o folio..." autocomplete="off">
+                </div>
             </div>
 
             <div class="logo_institucional_hero">
-                <img src="recursos/imagenes/logo_escom.png" alt="Logo ESCOM" class="imagen_logo_hero" onerror="this.style.display='none';">
+                <img src="recursos/imagenes/logo_escom.png" alt="Logo ESCOM" class="imagen_logo_hero" width="140" height="140" onerror="this.style.display='none';">
             </div>
         </div>
     </section>
 
-    <main class="contenedor_principal_nuevo">
+    <main id="main_content" class="contenedor_principal_nuevo">
         
         <div class="barra_filtros">
             <div class="titulo_filtros">
@@ -57,14 +63,16 @@
             
             <div class="contenedor_selectores">
                 <div class="grupo_selector">
-                    <i class="fa-solid fa-graduation-cap icono_selector"></i>
+                    <label for="select_carrera" class="sr-only">Seleccionar Carrera</label>
+                    <i class="fa-solid fa-graduation-cap icono_selector" aria-hidden="true"></i>
                     <select id="select_carrera" class="control_selector">
                         <option value="0">Todas las carreras</option>
                     </select>
                 </div>
 
                 <div class="grupo_selector">
-                    <i class="fa-solid fa-list-ol icono_selector"></i>
+                    <label for="select_semestre" class="sr-only">Seleccionar Semestre</label>
+                    <i class="fa-solid fa-list-ol icono_selector" aria-hidden="true"></i>
                     <select id="select_semestre" class="control_selector">
                         <option value="0">Todos los semestres</option>
                         <option value="1">1° Semestre</option>
@@ -79,14 +87,15 @@
                 </div>
 
                 <div class="grupo_selector">
-                    <i class="fa-solid fa-book icono_selector"></i>
+                    <label for="select_materia" class="sr-only">Seleccionar Materia</label>
+                    <i class="fa-solid fa-book icono_selector" aria-hidden="true"></i>
                     <select id="select_materia" class="control_selector" disabled>
                         <option value="0">Todas las materias</option>
                     </select>
                 </div>
 
-                <button id="btn_buscar" class="btn_buscar_nuevo">
-                    <i class="fa-solid fa-magnifying-glass"></i>
+                <button id="btn_buscar" class="btn_buscar_nuevo" aria-label="Buscar exámenes">
+                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
                 </button>
             </div>
         </div>
