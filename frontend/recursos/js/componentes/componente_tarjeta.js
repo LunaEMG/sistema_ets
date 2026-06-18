@@ -1,4 +1,5 @@
 import { escaparHTML } from '../utilidades/escape.js';
+import { obtener_color_carrera } from '../utilidades/color_carrera.js';
 
 /**
  * Componente funcional para renderizar las tarjetas de los exámenes ETS.
@@ -14,14 +15,15 @@ export const componente_tarjeta = {
         };
 
         const horario_completo = `${calcularBloque(datos_examen.hora_manana)} y ${calcularBloque(datos_examen.hora_tarde)}`;
+        const color_carrera = obtener_color_carrera(datos_examen.nombre_carrera);
 
         return `
-            <div class="tarjeta_materia_ets_nueva" onclick="this.classList.toggle('animacion_activa')">
+            <div class="tarjeta_materia_ets_nueva" style="border-bottom: 4px solid ${color_carrera};" onclick="this.classList.toggle('animacion_activa')">
                 <img src="recursos/imagenes/tiburon.svg" class="marca_agua_tiburon" alt="Tiburón ESCOM">
                 <!-- Header Tarjeta -->
                 <div class="tarjeta_encabezado_nuevo" style="position: relative; z-index: 1;">
                     <div class="tarjeta_encabezado_top">
-                        <span class="badge_carrera">
+                        <span class="badge_carrera" style="background-color: ${color_carrera};">
                             ${escaparHTML(datos_examen.nombre_carrera)}
                         </span>
                         <span class="id_examen_badge">

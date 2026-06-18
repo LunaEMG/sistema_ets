@@ -1,5 +1,6 @@
 import { servicio_api } from '../servicios/servicio_api.js';
 import { escaparHTML } from '../utilidades/escape.js';
+import { obtener_color_carrera } from '../utilidades/color_carrera.js';
 
 let lista_carreras = [];
 
@@ -42,7 +43,11 @@ function renderizar_tabla_carreras(carreras) {
     carreras.forEach(c => {
         html += `<tr>
             <td>${c.id}</td>
-            <td class="destacado_primario">${escaparHTML(c.nombre_carrera)}</td>
+            <td class="destacado_primario">
+                <span class="badge_carrera" style="background-color: ${obtener_color_carrera(c.nombre_carrera)}; font-size: 0.85rem; padding: 0.3rem 0.8rem;">
+                    ${escaparHTML(c.nombre_carrera)}
+                </span>
+            </td>
             <td class="acciones_fila">
                 <button class="btn_accion_nuevo editar" title="Editar Carrera" aria-label="Editar carrera ${escaparHTML(c.nombre_carrera)}" data-id="${c.id}" data-nombre="${escaparHTML(c.nombre_carrera)}" data-tipo="carrera"><i class="fa-solid fa-pen"></i></button>
                 <button class="btn_accion_nuevo eliminar" title="Eliminar Carrera" aria-label="Eliminar carrera ${escaparHTML(c.nombre_carrera)}" data-id="${c.id}" data-tipo="carrera"><i class="fa-solid fa-trash"></i></button>
@@ -69,7 +74,11 @@ function renderizar_tabla_materias(materias) {
             <td>${m.id}</td>
             <td class="destacado_primario">${escaparHTML(m.nombre_materia)}</td>
             <td>${m.semestre_materia}</td>
-            <td class="destacado_secundario">${escaparHTML(m.nombre_carrera)}</td>
+            <td class="destacado_secundario">
+                <span class="badge_carrera" style="background-color: ${obtener_color_carrera(m.nombre_carrera)};">
+                    ${escaparHTML(m.nombre_carrera)}
+                </span>
+            </td>
             <td class="acciones_fila">
                 <button class="btn_accion_nuevo editar" title="Editar Materia" aria-label="Editar materia ${escaparHTML(m.nombre_materia)}" data-id="${m.id}" data-nombre="${escaparHTML(m.nombre_materia)}" data-semestre="${m.semestre_materia}" data-carrera="${m.id_carrera}" data-tipo="materia"><i class="fa-solid fa-pen"></i></button>
                 <button class="btn_accion_nuevo eliminar" title="Eliminar Materia" aria-label="Eliminar materia ${escaparHTML(m.nombre_materia)}" data-id="${m.id}" data-tipo="materia"><i class="fa-solid fa-trash"></i></button>

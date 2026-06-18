@@ -36,6 +36,12 @@
     --color_neutral_hover: #7f8c8d;
     --color_skeleton_base: #e2e8f0;
     --color_skeleton_shine: #f8fafc;
+
+    /* Colores Institucionales Carreras ESCOM */
+    --color_carrera_isc: #01579B;
+    --color_carrera_iia: #289688;
+    --color_carrera_lcd: #546E7A;
+    --color_carrera_default: #64748b;
 }
 
 /*  Estilos Generales y Reseteo */
@@ -218,6 +224,12 @@ select.control_formulario:disabled {
 
 .boton_primario:hover {
     background-color: var(--color_azul_oscuro);
+}
+
+.boton_primario:disabled {
+    background-color: #cbd5e1;
+    cursor: not-allowed;
+    color: #64748b;
 }
 
 /* Cuadricula de Resultados */
@@ -728,12 +740,12 @@ select.control_formulario:disabled {
 /* Formularios CRUD Admin */
 .tarjeta_formulario {
     background-color: var(--color_blanco);
-    padding: 2.5rem;
-    border-radius: 1rem;
-    border: 1px solid var(--color_slate_200, #e2e8f0);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    padding: 3rem;
+    border-radius: 1.5rem;
+    border: 1px solid rgba(226, 232, 240, 0.6);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
     margin: 0 auto 3rem auto;
-    max-width: 800px;
+    max-width: 850px;
 }
 
 .acciones_formulario {
@@ -825,6 +837,104 @@ select.control_formulario:disabled {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.seccion_fieldset {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+}
+
+.seccion_fieldset:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.titulo_fieldset {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color_blue_950);
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.titulo_fieldset i {
+    color: var(--color_azul_escom);
+    font-size: 1.25rem;
+}
+
+.control_premium {
+    background-color: var(--color_blanco);
+    border: 1px solid #cbd5e1;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    color: var(--color_texto_principal);
+    transition: all 0.2s ease-in-out;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);
+    min-width: 0;
+    text-overflow: ellipsis;
+}
+
+.control_premium:disabled {
+    background-color: #f1f5f9;
+    color: #94a3b8;
+    cursor: not-allowed;
+    border-color: #e2e8f0;
+}
+
+.control_premium:focus {
+    outline: none;
+    border-color: var(--color_azul_escom);
+    box-shadow: 0 0 0 3px rgba(11, 83, 148, 0.15);
+}
+
+.label_premium {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--color_slate_700);
+    margin-bottom: 0.5rem;
+}
+
+.label_premium i {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.fila_premium {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.btn_pill {
+    border-radius: 50px !important;
+    padding: 0.85rem 2rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.btn_pill.btn_primario {
+    background: linear-gradient(135deg, var(--color_blue_900) 0%, var(--color_azul_escom) 100%);
+    border: none;
+}
+
+.btn_pill.btn_primario:hover {
+    box-shadow: 0 6px 12px rgba(11, 83, 148, 0.25);
+    transform: translateY(-1px);
 }
 
 .logo_titulo h1 {
@@ -1229,12 +1339,15 @@ select.control_formulario:disabled {
 .badge_carrera {
     display: inline-flex;
     align-items: center;
-    padding: 0.125rem 0.625rem;
+    padding: 0.2rem 0.75rem;
     border-radius: 9999px;
     font-size: 0.75rem;
-    font-weight: 500;
-    background-color: var(--color_blue_100);
-    color: var(--color_blue_800);
+    font-weight: 600;
+    color: var(--color_blanco);
+    background-color: var(--color_carrera_default);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    letter-spacing: 0.3px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .id_examen_badge {

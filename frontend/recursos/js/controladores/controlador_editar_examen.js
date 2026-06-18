@@ -369,7 +369,7 @@ async function enviar_actualizacion(e) {
     const v5 = validar_select(selector_hora_tarde, error_hora_tarde);
     const v6 = validar_select(selector_profesor, error_profesor);
     const v7 = validar_select(selector_edificio, error_edificio);
-    const v8 = validar_select(selector_piso, error_piso);
+    const v8 = validar_select(selector_piso, error_piso, [""]);
     const v9 = validar_select(selector_salon_final, error_salon_final);
 
     if (!(v1 && v2 && v3 && v4 && v5 && v6 && v7 && v8 && v9)) {
