@@ -54,7 +54,56 @@
 
         <section class="seccion_resultados">
             <h2 class="titulo_seccion">Listado de Exámenes Programados</h2>
+            
+            <div class="barra_filtros" style="margin-bottom: 1.5rem;">
+                <div class="titulo_filtros" style="flex: 1; min-width: 250px;">
+                    <div class="contenedor_buscador_texto" style="margin: 0; max-width: 100%; box-shadow: none; border: 1px solid var(--color_gris_borde);">
+                        <i class="fa-solid fa-search icono_buscador_texto" style="color: var(--color_slate_500);"></i>
+                        <input type="text" id="input_buscador_texto" class="input_buscador_texto" placeholder="Buscar..." autocomplete="off" style="font-size: 0.9rem; padding: 0.8rem 1rem 0.8rem 3rem;">
+                    </div>
+                </div>
+                
+                <div class="contenedor_selectores">
+                    <div class="grupo_selector">
+                        <label for="select_carrera" class="sr-only">Seleccionar Carrera</label>
+                        <i class="fa-solid fa-graduation-cap icono_selector" aria-hidden="true"></i>
+                        <select id="select_carrera" class="control_selector">
+                            <option value="0">Todas las carreras</option>
+                        </select>
+                    </div>
+
+                    <div class="grupo_selector">
+                        <label for="select_semestre" class="sr-only">Seleccionar Semestre</label>
+                        <i class="fa-solid fa-list-ol icono_selector" aria-hidden="true"></i>
+                        <select id="select_semestre" class="control_selector">
+                            <option value="0">Todos los semestres</option>
+                            <option value="1">1° Semestre</option>
+                            <option value="2">2° Semestre</option>
+                            <option value="3">3° Semestre</option>
+                            <option value="4">4° Semestre</option>
+                            <option value="5">5° Semestre</option>
+                            <option value="6">6° Semestre</option>
+                            <option value="7">7° Semestre</option>
+                            <option value="8">8° Semestre</option>
+                        </select>
+                    </div>
+
+                    <div class="grupo_selector">
+                        <label for="select_materia" class="sr-only">Seleccionar Materia</label>
+                        <i class="fa-solid fa-book icono_selector" aria-hidden="true"></i>
+                        <select id="select_materia" class="control_selector" disabled>
+                            <option value="0">Todas las materias</option>
+                        </select>
+                    </div>
+
+                    <button id="btn_buscar" class="btn_buscar_nuevo" aria-label="Buscar exámenes">
+                        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+
             <div id="contenedor_tabla_examenes" style="background-color: #ffffff; padding: 1rem; border-radius: 8px; box-shadow: var(--sombra_suave); overflow-x: auto;"></div>
+
         </section>
     </main>
 

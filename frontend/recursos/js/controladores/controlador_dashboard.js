@@ -9,7 +9,14 @@ const btn_cerrar_sesion = document.getElementById('btn_cerrar_sesion');
 const contenedor_tabla = document.getElementById('contenedor_tabla_examenes');
 const contenedor_stats = document.getElementById('contenedor_estadisticas');
 
+const selector_carrera = document.getElementById('select_carrera');
+const selector_semestre = document.getElementById('select_semestre');
+const selector_materia = document.getElementById('select_materia');
+const boton_buscar = document.getElementById('btn_buscar');
+const input_buscador_texto = document.getElementById('input_buscador_texto');
+
 let examenes_memoria = [];
+let examenes_filtrados = [];
 let pagina_actual = 1;
 const ITEMS_POR_PAGINA = 10;
 
@@ -25,8 +32,52 @@ async function inicializar_dashboard() {
     
     btn_cerrar_sesion.addEventListener('click', procesar_salida);
     contenedor_tabla.addEventListener('click', evaluar_click_tabla);
+    
+    await inicializar_selectores();
+
     cargar_listado_examenes();
     cargar_tarjetas_estadisticas();
+}
+
+async function inicializar_selectores() {
+    const lista_carreras = await servicio_api.obtener_carreras();
+    
+    lista_carreras.forEach(carrera => {
+        const opcion = document.createElement('option');
+        opcion.value = carrera.id;
+        opcion.textContent = carrera.nombre_carrera;
+        selector_carrera.appendChild(opcion);
+    });
+
+    selector_carrera.addEventListener('change', async (evento) => {
+        const id_seleccionado = evento.target.value;
+        selector_materia.innerHTML = '<option value="0">Todas las materias</option>';
+        selector_materia.disabled = true;
+
+        if (id_seleccionado > 0) {
+            const lista_materias = await servicio_api.obtener_materias_por_carrera(id_seleccionado);
+            lista_materias.forEach(materia => {
+                const opcion = document.createElement('option');
+                opcion.value = materia.id;
+                opcion.textContent = `[Semestre ${materia.semestre_materia}] - ${materia.nombre_materia}`;
+                selector_materia.appendChild(opcion);
+            });
+            selector_materia.disabled = false;
+        }
+    });
+
+    boton_buscar.addEventListener('click', cargar_listado_examenes);
+
+    if (input_buscador_texto) {
+        let temporizador_debounce;
+        input_buscador_texto.addEventListener('input', () => {
+            clearTimeout(temporizador_debounce);
+            temporizador_debounce = setTimeout(() => {
+                pagina_actual = 1;
+                filtrar_por_texto();
+            }, 300);
+        });
+    }
 }
 
 async function cargar_tarjetas_estadisticas() {
@@ -131,12 +182,50 @@ async function cargar_listado_examenes() {
         </div>
     `;
 
-    examenes_memoria = await servicio_api.buscar_examenes(0, 0, 0);
+    const carrera = selector_carrera ? selector_carrera.value : 0;
+    const semestre = selector_semestre ? selector_semestre.value : 0;
+    const materia = selector_materia ? selector_materia.value : 0;
+
+    examenes_memoria = await servicio_api.buscar_examenes(carrera, semestre, materia);
+    pagina_actual = 1;
+    filtrar_por_texto();
+}
+
+function normalizar_texto(texto) {
+    if (!texto) return '';
+    return texto.toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+function filtrar_por_texto() {
+    if (!input_buscador_texto) {
+        examenes_filtrados = [...examenes_memoria];
+        renderizar_tabla_paginada();
+        return;
+    }
+
+    const texto_busqueda = normalizar_texto(input_buscador_texto.value);
+    
+    if (texto_busqueda === '') {
+        examenes_filtrados = [...examenes_memoria];
+    } else {
+        examenes_filtrados = examenes_memoria.filter(examen => {
+            const mat = normalizar_texto(examen.nombre_materia);
+            const prof = normalizar_texto(examen.nombre_profesor);
+            const car = normalizar_texto(examen.nombre_carrera);
+            const id = normalizar_texto(examen.id);
+            
+            return mat.includes(texto_busqueda) || 
+                   prof.includes(texto_busqueda) || 
+                   car.includes(texto_busqueda) || 
+                   id.includes(texto_busqueda);
+        });
+    }
+
     renderizar_tabla_paginada();
 }
 
 function renderizar_tabla_paginada() {
-    contenedor_tabla.innerHTML = componente_tabla_admin.crear_tabla(examenes_memoria, pagina_actual, ITEMS_POR_PAGINA);
+    contenedor_tabla.innerHTML = componente_tabla_admin.crear_tabla(examenes_filtrados, pagina_actual, ITEMS_POR_PAGINA);
 }
 
 async function evaluar_click_tabla(evento) {
