@@ -19,6 +19,10 @@ let coleccion_examenes_actuales = [];
 let pagina_actual = 1;
 const ITEMS_POR_PAGINA = 12;
 
+window.obtener_examen_por_id = function(id) {
+    return coleccion_examenes_actuales.find(e => e.id == id);
+};
+
 async function inicializar_buscador() {
     const btn_menu_movil = document.getElementById('btn_menu_movil');
     const navegacion_superior = document.getElementById('navegacion_superior');

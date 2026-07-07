@@ -4,16 +4,21 @@
  */
 export const exportador_calendario = {
     
-    /**
-     * Lanza la ventana de impresión del navegador optimizada por CSS
-     */
-    exportar_a_pdf() {
-        window.print();
-    },
 
-    /**
-     * Genera y descarga el archivo con el estándar internacional .ics (iCalendar)
-     */
+    exportar_a_pdf(lista_examenes = null) {
+        if (!lista_examenes) {
+            window.print();
+            return;
+        }
+
+        document.body.classList.add('imprimiendo_seleccionados');
+        
+        void document.body.offsetWidth;
+        
+        window.print();
+        
+        document.body.classList.remove('imprimiendo_seleccionados');
+    },
     exportar_a_ics(lista_examenes) {
         if (!lista_examenes || lista_examenes.length === 0) return;
 
@@ -34,8 +39,11 @@ export const exportador_calendario = {
         ].join("\r\n") + "\r\n";
 
         lista_examenes.forEach((examen, indice) => {
-            const fecha_limpia = examen.fecha_examen.replace(/-/g, "");
-            const h_manana_ini = parseInt(examen.hora_manana.split(':')[0]); 
+            const fecha_valida = examen.fecha_examen || new Date().toISOString().split('T')[0];
+            const fecha_limpia = fecha_valida.replace(/-/g, "");
+            
+            const hora_m = examen.hora_manana || '00:00:00';
+            const h_manana_ini = parseInt(hora_m.split(':')[0]) || 0; 
             const hora_manana_inicio_str = String(h_manana_ini).padStart(2, '0') + "0000";
             const hora_manana_fin_str = String(h_manana_ini + 2).padStart(2, '0') + "0000";
 
@@ -46,12 +54,13 @@ export const exportador_calendario = {
                 `DTSTART:${fecha_limpia}T${hora_manana_inicio_str}`,
                 `DTEND:${fecha_limpia}T${hora_manana_fin_str}`,
                 `SUMMARY:ETS (M) - ${examen.nombre_materia}`,
-                `LOCATION:${examen.nombre_edificio} - ${examen.nombre_salon}`,
+                `LOCATION:${examen.nombre_edificio || 'Por asignar'} - ${examen.nombre_salon || 'Por asignar'}`,
                 `DESCRIPTION:Carrera: ${examen.nombre_carrera}\\nCoordinador: ${examen.nombre_profesor}\\nHorario: ${h_manana_ini}:00 a ${h_manana_ini + 2}:00 hrs.`,
                 "END:VEVENT"
             ].join("\r\n") + "\r\n";
 
-            const h_tarde_ini = parseInt(examen.hora_tarde.split(':')[0]);  
+            const hora_t = examen.hora_tarde || '00:00:00';
+            const h_tarde_ini = parseInt(hora_t.split(':')[0]) || 0;  
             const hora_tarde_inicio_str = String(h_tarde_ini).padStart(2, '0') + "0000";
             const hora_tarde_fin_str = String(h_tarde_ini + 2).padStart(2, '0') + "0000";   
 
@@ -74,9 +83,6 @@ export const exportador_calendario = {
         this.descargar_archivo(contenedor_datos, "calendario_examenes_ets.ics");
     },
 
-    /**
-     * Método utilitario privado para forzar la descarga de archivos en el navegador
-     */
     descargar_archivo(contenido_blob, nombre_archivo) {
         const enlace_descarga = document.createElement("a");
         enlace_descarga.href = URL.createObjectURL(contenido_blob);

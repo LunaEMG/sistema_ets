@@ -27,6 +27,10 @@
                 <a href="#">Inicio</a>
                 <a href="#" class="activo">Horarios de Exámenes</a>
                 <a href="login.html">Acceso Administrativo</a>
+                <button id="btn_abrir_carrito" class="btn_carrito_nav" aria-label="Abrir Mi Horario">
+                    <i class="fa-solid fa-clipboard-check"></i>
+                    <span id="badge_carrito" class="badge_notificacion_carrito" style="display: none;">0</span>
+                </button>
             </nav>
         </div>
     </header>
@@ -129,8 +133,48 @@
         <p>&copy; 2026 - Tecnologías para el Desarrollo de Aplicaciones Web - ESCOM IPN</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script type="module" src="recursos/js/controladores/buscador_principal.js?v=2"></script>
+    <div id="barra_flotante_carrito" class="barra_flotante_carrito">
+        <div class="info_flotante">
+            <div class="icono_flotante">
+                <i class="fa-solid fa-clipboard-check"></i>
+                <span id="badge_flotante">0</span>
+            </div>
+            <span class="texto_flotante"><strong id="cantidad_flotante">0</strong> exámenes seleccionados</span>
+        </div>
+        <button id="btn_flotante_abrir" class="btn_formulario btn_primario" style="margin: 0; padding: 0.5rem 1.5rem; border-radius: 9999px;">
+            Revisar <i class="fa-solid fa-arrow-right" style="margin-left: 0.5rem;"></i>
+        </button>
+    </div>
 
+    <div id="overlay_carrito" class="overlay_carrito"></div>
+    <div id="panel_lateral_carrito" class="panel_lateral_carrito">
+        <div class="cabecera_carrito">
+            <h3><i class="fa-solid fa-clipboard-check"></i> Mi Horario Personal</h3>
+            <button id="btn_cerrar_carrito" class="btn_cerrar_carrito"><i class="fa-solid fa-times"></i></button>
+        </div>
+        
+        <div id="cuerpo_carrito" class="cuerpo_carrito">
+            <div class="carrito_vacio">
+                <i class="fa-solid fa-folder-open"></i>
+                <p>No has seleccionado ningún examen.</p>
+            </div>
+        </div>
+
+        <div class="pie_carrito">
+            <p style="font-size: 0.8rem; color: var(--color_slate_500); text-align: center; margin: 0;">Exporta únicamente los exámenes que seleccionaste.</p>
+            <div style="display: flex; gap: 0.5rem; justify-content: center; margin-top: 0.5rem;">
+                <button id="btn_carrito_exportar_pdf" class="boton_exportar de_pdf" style="flex: 1; padding: 0.6rem; font-size: 0.9rem;" disabled>
+                    <i class="fa-solid fa-file-pdf"></i> Exportar a PDF
+                </button>
+                <button id="btn_carrito_exportar_ics" class="boton_exportar de_ics" style="flex: 1; padding: 0.6rem; font-size: 0.9rem;" disabled>
+                    <i class="fa-solid fa-calendar-days"></i> Exportar a iCalendar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module" src="recursos/js/controladores/carrito_examenes.js"></script>
+    <script type="module" src="recursos/js/controladores/buscador_principal.js"></script>
 </body>
 </html>
