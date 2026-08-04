@@ -1,9 +1,5 @@
 /**
- * Utilidad para asignar colores institucionales a las carreras de ESCOM.
- * Retorna la variable CSS correspondiente basada en palabras clave del nombre.
- * 
- * @param {string} nombre_carrera El nombre de la carrera
- * @returns {string} El valor CSS `var(--color_carrera_...)` 
+ * Función auxiliar para asignar colores dinámicos a las distintas carreras en la UI.
  */
 export function obtener_color_carrera(nombre_carrera) {
     if (!nombre_carrera) return 'var(--color_carrera_default)';

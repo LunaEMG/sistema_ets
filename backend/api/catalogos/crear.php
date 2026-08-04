@@ -1,6 +1,6 @@
 <?php
 /**
- * Endpoint para crear catálogos in-line (Carreras, Materias, Profesores).
+ * Endpoint para registrar nuevas carreras, materias o profesores.
  */
 header("Content-Type: application/json; charset=UTF-8");
 

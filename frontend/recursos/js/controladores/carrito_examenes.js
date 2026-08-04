@@ -1,3 +1,6 @@
+/**
+ * Controlador que gestiona la selección temporal de exámenes (carrito) y su barra flotante.
+ */
 import { exportador_calendario } from '../componentes/exportador_calendario.js';
 import { obtener_color_carrera } from '../utilidades/color_carrera.js';
 
@@ -93,6 +96,7 @@ export const carrito_examenes = {
         if (!this.examenes_seleccionados.has(examen.id)) {
             this.examenes_seleccionados.set(examen.id, examen);
             this.actualizar_ui();
+            window.Toast.mostrar('Examen añadido', examen.nombre_materia, 'success');
         }
     },
 

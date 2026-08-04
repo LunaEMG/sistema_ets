@@ -1,5 +1,5 @@
 /**
- * Controlador para blindar el Dashboard Administrativo y gestionar sus acciones.
+ * Controlador que maneja la vista principal del administrador y carga de estadísticas.
  */
 import { servicio_api } from '../servicios/servicio_api.js';
 import { componente_tabla_admin } from '../componentes/componente_tabla_admin.js';

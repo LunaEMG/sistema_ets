@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS examen (
     id_salon INT NOT NULL,
     id_profesor INT NOT NULL,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    estatus ENUM('activo', 'inactivo') DEFAULT 'activo',
     FOREIGN KEY (id_materia) REFERENCES materia (id) ON DELETE CASCADE,
     FOREIGN KEY (id_salon) REFERENCES salon (id) ON DELETE RESTRICT,
     FOREIGN KEY (id_profesor) REFERENCES profesor (id) ON DELETE RESTRICT

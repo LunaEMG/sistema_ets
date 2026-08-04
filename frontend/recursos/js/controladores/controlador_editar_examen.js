@@ -1,5 +1,5 @@
 /**
- * Controlador para la modificación de exámenes.
+ * Controlador para rellenar y enviar el formulario de actualización de un examen existente.
  */
 import { servicio_api } from '../servicios/servicio_api.js';
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Endpoint para actualizar catálogos (Carreras, Materias, Profesores).
+ * Endpoint para actualizar datos de carreras, materias o profesores en el catálogo.
  */
 header("Content-Type: application/json; charset=UTF-8");
 

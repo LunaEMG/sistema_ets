@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Exámenes ETS - ESCOM IPN</title>
     <link rel="icon" type="image/svg+xml" href="recursos/imagenes/tiburon.svg">
-    <link rel="stylesheet" href="recursos/css/estilos_busqueda.css">
+    <link rel="stylesheet" href="recursos/css/estilos_busqueda.css?v=2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Crete+Round:ital@0;1&family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Raleway:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -16,7 +16,7 @@
         <div class="contenedor_nav_superior">
             <div class="barra_superior_movil">
                 <div class="logo_titulo">
-                    <img src="recursos/imagenes/tiburon.svg" alt="Tiburón ESCOM" style="width: 3rem; height: 3rem; filter: brightness(0) invert(1); margin-right: 0.5rem;">
+                    <img src="recursos/imagenes/tiburon.svg" alt="Tiburón ESCOM" width="48" height="48" fetchpriority="high" style="width: 3rem; height: 3rem; filter: brightness(0) invert(1); margin-right: 0.5rem;">
                     <h1>Escuela Superior de Cómputo</h1>
                 </div>
                 <button id="btn_menu_movil" class="btn_menu_movil" aria-label="Alternar menú">
@@ -28,7 +28,7 @@
                 <a href="#" class="activo">Horarios de Exámenes</a>
                 <a href="login.html">Acceso Administrativo</a>
                 <button id="btn_abrir_carrito" class="btn_carrito_nav" aria-label="Abrir Mi Horario">
-                    <i class="fa-solid fa-clipboard-check"></i>
+                    <i class="fa-solid fa-bookmark"></i>
                     <span id="badge_carrito" class="badge_notificacion_carrito" style="display: none;">0</span>
                 </button>
             </nav>
@@ -36,35 +36,31 @@
     </header>
 
     <section class="hero_seccion">
-        <div class="decoracion_fondo">
-            <div class="esfera_blanca"></div>
-            <div class="esfera_azul"></div>
-        </div>
-        
         <div class="contenedor_hero_flex">
-            <div class="logo_institucional_hero">
-                <img src="recursos/imagenes/logo_ipn.png" alt="Logo IPN" class="imagen_logo_hero" width="140" height="140" onerror="this.style.display='none';">
+            <div class="logo_institucional_hero animate_appear_up" style="animation-delay: 200ms;">
+                <img src="recursos/imagenes/logo_ipn.png" alt="Logo IPN" class="imagen_logo_hero" width="140" height="140" fetchpriority="high" decoding="sync" onerror="this.style.display='none';">
             </div>
 
             <div class="contenido_hero">
-                <h2>Consulta tu Horario de Examen</h2>
-                <p>Encuentra rápidamente la fecha, hora y salón de tu examen a titulo de suficiencia.</p>
+                <h2 class="animate_appear_up" style="animation-delay: 100ms;">Consulta tu Horario de Examen</h2>
+                <p class="animate_appear_up" style="animation-delay: 150ms;">Encuentra rápidamente la fecha, hora y salón de tu examen a titulo de suficiencia.</p>
                 
-                <div class="contenedor_buscador_texto">
-                    <i class="fa-solid fa-search icono_buscador_texto"></i>
+                <form class="contenedor_buscador_texto animate_appear_up" role="search" onsubmit="event.preventDefault();" style="animation-delay: 300ms;">
+                    <label for="input_buscador_texto" class="sr-only">Buscar exámenes por texto</label>
+                    <i class="fa-solid fa-search icono_buscador_texto" aria-hidden="true"></i>
                     <input type="text" id="input_buscador_texto" class="input_buscador_texto" placeholder="Buscar por materia, profesor, carrera o folio..." autocomplete="off">
-                </div>
+                </form>
             </div>
 
-            <div class="logo_institucional_hero">
-                <img src="recursos/imagenes/logo_escom.png" alt="Logo ESCOM" class="imagen_logo_hero" width="140" height="140" onerror="this.style.display='none';">
+            <div class="logo_institucional_hero animate_appear_up" style="animation-delay: 200ms;">
+                <img src="recursos/imagenes/logo_escom.png" alt="Logo ESCOM" class="imagen_logo_hero" width="140" height="140" fetchpriority="high" decoding="sync" onerror="this.style.display='none';">
             </div>
         </div>
     </section>
 
     <main id="main_content" class="contenedor_principal_nuevo">
         
-        <div class="barra_filtros">
+        <form class="barra_filtros" role="search" onsubmit="event.preventDefault();">
             <div class="titulo_filtros">
                 <i class="fa-solid fa-filter"></i>
                 <span>Filtros:</span>
@@ -81,7 +77,7 @@
 
                 <div class="grupo_selector">
                     <label for="select_semestre" class="sr-only">Seleccionar Semestre</label>
-                    <i class="fa-solid fa-list-ol icono_selector" aria-hidden="true"></i>
+                    <i class="fa-solid fa-layer-group icono_selector" aria-hidden="true"></i>
                     <select id="select_semestre" class="control_selector">
                         <option value="0">Todos los semestres</option>
                         <option value="1">1° Semestre</option>
@@ -103,11 +99,11 @@
                     </select>
                 </div>
 
-                <button id="btn_buscar" class="btn_buscar_nuevo" aria-label="Buscar exámenes">
+                <button type="submit" id="btn_buscar" class="btn_buscar_nuevo" aria-label="Buscar exámenes">
                     <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
                 </button>
             </div>
-        </div>
+        </form>
 
         <section class="seccion_resultados">
             <div class="encabezado_resultados_flex">
@@ -136,7 +132,7 @@
     <div id="barra_flotante_carrito" class="barra_flotante_carrito">
         <div class="info_flotante">
             <div class="icono_flotante">
-                <i class="fa-solid fa-clipboard-check"></i>
+                <i class="fa-solid fa-bookmark"></i>
                 <span id="badge_flotante">0</span>
             </div>
             <span class="texto_flotante"><strong id="cantidad_flotante">0</strong> exámenes seleccionados</span>
@@ -149,13 +145,13 @@
     <div id="overlay_carrito" class="overlay_carrito"></div>
     <div id="panel_lateral_carrito" class="panel_lateral_carrito">
         <div class="cabecera_carrito">
-            <h3><i class="fa-solid fa-clipboard-check"></i> Mi Horario Personal</h3>
+            <h3><i class="fa-solid fa-bookmark"></i> Mi Horario Personal</h3>
             <button id="btn_cerrar_carrito" class="btn_cerrar_carrito"><i class="fa-solid fa-times"></i></button>
         </div>
         
         <div id="cuerpo_carrito" class="cuerpo_carrito">
             <div class="carrito_vacio">
-                <i class="fa-solid fa-folder-open"></i>
+                <i class="fa-solid fa-inbox"></i>
                 <p>No has seleccionado ningún examen.</p>
             </div>
         </div>
@@ -173,7 +169,12 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script src="recursos/js/componentes/toast.js"></script>
+    <script src="recursos/js/componentes/componente_tarjeta.js"></script>
     <script type="module" src="recursos/js/controladores/carrito_examenes.js"></script>
     <script type="module" src="recursos/js/controladores/buscador_principal.js"></script>
 </body>

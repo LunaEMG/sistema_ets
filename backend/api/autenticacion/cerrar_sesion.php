@@ -1,6 +1,6 @@
 <?php
 /**
- * Endpoint de la API para destruir la sesion del administrador de forma segura.
+ * Endpoint para destruir la sesión activa y desloguear al administrador.
  */
 ini_set('session.cookie_httponly', 1);
 ini_set('session.use_only_cookies', 1);

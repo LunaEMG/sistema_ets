@@ -1,7 +1,20 @@
+/**
+ * Componente encargado de construir el HTML de las tarjetas visuales de cada examen.
+ */
 import { escaparHTML } from '../utilidades/escape.js';
 import { obtener_color_carrera } from '../utilidades/color_carrera.js';
 import { carrito_examenes } from '../controladores/carrito_examenes.js';
 
+const formatearTitulo = (texto) => {
+    if (!texto) return '';
+    const excepciones = ['de', 'del', 'y', 'en', 'el', 'la', 'los', 'las', 'a', 'por', 'para', 'con'];
+    return texto.toLowerCase().split(/\s+/).map((palabra, index) => {
+        if (index > 0 && excepciones.includes(palabra)) {
+            return palabra;
+        }
+        return palabra.charAt(0).toUpperCase() + palabra.slice(1);
+    }).join(' ');
+};
 
 export const componente_tarjeta = {
     crear_bloque_examen(datos_examen) {
@@ -26,7 +39,7 @@ export const componente_tarjeta = {
                     <span class="checkmark_premium"></span>
                 </label>
                 
-                <img src="recursos/imagenes/tiburon.svg" class="marca_agua_tiburon" alt="Tiburón ESCOM">
+                <img src="recursos/imagenes/tiburon.svg" class="marca_agua_tiburon" alt="Tiburón ESCOM" width="80" height="80" loading="lazy" decoding="async">
                 <!-- Header Tarjeta -->
                 <div class="tarjeta_encabezado_nuevo" style="position: relative; z-index: 1;">
                     <div class="tarjeta_encabezado_top">
@@ -34,8 +47,8 @@ export const componente_tarjeta = {
                             ${escaparHTML(datos_examen.nombre_carrera)}
                         </span>
                     </div>
-                    <h4 class="titulo_materia_nuevo">
-                        ${escaparHTML(datos_examen.nombre_materia)}
+                    <h4 class="titulo_materia_nuevo" title="${escaparHTML(datos_examen.nombre_materia)}">
+                        ${escaparHTML(formatearTitulo(datos_examen.nombre_materia))}
                     </h4>
                     <div class="info_semestre_nuevo">
                         <i class="fa-solid fa-book-open" style="margin-right: 0.375rem;"></i>
@@ -51,7 +64,7 @@ export const componente_tarjeta = {
                         </div>
                         <div class="texto_dato_nuevo">
                             <span class="etiqueta_dato_nuevo">Profesor Titular</span>
-                            <span class="valor_dato_nuevo">${escaparHTML(datos_examen.nombre_profesor)}</span>
+                            <span class="valor_dato_nuevo">${escaparHTML(formatearTitulo(datos_examen.nombre_profesor))}</span>
                         </div>
                     </div>
 
@@ -61,7 +74,7 @@ export const componente_tarjeta = {
                         </div>
                         <div class="texto_dato_nuevo">
                             <span class="etiqueta_dato_nuevo">Fecha</span>
-                            <span class="valor_dato_nuevo" style="text-transform: capitalize;">${fecha_legible.split(',')[0]}</span>
+                            <span class="valor_dato_nuevo">${(fecha_legible.charAt(0).toUpperCase() + fecha_legible.slice(1)).split(',')[0]}</span>
                         </div>
                     </div>
                     
@@ -84,6 +97,21 @@ export const componente_tarjeta = {
                             <span class="valor_dato_nuevo">${escaparHTML(datos_examen.nombre_salon)}</span>
                         </div>
                     </div>
+                </div>
+            </div>
+        `;
+    },
+
+    crear_skeleton() {
+        return `
+            <div class="tarjeta_skeleton">
+                <div class="skeleton_bloque skeleton_header"></div>
+                <div class="skeleton_bloque skeleton_title"></div>
+                <div class="skeleton_body">
+                    <div class="skeleton_bloque skeleton_linea"></div>
+                    <div class="skeleton_bloque skeleton_linea corta"></div>
+                    <div class="skeleton_bloque skeleton_linea"></div>
+                    <div class="skeleton_bloque skeleton_linea corta"></div>
                 </div>
             </div>
         `;

@@ -1,6 +1,5 @@
 /**
- * Componente encargado de procesar la lógica de exportación de datos.
- * Genera archivos estructurados nativos sin dependencias externas.
+ * Utilidad encargada de generar y descargar los exámenes seleccionados en formato PDF o ICS.
  */
 export const exportador_calendario = {
     
@@ -12,23 +11,20 @@ export const exportador_calendario = {
         }
 
         document.body.classList.add('imprimiendo_seleccionados');
-        
         void document.body.offsetWidth;
         
-        window.print();
-        
-        document.body.classList.remove('imprimiendo_seleccionados');
+        window.Toast.mostrar('Generando PDF', 'Preparando el documento para impresión...', 'info');
+
+
+        setTimeout(() => {
+            window.print();
+            document.body.classList.remove('imprimiendo_seleccionados');
+        }, 300);
     },
     exportar_a_ics(lista_examenes) {
         if (!lista_examenes || lista_examenes.length === 0) return;
 
-        Swal.fire({
-            icon: 'success',
-            title: '¡Calendario Generado!',
-            text: 'Tu archivo .ics se ha generado y descargado con éxito.',
-            showConfirmButton: false,
-            timer: 2000
-        });
+        window.Toast.mostrar('Calendario Generado', 'Tu archivo .ics se ha generado con éxito.', 'success');
 
         let contenido_ics = [
             "BEGIN:VCALENDAR",

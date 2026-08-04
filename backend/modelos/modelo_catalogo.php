@@ -1,7 +1,6 @@
 <?php
 /**
- * Modelo para la gestion de catalogos (Carreras, Materias, Edificios, Salones).
- * Ejecuta consultas seguras mediante sentencias preparadas con PDO.
+ * Clase de modelo para gestionar las operaciones CRUD de los catálogos (carreras, materias, profesores).
  */
 
 require_once __DIR__ . '/../configuracion/conexion_base_datos.php';
@@ -42,7 +41,7 @@ class ModeloCatalogo {
                              
             $sentencia = $this->conexion_bd->prepare($consulta_sql);
             
-            // Vinculacion estricta de parametros (Mitigacion de Inyeccion SQL)
+
             $sentencia->bindParam(':id_carrera', $id_carrera, PDO::PARAM_INT);
             $sentencia->execute();
             

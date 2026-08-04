@@ -1,5 +1,5 @@
 /**
- * Controlador para gestionar los eventos e interacciones de la pantalla de Login.
+ * Controlador que procesa el formulario de inicio de sesión y comunicación con la API.
  */
 import { servicio_api } from '../servicios/servicio_api.js';
 

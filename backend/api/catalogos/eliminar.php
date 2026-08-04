@@ -1,6 +1,6 @@
 <?php
 /**
- * Endpoint para eliminar catálogos (Carreras, Materias, Profesores).
+ * Endpoint para eliminar registros específicos del catálogo.
  */
 header("Content-Type: application/json; charset=UTF-8");
 

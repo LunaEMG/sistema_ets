@@ -1,7 +1,6 @@
 <?php
 /**
- * Endpoint de la API para retornar las estadísticas cuantitativas del Dashboard.
- * Requiere validación de sesión administrativa estricta.
+ * Endpoint para calcular y obtener estadísticas generales de los exámenes por carrera.
  */
 ini_set('session.cookie_httponly', 1);
 ini_set('session.use_only_cookies', 1);
@@ -12,7 +11,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Validador de Seguridad
+
 if (!isset($_SESSION['esta_autenticado']) || $_SESSION['esta_autenticado'] !== true) {
     http_response_code(401);
     echo json_encode(["estado" => "error", "mensaje" => "No autorizado."], JSON_UNESCAPED_UNICODE);

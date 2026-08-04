@@ -1,6 +1,6 @@
 <?php
 /**
- * Endpoint de la API para verificar si el usuario tiene una sesion activa y valida.
+ * Endpoint para comprobar si existe una sesión activa válida.
  */
 ini_set('session.cookie_httponly', 1);
 ini_set('session.use_only_cookies', 1);

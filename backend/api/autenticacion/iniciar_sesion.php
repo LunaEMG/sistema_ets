@@ -1,7 +1,6 @@
 <?php
 /**
- * Endpoint de la API para procesar la autenticacion de administradores.
- * Recibe datos por POST (JSON) y maneja sesiones seguras nativas.
+ * Endpoint para validar credenciales y crear una sesión de administrador.
  */
 
 ini_set('session.cookie_httponly', 1);

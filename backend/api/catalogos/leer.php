@@ -1,7 +1,6 @@
 <?php
 /**
- * Endpoint de la API para consultar catalogos de forma asincrona.
- * Devuelve respuestas estrictamente en formato JSON.
+ * Endpoint para consultar todos los elementos de los distintos catálogos.
  */
 
 header("Content-Type: application/json; charset=UTF-8");

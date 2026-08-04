@@ -1,7 +1,6 @@
 <?php
 /**
- * Endpoint de la API para la eliminacion segura de examenes ETS.
- * Requiere verificacion obligatoria de sesion activa.
+ * Endpoint para eliminar un examen del sistema validando permisos.
  */
 ini_set('session.cookie_httponly', 1);
 ini_set('session.use_only_cookies', 1);
@@ -31,6 +30,12 @@ if (!isset($_SERVER['HTTP_X_CSRF_TOKEN']) || !isset($_SESSION['token_csrf']) || 
 }
 
 $datos_recibidos = json_decode(file_get_contents("php://input"), true);
+if (!$datos_recibidos) {
+    http_response_code(400);
+    echo json_encode(["estado" => "error", "mensaje" => "Formato de datos inválido."], JSON_UNESCAPED_UNICODE);
+    exit();
+}
+
 $id_examen = isset($datos_recibidos['id_examen']) ? intval($datos_recibidos['id_examen']) : 0;
 
 if ($id_examen === 0) {

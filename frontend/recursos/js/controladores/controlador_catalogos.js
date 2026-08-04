@@ -1,3 +1,6 @@
+/**
+ * Controlador para administrar la interfaz CRUD de los distintos catálogos en el panel admin.
+ */
 import { servicio_api } from '../servicios/servicio_api.js';
 import { escaparHTML } from '../utilidades/escape.js';
 import { obtener_color_carrera } from '../utilidades/color_carrera.js';

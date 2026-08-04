@@ -1,6 +1,6 @@
 <?php
 /**
- * Modelo para la gestion y verificacion de usuarios administradores.
+ * Clase de modelo dedicada a la gestión, validación y consulta de usuarios administradores.
  */
 
 require_once __DIR__ . '/../configuracion/conexion_base_datos.php';

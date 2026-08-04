@@ -1,6 +1,6 @@
 <?php
 /**
- * Clase para la gestion de la conexion segura a la base de datos mediante PDO.
+ * Archivo de configuración central para establecer la conexión PDO con la base de datos MySQL.
  */
 
 class ConexionBaseDatos {

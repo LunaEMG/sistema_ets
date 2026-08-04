@@ -1,6 +1,5 @@
 /**
- * Módulo de Alta de Exámenes - ESCOM IPN
- * Gestiona selectores encadenados y validación asíncrona de datos de forma defensiva.
+ * Controlador encargado de la lógica y validación del formulario para crear nuevos exámenes.
  */
 import { servicio_api } from '../servicios/servicio_api.js';
 
@@ -113,7 +112,7 @@ async function inicializar_formulario() {
         });
     }
 
-    // Configurar validaciones en línea (blur / change)
+
     [selector_carrera, selector_materia, selector_hora_manana, selector_hora_tarde, selector_profesor, selector_edificio, selector_piso, selector_salon_final].forEach(select => {
         if(select) {
             select.addEventListener('change', () => {

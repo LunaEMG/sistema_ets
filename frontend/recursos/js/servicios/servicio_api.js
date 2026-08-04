@@ -1,6 +1,5 @@
 /**
- * Plataforma ETS - ESCOM IPN
- * Servicio Centralizado de API (Frontend) - VERSIÓN COMPLETA INTEGRADA
+ * Servicio centralizado para realizar todas las peticiones HTTP al backend de manera asíncrona.
  */
 
 const URL_BASE = `${window.location.origin}/api`;

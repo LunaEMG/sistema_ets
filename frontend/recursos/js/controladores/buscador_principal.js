@@ -1,9 +1,41 @@
 /**
- * Controlador principal para la vista publica del buscador de ETS.
+ * Controlador principal que maneja la lógica, filtros y paginación del buscador público de exámenes.
  */
 import { servicio_api } from '../servicios/servicio_api.js';
 import { componente_tarjeta } from '../componentes/componente_tarjeta.js';
 import { exportador_calendario } from '../componentes/exportador_calendario.js';
+import { debounce } from '../utilidades/helpers.js';
+
+
+const CONFIG = {
+    SKELETONS_MOSTRADOS: 8,
+    RETRASO_SIMULADO_MS: 600,
+    ITEMS_POR_PAGINA: 12
+};
+
+
+class GestorExamenes {
+    constructor() {
+        this.coleccion = [];
+        this.pagina_actual = 1;
+    }
+    establecer_coleccion(nueva_coleccion) {
+        this.coleccion = nueva_coleccion;
+        this.pagina_actual = 1;
+    }
+    obtener_coleccion() { return this.coleccion; }
+    obtener_pagina_actual() { return this.pagina_actual; }
+    establecer_pagina_actual(pagina) { this.pagina_actual = pagina; }
+    obtenerPorId(id) {
+        return this.coleccion.find(e => e.id == id);
+    }
+}
+
+const estado = new GestorExamenes();
+
+window.obtener_examen_por_id = function(id) {
+    return estado.obtenerPorId(id);
+};
 
 const selector_carrera = document.getElementById('select_carrera');
 const selector_semestre = document.getElementById('select_semestre');
@@ -15,14 +47,6 @@ const boton_exportar_ics = document.getElementById('btn_exportar_ics');
 const input_buscador_texto = document.getElementById('input_buscador_texto');
 const contenedor_paginacion = document.getElementById('contenedor_paginacion');
 
-let coleccion_examenes_actuales = [];
-let pagina_actual = 1;
-const ITEMS_POR_PAGINA = 12;
-
-window.obtener_examen_por_id = function(id) {
-    return coleccion_examenes_actuales.find(e => e.id == id);
-};
-
 async function inicializar_buscador() {
     const btn_menu_movil = document.getElementById('btn_menu_movil');
     const navegacion_superior = document.getElementById('navegacion_superior');
@@ -32,14 +56,17 @@ async function inicializar_buscador() {
         });
     }
 
-    const lista_carreras = await servicio_api.obtener_carreras();
-    
-    lista_carreras.forEach(carrera => {
-        const opcion = document.createElement('option');
-        opcion.value = carrera.id;
-        opcion.textContent = carrera.nombre_carrera;
-        selector_carrera.appendChild(opcion);
-    });
+    try {
+        const lista_carreras = await servicio_api.obtener_carreras();
+        lista_carreras.forEach(carrera => {
+            const opcion = document.createElement('option');
+            opcion.value = carrera.id;
+            opcion.textContent = carrera.nombre_carrera;
+            selector_carrera.appendChild(opcion);
+        });
+    } catch (error) {
+        console.error("Error cargando carreras:", error);
+    }
 
     selector_carrera.addEventListener('change', async (evento) => {
         const id_seleccionado = evento.target.value;
@@ -47,88 +74,113 @@ async function inicializar_buscador() {
         selector_materia.disabled = true;
 
         if (id_seleccionado > 0) {
-            const lista_materias = await servicio_api.obtener_materias_por_carrera(id_seleccionado);
-            lista_materias.forEach(materia => {
-                const opcion = document.createElement('option');
-                opcion.value = materia.id;
-                opcion.textContent = `[Semestre ${materia.semestre_materia}] - ${materia.nombre_materia}`;
-                selector_materia.appendChild(opcion);
-            });
-            selector_materia.disabled = false;
+            try {
+                const lista_materias = await servicio_api.obtener_materias_por_carrera(id_seleccionado);
+                lista_materias.forEach(materia => {
+                    const opcion = document.createElement('option');
+                    opcion.value = materia.id;
+                    opcion.textContent = `[Semestre ${materia.semestre_materia}] - ${materia.nombre_materia}`;
+                    selector_materia.appendChild(opcion);
+                });
+                selector_materia.disabled = false;
+            } catch (error) {
+                console.error("Error cargando materias:", error);
+            }
         }
     });
 
-    boton_buscar.addEventListener('click', ejecutar_busqueda_examenes);
-    boton_exportar_pdf.addEventListener('click', () => exportador_calendario.exportar_a_pdf());
-    boton_exportar_ics.addEventListener('click', () => {
-        exportador_calendario.exportar_a_ics(coleccion_examenes_actuales);
+
+    const formBuscador = document.querySelector('form.contenedor_buscador_texto');
+    if (formBuscador) formBuscador.addEventListener('submit', ejecutar_busqueda_examenes);
+    
+    const formFiltros = document.querySelector('form.barra_filtros');
+    if (formFiltros) formFiltros.addEventListener('submit', ejecutar_busqueda_examenes);
+
+
+    if (boton_buscar) boton_buscar.addEventListener('click', ejecutar_busqueda_examenes);
+    
+    if (boton_exportar_pdf) boton_exportar_pdf.addEventListener('click', () => exportador_calendario.exportar_a_pdf());
+    
+    if (boton_exportar_ics) boton_exportar_ics.addEventListener('click', () => {
+        exportador_calendario.exportar_a_ics(estado.obtener_coleccion());
         const original = boton_exportar_ics.innerHTML;
         boton_exportar_ics.innerHTML = '<i class="fa-solid fa-check" style="color: #27ae60;"></i> ¡Descargado!';
         setTimeout(() => { boton_exportar_ics.innerHTML = original; }, 3000);
     });
     
     if (input_buscador_texto) {
-        let temporizador_debounce;
-        input_buscador_texto.addEventListener('input', () => {
-            clearTimeout(temporizador_debounce);
-            temporizador_debounce = setTimeout(() => {
-                pagina_actual = 1;
-                filtrar_por_texto();
-            }, 300);
-        });
+
+        const manejadorInput = debounce(() => {
+            estado.establecer_pagina_actual(1);
+            filtrar_por_texto();
+        }, 300);
+        input_buscador_texto.addEventListener('input', manejadorInput);
     }
     
     ejecutar_busqueda_examenes();
 }
 
-async function ejecutar_busqueda_examenes() {
-    contenedor_resultados.innerHTML = `
-        <div class="mensaje_carga">
-            <div class="spinner_carga"></div>
-            <p>Buscando exámenes programados...</p>
-        </div>
-    `;
+async function ejecutar_busqueda_examenes(e) {
+    if (e) e.preventDefault(); // Por si el evento viene del submit del form
     
-    boton_exportar_pdf.disabled = true;
-    const contenido_btn_original = boton_buscar.innerHTML;
-    boton_buscar.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-    boton_buscar.disabled = true;
-    selector_carrera.disabled = true;
-    selector_semestre.disabled = true;
-    selector_materia.disabled = true;
+    let skeletons_html = '';
+    for(let i = 0; i < CONFIG.SKELETONS_MOSTRADOS; i++) {
+        skeletons_html += componente_tarjeta.crear_skeleton();
+    }
+    contenedor_resultados.innerHTML = skeletons_html;
+    
+    if (boton_exportar_pdf) boton_exportar_pdf.disabled = true;
+    
+    const contenido_btn_original = boton_buscar ? boton_buscar.innerHTML : '';
+    if (boton_buscar) {
+        boton_buscar.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+        boton_buscar.disabled = true;
+    }
+    
+    if (selector_carrera) selector_carrera.disabled = true;
+    if (selector_semestre) selector_semestre.disabled = true;
+    if (selector_materia) selector_materia.disabled = true;
     if (input_buscador_texto) input_buscador_texto.disabled = true;
 
-    const carrera = selector_carrera.value;
-    const semestre = selector_semestre.value;
-    const materia = selector_materia.value;
+    const carrera = selector_carrera ? selector_carrera.value : 0;
+    const semestre = selector_semestre ? selector_semestre.value : 0;
+    const materia = selector_materia ? selector_materia.value : 0;
 
     try {
-        coleccion_examenes_actuales = await servicio_api.buscar_examenes(carrera, semestre, materia);
+        const [resultados] = await Promise.all([
+            servicio_api.buscar_examenes(carrera, semestre, materia),
+            new Promise(resolve => setTimeout(resolve, CONFIG.RETRASO_SIMULADO_MS))
+        ]);
+        
+        estado.establecer_coleccion(resultados);
+        
+        if (estado.obtener_coleccion().length === 0) {
+            renderizar_examenes([]);
+            window.Toast.mostrar('Búsqueda sin resultados', 'No se encontraron exámenes con los filtros seleccionados.', 'info');
+            return;
+        }
+
+        filtrar_por_texto();
+
+        if (boton_exportar_pdf) boton_exportar_pdf.disabled = false;
+        if (boton_exportar_ics) boton_exportar_ics.disabled = false;
+        
+    } catch (error) {
+        console.error("Error al buscar exámenes:", error);
+        contenedor_resultados.innerHTML = '';
+        window.Toast.mostrar('Error de conexión', 'No pudimos conectar con el servidor. Inténtalo de nuevo.', 'error');
     } finally {
-        boton_buscar.innerHTML = contenido_btn_original;
-        boton_buscar.disabled = false;
-        selector_carrera.disabled = false;
-        selector_semestre.disabled = false;
-        if (selector_carrera.value > 0) selector_materia.disabled = false;
+        if (boton_buscar) {
+            boton_buscar.innerHTML = contenido_btn_original;
+            boton_buscar.disabled = false;
+        }
+        if (selector_carrera) {
+            selector_carrera.disabled = false;
+            if (selector_carrera.value > 0 && selector_materia) selector_materia.disabled = false;
+        }
+        if (selector_semestre) selector_semestre.disabled = false;
         if (input_buscador_texto) input_buscador_texto.disabled = false;
-        pagina_actual = 1;
     }
-
-    if (coleccion_examenes_actuales.length === 0) {
-        renderizar_examenes([]);
-        Swal.fire({
-            icon: 'info',
-            title: 'Búsqueda sin resultados',
-            text: 'No se encontraron exámenes programados con los filtros seleccionados.',
-            confirmButtonColor: '#006293'
-        });
-        return;
-    }
-
-    filtrar_por_texto();
-
-    boton_exportar_pdf.disabled = false;
-    boton_exportar_ics.disabled = false;
 }
 
 function normalizar_texto(texto) {
@@ -137,14 +189,15 @@ function normalizar_texto(texto) {
 }
 
 function filtrar_por_texto() {
-    const texto_busqueda = normalizar_texto(input_buscador_texto.value);
+    const texto_busqueda = normalizar_texto(input_buscador_texto ? input_buscador_texto.value : '');
+    const coleccion = estado.obtener_coleccion();
     
     if (texto_busqueda === '') {
-        renderizar_examenes(coleccion_examenes_actuales);
+        renderizar_examenes(coleccion);
         return;
     }
 
-    const lista_filtrada = coleccion_examenes_actuales.filter(examen => {
+    const lista_filtrada = coleccion.filter(examen => {
         const mat = normalizar_texto(examen.nombre_materia);
         const prof = normalizar_texto(examen.nombre_profesor);
         const car = normalizar_texto(examen.nombre_carrera);
@@ -160,7 +213,10 @@ function filtrar_por_texto() {
 }
 
 function renderizar_examenes(lista_examenes) {
-    contenedor_resultados.innerHTML = '';
+    if (!contenedor_resultados) return;
+    
+
+    contenedor_resultados.innerHTML = ''; 
     
     if (lista_examenes.length === 0) {
         contenedor_resultados.innerHTML = `
@@ -178,13 +234,16 @@ function renderizar_examenes(lista_examenes) {
     }
 
     const total_items = lista_examenes.length;
-    const total_paginas = Math.ceil(total_items / ITEMS_POR_PAGINA);
+    const total_paginas = Math.ceil(total_items / CONFIG.ITEMS_POR_PAGINA);
+    
+    let pagina_actual = estado.obtener_pagina_actual();
     
     if (pagina_actual > total_paginas) pagina_actual = total_paginas;
     if (pagina_actual < 1) pagina_actual = 1;
+    estado.establecer_pagina_actual(pagina_actual);
 
-    const indice_inicio = (pagina_actual - 1) * ITEMS_POR_PAGINA;
-    const indice_fin = indice_inicio + ITEMS_POR_PAGINA;
+    const indice_inicio = (pagina_actual - 1) * CONFIG.ITEMS_POR_PAGINA;
+    const indice_fin = indice_inicio + CONFIG.ITEMS_POR_PAGINA;
     const examenes_pagina = lista_examenes.slice(indice_inicio, indice_fin);
 
     let html_acumulado = '';
@@ -192,6 +251,17 @@ function renderizar_examenes(lista_examenes) {
         html_acumulado += componente_tarjeta.crear_bloque_examen(examen);
     });
     contenedor_resultados.innerHTML = html_acumulado;
+
+    if (window.gsap) {
+        gsap.from('.tarjeta_materia_ets_nueva', { 
+            opacity: 0, 
+            scale: 0.92, 
+            y: 16, 
+            duration: 0.4,
+            ease: "back.out(1.2)",
+            clearProps: 'all'
+        });
+    }
 
     if (contenedor_paginacion) {
         renderizar_paginacion(total_paginas, lista_examenes);
@@ -202,14 +272,16 @@ function renderizar_paginacion(total_paginas, lista_filtrada_referencia) {
     contenedor_paginacion.innerHTML = '';
 
     if (total_paginas <= 1) return;
+    
+    const pagina_actual = estado.obtener_pagina_actual();
 
     const btn_anterior = document.createElement('button');
     btn_anterior.className = 'btn_pagina';
     btn_anterior.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
     btn_anterior.disabled = pagina_actual === 1;
     btn_anterior.addEventListener('click', () => {
-        if (pagina_actual > 1) {
-            pagina_actual--;
+        if (estado.obtener_pagina_actual() > 1) {
+            estado.establecer_pagina_actual(estado.obtener_pagina_actual() - 1);
             renderizar_examenes(lista_filtrada_referencia);
             window.scrollTo({ top: document.getElementById('main_content').offsetTop - 20, behavior: 'smooth' });
         }
@@ -221,7 +293,7 @@ function renderizar_paginacion(total_paginas, lista_filtrada_referencia) {
         btn_num.className = `btn_pagina ${i === pagina_actual ? 'activa' : ''}`;
         btn_num.textContent = i;
         btn_num.addEventListener('click', () => {
-            pagina_actual = i;
+            estado.establecer_pagina_actual(i);
             renderizar_examenes(lista_filtrada_referencia);
             window.scrollTo({ top: document.getElementById('main_content').offsetTop - 20, behavior: 'smooth' });
         });
@@ -233,8 +305,8 @@ function renderizar_paginacion(total_paginas, lista_filtrada_referencia) {
     btn_siguiente.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
     btn_siguiente.disabled = pagina_actual === total_paginas;
     btn_siguiente.addEventListener('click', () => {
-        if (pagina_actual < total_paginas) {
-            pagina_actual++;
+        if (estado.obtener_pagina_actual() < total_paginas) {
+            estado.establecer_pagina_actual(estado.obtener_pagina_actual() + 1);
             renderizar_examenes(lista_filtrada_referencia);
             window.scrollTo({ top: document.getElementById('main_content').offsetTop - 20, behavior: 'smooth' });
         }

@@ -1,3 +1,6 @@
+/**
+ * Componente reutilizable para renderizar tablas interactivas en el panel de administración.
+ */
 import { escaparHTML } from '../utilidades/escape.js';
 
 /**

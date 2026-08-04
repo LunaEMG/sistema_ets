@@ -1,6 +1,6 @@
 <?php
 /**
- * Modelo para la gestión de exámenes ETS en la base de datos.
+ * Clase de modelo que maneja la lógica de negocio y consultas CRUD para los exámenes ETS.
  */
 
 require_once __DIR__ . '/../configuracion/conexion_base_datos.php';
@@ -34,7 +34,7 @@ class ModeloExamen {
 
     public function eliminar_examen($id_examen) {
         try {
-            $consulta_sql = "DELETE FROM examen WHERE id = :id_examen";
+            $consulta_sql = "UPDATE examen SET estatus = 'inactivo' WHERE id = :id_examen";
             $sentencia = $this->conexion_bd->prepare($consulta_sql);
             $sentencia->bindParam(':id_examen', $id_examen, PDO::PARAM_INT);
             return $sentencia->execute();
@@ -54,6 +54,7 @@ class ModeloExamen {
                              INNER JOIN salon s ON e.id_salon = s.id
                              INNER JOIN edificio ed ON s.id_edificio = ed.id
                              INNER JOIN profesor p ON e.id_profesor = p.id
+                             WHERE e.estatus = 'activo'
                              ORDER BY e.fecha_examen ASC, e.hora_manana ASC";
 
             $sentencia = $this->conexion_bd->prepare($consulta_sql);
@@ -75,7 +76,7 @@ class ModeloExamen {
                              INNER JOIN salon s ON e.id_salon = s.id
                              INNER JOIN edificio ed ON s.id_edificio = ed.id
                              INNER JOIN profesor p ON e.id_profesor = p.id
-                             WHERE 1=1";
+                             WHERE e.estatus = 'activo'";
 
             $parametros = [];
 
@@ -151,7 +152,7 @@ class ModeloExamen {
             $consulta_sql = "SELECT c.nombre_carrera, COUNT(e.id) AS total_examenes 
                              FROM carrera c 
                              LEFT JOIN materia m ON m.id_carrera = c.id 
-                             LEFT JOIN examen e ON e.id_materia = m.id 
+                             LEFT JOIN examen e ON e.id_materia = m.id AND e.estatus = 'activo'
                              GROUP BY c.id, c.nombre_carrera 
                              ORDER BY c.nombre_carrera ASC";
 
@@ -170,6 +171,7 @@ class ModeloExamen {
             $consulta_sql = "SELECT COUNT(*) FROM examen 
                              WHERE id_salon = :id_salon 
                                AND fecha_examen = :fecha_examen 
+                               AND estatus = 'activo'
                                AND (
                                    (:hora_manana_1 < ADDTIME(hora_manana, '02:00:00') AND hora_manana < ADDTIME(:hora_manana_2, '02:00:00'))
                                    OR 
@@ -202,6 +204,7 @@ class ModeloExamen {
             $consulta_sql = "SELECT COUNT(*) FROM examen 
                              WHERE id_profesor = :id_profesor 
                                AND fecha_examen = :fecha_examen 
+                               AND estatus = 'activo'
                                AND (
                                    (:hora_manana_1 < ADDTIME(hora_manana, '02:00:00') AND hora_manana < ADDTIME(:hora_manana_2, '02:00:00'))
                                    OR 
